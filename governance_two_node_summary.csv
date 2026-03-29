@@ -1,0 +1,4 @@
+scenario,node_a_avg_final_stability,node_b_avg_final_stability,node_a_stable_run_rate,node_b_stable_run_rate,node_a_failure_rate,node_b_failure_rate,node_a_recovery_rate,node_b_recovery_rate,node_a_avg_final_trust,node_b_avg_final_trust,propagated_breach_rate,propagated_failure_rate,avg_synchronization_correlation,avg_stability_gap,simultaneous_breach_rate
+node_a_disturbance_only,0.9990949741422709,0.9996576711296383,1.0,1.0,0.0,0.0,0.0,0.0,0.9668777942666557,0.9788267961273547,0.0,0.0,0.9122484262786992,0.004963660158079131,0.0
+node_a_high_node_b_low,0.998901792759457,0.9199343107166797,1.0,0.5,0.0,0.1,0.0,0.45,0.9629383698078327,0.8011265308994426,0.5,0.1,0.024607445446838593,0.0850205159816714,0.0
+both_constraint,0.4111940613991639,0.480174477177077,0.0,0.0,1.0,0.95,0.1,0.25,0.11559628443075817,0.21849298955405683,1.0,0.95,0.5640235058893085,0.12845282057092058,1.0

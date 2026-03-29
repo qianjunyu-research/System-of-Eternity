@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multi-AI Room Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Prototype</p>
+        <h1>Shared Multi-AI Room</h1>
+        <p class="lede">
+          One transcript, five mock AI participants, hand-raise turn order, private work boxes, and a hard pause when the next speaker cannot afford a turn.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <label class="toggle">
+          <span>Strict pause mode</span>
+          <input id="strict-mode" type="checkbox" checked>
+        </label>
+        <label class="toggle">
+          <span>Auto-play turns</span>
+          <input id="auto-play" type="checkbox">
+        </label>
+        <button id="continue-btn" class="secondary">Let Next Speaker Talk</button>
+        <button id="resume-btn" class="secondary">Resume</button>
+        <button id="reset-btn" class="ghost">Reset Room</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="panel roster-panel">
+        <div class="panel-header">
+          <h2>Participants</h2>
+          <p>Each AI can raise a hand, wait, or pass.</p>
+        </div>
+        <div id="roster" class="roster"></div>
+      </aside>
+
+      <section class="panel chat-panel">
+        <div id="banner" class="banner hidden"></div>
+        <div class="queue-card">
+          <div class="panel-header">
+            <h2>Turn Queue</h2>
+            <p id="queue-meta">No hands are up right now.</p>
+          </div>
+          <p id="queue-list" class="queue-list empty">Everyone is currently passing.</p>
+          <p id="auto-play-meta" class="queue-note">Auto-play is off. Advance the room manually.</p>
+        </div>
+        <div class="panel-header">
+          <h2>Rolling Summary</h2>
+          <p id="summary-meta">No messages have been condensed yet.</p>
+        </div>
+        <pre id="summary" class="summary empty">The prototype will summarize older messages here once the transcript gets long enough.</pre>
+
+        <div class="panel-header transcript-header">
+          <h2>Transcript</h2>
+          <p id="last-event">Room ready.</p>
+        </div>
+        <div id="transcript" class="transcript"></div>
+
+        <form id="composer" class="composer">
+          <label for="message" class="sr-only">Message</label>
+          <textarea id="message" rows="3" placeholder="Try 'Claude, answer this' or '@Grok stress-test this idea'."></textarea>
+          <div class="composer-actions">
+            <span class="hint">Direct-address a model to give it first priority. Turn on Auto-play if you want the room to keep moving by itself.</span>
+            <button type="submit">Send To Room</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <section class="panel workspace-panel">
+      <div class="panel-header">
+        <h2>Private Work Boxes</h2>
+        <p>Each AI gets a side chat for private work before publishing back to the room.</p>
+      </div>
+      <div id="workspace-tabs" class="workspace-tabs"></div>
+      <div class="workspace-shell">
+        <div class="workspace-header">
+          <div>
+            <h3 id="workspace-title">Codex Private Box</h3>
+            <p id="workspace-event">Choose a box and send a private note.</p>
+          </div>
+          <p id="workspace-meta" class="workspace-meta">No private work yet.</p>
+        </div>
+        <div id="workspace-transcript" class="workspace-transcript"></div>
+        <form id="workspace-composer" class="composer workspace-composer">
+          <label for="workspace-message" class="sr-only">Private note</label>
+          <textarea id="workspace-message" rows="3" placeholder="Ask this AI to work privately here."></textarea>
+          <div class="composer-actions workspace-actions-row">
+            <span id="workspace-hint" class="hint">Private notes stay here until you choose to share the latest result. Private work can continue even if the main room is paused.</span>
+            <div class="workspace-actions">
+              <button id="workspace-share-btn" type="button" class="secondary">Share Latest To Room</button>
+              <button id="workspace-send-btn" type="submit">Send Private Note</button>
+            </div>
+          </div>
+        </form>
+        <section class="workspace-sim-panel">
+          <div class="workspace-sim-header">
+            <div>
+              <h4>Simulation Flow</h4>
+              <p id="workspace-sim-status">No simulation request is open.</p>
+            </div>
+            <p id="workspace-sim-meta" class="workspace-meta">Run simulations outside this room, then paste the result back here.</p>
+          </div>
+          <form id="workspace-sim-request-form" class="composer workspace-sim-form">
+            <label for="workspace-sim-request" class="sr-only">Simulation request</label>
+            <textarea id="workspace-sim-request" rows="2" placeholder="Describe the simulation this AI wants you to run outside the room."></textarea>
+            <div class="composer-actions workspace-actions-row">
+              <span class="hint">This marks the box as waiting on you.</span>
+              <button id="workspace-sim-request-btn" type="submit" class="secondary">Request Simulation</button>
+            </div>
+          </form>
+          <form id="workspace-sim-result-form" class="composer workspace-sim-form">
+            <label for="workspace-sim-result" class="sr-only">Simulation result</label>
+            <textarea id="workspace-sim-result" rows="3" placeholder="Paste the simulation result you ran outside the room."></textarea>
+            <div class="composer-actions workspace-actions-row">
+              <span class="hint">When you send the result here, the AI reviews it privately first.</span>
+              <button id="workspace-sim-result-btn" type="submit">Send Simulation Result</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <template id="message-template">
+    <article class="message">
+      <div class="message-header">
+        <strong class="message-author"></strong>
+        <span class="message-round"></span>
+      </div>
+      <p class="message-body"></p>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

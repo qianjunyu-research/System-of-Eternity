@@ -1,0 +1,6 @@
+name,runs,seed_start,abundance_rate,avg_abundance_year,avg_peak_abundance,avg_ai_year,stable_rate,avg_final_stability,avg_min_stability,avg_disruptions
+baseline,100,42,0.0,,0.4193,686.7,0.01,0.27835,0.27835,4.42
+faster_automation,100,42,0.94,306.9148936170213,0.76986,575.1,0.0,0.0134,0.00656,4.73
+slower_ai,100,42,0.0,,0.38997,925.7,1.0,0.97919,0.72363,4.06
+stronger_cooperation,100,42,0.0,,0.41397999999999996,668.0,0.0,0.17509,0.17509,0.02
+balanced_path,100,42,0.0,,0.46722,862.4,1.0,0.95848,0.7845799999999999,0.0

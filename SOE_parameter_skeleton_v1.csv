@@ -1,0 +1,30 @@
+Module,Variable,Meaning,Range,Default
+Disturbance,noise_level,background random uncertainty,0.0 - 1.0,0.10
+Disturbance,shock_prob,chance of sudden external event per cycle,0.0 - 0.50,0.05
+Disturbance,shock_impact,severity of shock when it occurs,0.0 - 1.0,0.30
+Disturbance,novelty_rate,rate of new unmodeled disturbance entering the system,0.0 - 0.50,0.08
+Disturbance,novelty_impact,strength of new unknown disturbances,0.0 - 1.0,0.30
+Cognition,emotional_weight,influence of emotional information on decisions,0.0 - 1.0,0.30
+Cognition,structural_weight,influence of structured or falsifiable information,0.0 - 1.0,0.70
+Cognition,falsifiability_gate,strictness of evidence filtering,0.0 - 1.0,0.55
+Cognition,info_spread_rate,speed of information diffusion across nodes,0.0 - 1.0,0.60
+Cognition,attention_bias,how much high-noise info captures attention,0.0 - 1.0,0.60
+Cognition,distortion_impact_on_trust,how much distorted information reduces trust,0.0 - 1.0,0.30
+Trust,trust_decay,drop in trust after betrayal or failed coordination,0.0 - 1.0,0.40
+Trust,recovery_rate,speed of trust rebuilding per cycle,0.0 - 0.10,0.02
+Trust,betrayal_frequency,likelihood of betrayal or trust-breaking event,0.0 - 0.50,0.10
+Trust,isolation_threshold,trust level below which ties are severed or quarantined,0.0 - 1.0,0.30
+Trust,memory_factor,how strongly past betrayal affects future trust,0.0 - 1.0,0.70
+Trust,stability_threshold,threshold for stable state activation,0.0 - 1.0,0.80
+Trust,stability_boost,multiplier on recovery above threshold,1.0 - 2.0,1.20
+Trust,disturbance_damping,reduction of disturbance when stable,0.0 - 1.0,0.80
+AI-Governance,ai_growth_rate,speed of AI capability growth,0.0 - 1.0,0.50
+AI-Governance,governance_capacity,ability of the system to regulate AI and coordinate response,0.0 - 1.0,0.50
+AI-Governance,coupling_threshold,maximum safe AI-to-governance ratio,1.0 - 2.0,1.20
+AI-Governance,coordination_latency,delay before governance responds to a change or shock,0.0 - 1.0,0.20
+AI-Governance,overshoot_penalty,instability added when AI exceeds governance,0.0 - 1.0,0.40
+Emergence,emergence_rate,frequency of new structures coalitions or institutions appearing,0.0 - 0.50,0.10
+Emergence,F_threshold,minimum functionality required for a new structure to persist,0.0 - 1.0,0.50
+Emergence,S_threshold,minimum stability required for a new structure to persist,0.0 - 1.0,0.50
+Emergence,adaptation_gain,benefit gained when a new structure succeeds,0.0 - 0.50,0.12
+Emergence,disruption_strength,impact of destabilizing new structure,0.0 - 1.0,0.50
