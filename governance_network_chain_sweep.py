@@ -16,8 +16,18 @@ from governance_loop_sim import (
     smooth_observation,
     summarize_run,
 )
-from governance_network_sim import NodeRuntime, apply_coupling, build_node_config, initialize_nodes
+from governance_network_sim import (
+    NodeRuntime,
+    apply_coupling,
+    apply_intrinsic_decay,
+    build_node_config,
+    initialize_nodes,
+)
 from governance_loop_sim import choose_governance_response, queue_decision, step_system
+
+PROPAGATION_AFFECTED_SHARE_THRESHOLD = 0.20
+PROPAGATION_DISTANCE_THRESHOLD = 5
+PROPAGATION_SUSTAINED_STEPS_THRESHOLD = 3
 
 
 def build_chain_neighbors(node_count: int) -> List[List[int]]:
@@ -98,10 +108,22 @@ def measure_run_metrics(
         for index, summary in enumerate(summaries)
         if summary["first_breach_step"] != ""
     ]
+    propagated_indices = [index for index in affected_indices if index != origin_index]
     failure_rate = len(failed_indices) / len(nodes) if nodes else 0.0
     cascade_depth = max((abs(index - origin_index) for index in affected_indices), default=0)
     last_affected_node = max(affected_indices, default=origin_index)
     survival_cluster_sizes = contiguous_cluster_sizes(len(nodes), affected_indices)
+    denominator = max(1, len(nodes) - 1)
+    affected_share = len(propagated_indices) / denominator
+    sustained_failure_steps = 0
+    for index in propagated_indices:
+        run_length = 0
+        for row in nodes[index].history:
+            if row["stability"] < threshold:
+                run_length += 1
+                sustained_failure_steps = max(sustained_failure_steps, run_length)
+            else:
+                run_length = 0
 
     time_to_collapse: Optional[int] = None
     for step in range(len(nodes[0].history) if nodes else 0):
@@ -114,11 +136,19 @@ def measure_run_metrics(
             time_to_collapse = int(nodes[0].history[step]["step"])
             break
 
+    propagated = int(
+        affected_share >= PROPAGATION_AFFECTED_SHARE_THRESHOLD
+        and cascade_depth >= PROPAGATION_DISTANCE_THRESHOLD
+        and sustained_failure_steps >= PROPAGATION_SUSTAINED_STEPS_THRESHOLD
+    )
+
     return {
         "failure_rate": failure_rate,
+        "affected_share": affected_share,
         "cascade_depth": cascade_depth,
+        "sustained_failure_steps": sustained_failure_steps,
         "time_to_collapse": -1 if time_to_collapse is None else time_to_collapse,
-        "propagated": int(any(index != origin_index for index in affected_indices)),
+        "propagated": propagated,
         "last_affected_node": last_affected_node,
         "survival_cluster_sizes": "|".join(str(size) for size in survival_cluster_sizes),
     }
@@ -134,6 +164,7 @@ def run_chain_network(
     k_c: float,
     k_t: float,
     origin_injection: float,
+    intrinsic_decay: float = 0.0,
 ) -> Tuple[List[NodeRuntime], Dict[str, float | int]]:
     nodes = initialize_nodes(config, node_count=node_count, run_seed=run_seed)
     neighbors = build_chain_neighbors(node_count)
@@ -166,6 +197,11 @@ def run_chain_network(
             k_d=k_d,
             k_c=k_c,
             migration_rate=k_t,
+        )
+        coupled_next_states = apply_intrinsic_decay(
+            coupled_next_states,
+            [node.state for node in nodes],
+            intrinsic_decay,
         )
 
         step_stabilities = [state.stability for state in coupled_next_states]
@@ -264,6 +300,7 @@ def run_parameter_sweep(
                         "k_D": k_d,
                         "k_C": k_c,
                         "k_T": k_t,
+                        "intrinsic_decay": 0.0,
                         **metrics,
                     }
                     raw_rows.append(row)

@@ -140,7 +140,36 @@ def apply_coupling(
     return updated
 
 
-def run_network(config: Config, node_count: int, steps: int, run_seed: int, coupled: bool, k_d: float, k_c: float, migration_rate: float) -> Tuple[List[NodeRuntime], Dict[str, float]]:
+def apply_intrinsic_decay(states: List[State], previous_states: Sequence[State], alpha: float) -> List[State]:
+    if alpha <= 0.0:
+        return [State(**state.__dict__) for state in states]
+
+    decayed_states: List[State] = []
+    for state, previous_state in zip(states, previous_states):
+        decayed_states.append(
+            State(
+                trust=clamp(state.trust),
+                disturbance=clamp(state.disturbance - (alpha * previous_state.disturbance)),
+                stability=clamp(state.stability),
+                cognitive_distortion=clamp(
+                    state.cognitive_distortion - (alpha * previous_state.cognitive_distortion)
+                ),
+            )
+        )
+    return decayed_states
+
+
+def run_network(
+    config: Config,
+    node_count: int,
+    steps: int,
+    run_seed: int,
+    coupled: bool,
+    k_d: float,
+    k_c: float,
+    migration_rate: float,
+    intrinsic_decay: float = 0.0,
+) -> Tuple[List[NodeRuntime], Dict[str, float]]:
     nodes = initialize_nodes(config, node_count=node_count, run_seed=run_seed)
     neighbors = build_neighbors(node_count, coupled=coupled)
 
@@ -175,6 +204,11 @@ def run_network(config: Config, node_count: int, steps: int, run_seed: int, coup
             )
         else:
             coupled_next_states = local_next_states
+        coupled_next_states = apply_intrinsic_decay(
+            coupled_next_states,
+            [node.state for node in nodes],
+            intrinsic_decay,
+        )
 
         step_stabilities = [state.stability for state in coupled_next_states]
         step_variance = statistics.pvariance(step_stabilities) if len(step_stabilities) > 1 else 0.0

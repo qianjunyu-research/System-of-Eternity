@@ -1,7 +1,13 @@
 import random
 import unittest
 
-from governance_network_topology_compare import classify_spatial_distribution, graph_to_neighbors, shortest_path_distances
+from governance_network_topology_compare import (
+    classify_spatial_distribution,
+    graph_to_neighbors,
+    normalize_topologies,
+    parse_float_list,
+    shortest_path_distances,
+)
 from soe_v3.soe_v3_topology import build_phase1_topology
 
 
@@ -28,6 +34,14 @@ class GovernanceNetworkTopologyCompareTests(unittest.TestCase):
         graph = build_phase1_topology("star", list(range(8)), random.Random(1))
         label = classify_spatial_distribution(graph, [0, 3, 5], origin_index=0)
         self.assertEqual(label, "hub_localized")
+
+    def test_normalize_topologies_accepts_user_friendly_aliases(self) -> None:
+        topologies = normalize_topologies("chain, star, random, fully connected")
+        self.assertEqual(topologies, ("chain", "star", "random-sparse", "fully-connected"))
+
+    def test_parse_float_list_reads_csv_values(self) -> None:
+        values = parse_float_list("0.02, 0.03, 0.05")
+        self.assertEqual(values, (0.02, 0.03, 0.05))
 
 
 if __name__ == "__main__":
