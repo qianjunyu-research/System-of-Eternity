@@ -37,6 +37,7 @@ class NodeRuntime:
     execution_rng: random.Random
     observation_rng: random.Random
     history: List[Dict[str, float]]
+    activation_active: bool
 
 
 def build_node_config(overrides: List[str]) -> Config:
@@ -92,9 +93,28 @@ def initialize_nodes(config: Config, node_count: int, run_seed: int) -> List[Nod
                 execution_rng=random.Random(run_seed + 10_000 + node_index),
                 observation_rng=random.Random(run_seed + 20_000 + node_index),
                 history=[],
+                activation_active=state.disturbance > 0.0,
             )
         )
     return nodes
+
+
+def update_activation_mask(
+    states: Sequence[State],
+    previous_active_mask: Sequence[bool],
+    activation_threshold: float,
+    deactivation_threshold: float,
+) -> List[bool]:
+    if activation_threshold <= 0.0:
+        return [state.disturbance > 0.0 for state in states]
+
+    active_mask: List[bool] = []
+    for state, was_active in zip(states, previous_active_mask):
+        if was_active:
+            active_mask.append(state.disturbance >= deactivation_threshold)
+        else:
+            active_mask.append(state.disturbance >= activation_threshold)
+    return active_mask
 
 
 def apply_coupling(
@@ -103,18 +123,46 @@ def apply_coupling(
     k_d: float,
     k_c: float,
     migration_rate: float,
+    activation_threshold: float = 0.0,
+    deactivation_threshold: float = 0.0,
+    propagation_exponent: float = 1.0,
+    neighbor_feedback_strength: float = 0.0,
+    active_mask: Sequence[bool] | None = None,
 ) -> List[State]:
     updated = [State(**state.__dict__) for state in states]
+    if active_mask is None:
+        active_mask = update_activation_mask(
+            states,
+            [False for _ in states],
+            activation_threshold,
+            deactivation_threshold,
+        )
 
     for node_index, node_neighbors in enumerate(neighbors):
         if not node_neighbors:
             continue
-        avg_neighbor_disturbance = sum(states[j].disturbance for j in node_neighbors) / len(node_neighbors)
-        avg_neighbor_cognition = sum(states[j].cognitive_distortion for j in node_neighbors) / len(node_neighbors)
-        updated[node_index].disturbance = clamp(updated[node_index].disturbance + (k_d * avg_neighbor_disturbance))
-        updated[node_index].cognitive_distortion = clamp(
-            updated[node_index].cognitive_distortion + (k_c * avg_neighbor_cognition)
-        )
+        active_neighbors = [
+            neighbor_index
+            for neighbor_index in node_neighbors
+            if active_mask[neighbor_index]
+        ]
+        if active_neighbors:
+            active_neighbor_ratio = len(active_neighbors) / len(node_neighbors)
+            feedback_multiplier = 1.0 + (neighbor_feedback_strength * active_neighbor_ratio)
+            avg_neighbor_disturbance = sum(
+                states[j].disturbance ** propagation_exponent for j in active_neighbors
+            ) / len(active_neighbors)
+            avg_neighbor_cognition = sum(
+                states[j].cognitive_distortion * (states[j].disturbance ** propagation_exponent)
+                for j in active_neighbors
+            ) / len(active_neighbors)
+            updated[node_index].disturbance = clamp(
+                updated[node_index].disturbance + (k_d * avg_neighbor_disturbance * feedback_multiplier)
+            )
+            updated[node_index].cognitive_distortion = clamp(
+                updated[node_index].cognitive_distortion
+                + (k_c * avg_neighbor_cognition * feedback_multiplier)
+            )
 
     trust_deltas = [0.0 for _ in states]
     seen_edges = set()
@@ -169,6 +217,10 @@ def run_network(
     k_c: float,
     migration_rate: float,
     intrinsic_decay: float = 0.0,
+    activation_threshold: float = 0.0,
+    deactivation_threshold: float = 0.0,
+    propagation_exponent: float = 1.0,
+    neighbor_feedback_strength: float = 0.0,
 ) -> Tuple[List[NodeRuntime], Dict[str, float]]:
     nodes = initialize_nodes(config, node_count=node_count, run_seed=run_seed)
     neighbors = build_neighbors(node_count, coupled=coupled)
@@ -195,15 +247,32 @@ def run_network(
             sampled_delays.append(sampled_delay)
 
         if coupled:
+            active_mask = update_activation_mask(
+                [node.state for node in nodes],
+                [node.activation_active for node in nodes],
+                activation_threshold,
+                deactivation_threshold,
+            )
             coupled_next_states = apply_coupling(
                 local_next_states,
                 neighbors=neighbors,
                 k_d=k_d,
                 k_c=k_c,
                 migration_rate=migration_rate,
+                activation_threshold=activation_threshold,
+                deactivation_threshold=deactivation_threshold,
+                propagation_exponent=propagation_exponent,
+                neighbor_feedback_strength=neighbor_feedback_strength,
+                active_mask=active_mask,
             )
         else:
             coupled_next_states = local_next_states
+            active_mask = update_activation_mask(
+                [node.state for node in nodes],
+                [node.activation_active for node in nodes],
+                activation_threshold,
+                deactivation_threshold,
+            )
         coupled_next_states = apply_intrinsic_decay(
             coupled_next_states,
             [node.state for node in nodes],
@@ -249,12 +318,14 @@ def run_network(
                     "executed_decisions": executed_label,
                     "sampled_delay": sampled_delay,
                     "node_stability_variance": step_variance,
+                    "activation_active": int(active_mask[node.node_index]),
                     **extras,
                 }
             )
             node.previous_observed_state = State(**node.observed_state.__dict__)
             node.observed_state = next_observed_state
             node.state = next_state
+            node.activation_active = active_mask[node.node_index]
 
     node_summaries = [summarize_run(node.history, threshold=config.stability_threshold) for node in nodes]
     final_stabilities = [float(summary["final_stability"]) for summary in node_summaries]

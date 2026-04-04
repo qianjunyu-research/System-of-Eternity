@@ -22,6 +22,7 @@ from governance_network_sim import (
     apply_intrinsic_decay,
     build_node_config,
     initialize_nodes,
+    update_activation_mask,
 )
 from governance_loop_sim import choose_governance_response, queue_decision, step_system
 
@@ -165,6 +166,10 @@ def run_chain_network(
     k_t: float,
     origin_injection: float,
     intrinsic_decay: float = 0.0,
+    activation_threshold: float = 0.0,
+    deactivation_threshold: float = 0.0,
+    propagation_exponent: float = 1.0,
+    neighbor_feedback_strength: float = 0.0,
 ) -> Tuple[List[NodeRuntime], Dict[str, float | int]]:
     nodes = initialize_nodes(config, node_count=node_count, run_seed=run_seed)
     neighbors = build_chain_neighbors(node_count)
@@ -191,12 +196,23 @@ def run_chain_network(
             executed_decision_labels.append("|".join(executed_decisions) if executed_decisions else "idle")
             sampled_delays.append(sampled_delay)
 
+        active_mask = update_activation_mask(
+            [node.state for node in nodes],
+            [node.activation_active for node in nodes],
+            activation_threshold,
+            deactivation_threshold,
+        )
         coupled_next_states = apply_coupling(
             local_next_states,
             neighbors=neighbors,
             k_d=k_d,
             k_c=k_c,
             migration_rate=k_t,
+            activation_threshold=activation_threshold,
+            deactivation_threshold=deactivation_threshold,
+            propagation_exponent=propagation_exponent,
+            neighbor_feedback_strength=neighbor_feedback_strength,
+            active_mask=active_mask,
         )
         coupled_next_states = apply_intrinsic_decay(
             coupled_next_states,
@@ -243,12 +259,14 @@ def run_chain_network(
                     "executed_decisions": executed_label,
                     "sampled_delay": sampled_delay,
                     "node_stability_variance": step_variance,
+                    "activation_active": int(active_mask[node.node_index]),
                     **extras,
                 }
             )
             node.previous_observed_state = State(**node.observed_state.__dict__)
             node.observed_state = next_observed_state
             node.state = next_state
+            node.activation_active = active_mask[node.node_index]
 
     metrics = measure_run_metrics(nodes, threshold=config.stability_threshold, origin_index=0)
     return nodes, metrics

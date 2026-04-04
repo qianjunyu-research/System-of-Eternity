@@ -22,6 +22,7 @@ from governance_network_chain_extended import (
 )
 from governance_network_chain_sweep import measure_run_metrics, write_csv_union
 from governance_network_sim import apply_coupling, apply_intrinsic_decay, build_node_config, initialize_nodes
+from governance_network_sim import update_activation_mask
 from governance_loop_sim import choose_governance_response, queue_decision, step_system
 from soe_v3.soe_v3_topology import build_phase1_topology
 
@@ -131,6 +132,10 @@ def run_topology_network(
     random_edge_probability: float,
     overrides: List[str],
     intrinsic_decay: float = 0.0,
+    activation_threshold: float = 0.0,
+    deactivation_threshold: float = 0.0,
+    propagation_exponent: float = 1.0,
+    neighbor_feedback_strength: float = 0.0,
 ) -> Dict[str, float | int | str]:
     config = build_node_config(overrides)
     nodes = initialize_nodes(config, node_count=node_count, run_seed=run_seed)
@@ -164,12 +169,23 @@ def run_topology_network(
             executed_decision_labels.append("|".join(executed_decisions) if executed_decisions else "idle")
             sampled_delays.append(sampled_delay)
 
+        active_mask = update_activation_mask(
+            [node.state for node in nodes],
+            [node.activation_active for node in nodes],
+            activation_threshold,
+            deactivation_threshold,
+        )
         coupled_next_states = apply_coupling(
             local_next_states,
             neighbors=neighbors,
             k_d=k_d,
             k_c=k_c,
             migration_rate=k_t,
+            activation_threshold=activation_threshold,
+            deactivation_threshold=deactivation_threshold,
+            propagation_exponent=propagation_exponent,
+            neighbor_feedback_strength=neighbor_feedback_strength,
+            active_mask=active_mask,
         )
         coupled_next_states = apply_intrinsic_decay(
             coupled_next_states,
@@ -215,12 +231,14 @@ def run_topology_network(
                     "executed_decisions": executed_label,
                     "sampled_delay": sampled_delay,
                     "node_stability_variance": step_variance,
+                    "activation_active": int(active_mask[node.node_index]),
                     **extras,
                 }
             )
             node.previous_observed_state = State(**node.observed_state.__dict__)
             node.observed_state = next_observed_state
             node.state = next_state
+            node.activation_active = active_mask[node.node_index]
 
     metrics = measure_run_metrics(nodes, threshold=config.stability_threshold, origin_index=0)
     affected_indices = [
@@ -247,6 +265,10 @@ def run_topology_comparison(
     k_c_values: Sequence[float] = (0.05, 0.10),
     k_t: float = 0.02,
     intrinsic_decay_values: Sequence[float] = (0.0,),
+    activation_threshold: float = 0.0,
+    deactivation_threshold: float = 0.0,
+    propagation_exponent: float = 1.0,
+    neighbor_feedback_strength: float = 0.0,
 ) -> Tuple[List[Dict[str, float | int | str]], List[Dict[str, float | int | str]]]:
     raw_rows: List[Dict[str, float | int | str]] = []
     summary_rows: List[Dict[str, float | int | str]] = []
@@ -268,6 +290,10 @@ def run_topology_comparison(
                         random_edge_probability=random_edge_probability,
                         overrides=overrides,
                         intrinsic_decay=intrinsic_decay,
+                        activation_threshold=activation_threshold,
+                        deactivation_threshold=deactivation_threshold,
+                        propagation_exponent=propagation_exponent,
+                        neighbor_feedback_strength=neighbor_feedback_strength,
                     )
                     row = {
                         "topology": topology,
@@ -275,6 +301,10 @@ def run_topology_comparison(
                         "k_D": k_d,
                         "k_C": k_c,
                         "k_T": k_t,
+                        "activation_threshold": activation_threshold,
+                        "deactivation_threshold": deactivation_threshold,
+                        "propagation_exponent": propagation_exponent,
+                        "neighbor_feedback_strength": neighbor_feedback_strength,
                         "intrinsic_decay": intrinsic_decay,
                         "run_index": run_index,
                         "seed": seed + run_index,
@@ -297,6 +327,10 @@ def run_topology_comparison(
                         "k_D": k_d,
                         "k_C": k_c,
                         "k_T": k_t,
+                        "activation_threshold": activation_threshold,
+                        "deactivation_threshold": deactivation_threshold,
+                        "propagation_exponent": propagation_exponent,
+                        "neighbor_feedback_strength": neighbor_feedback_strength,
                         "intrinsic_decay": intrinsic_decay,
                         "runs": runs,
                         "steps": steps,
@@ -341,6 +375,30 @@ def build_argument_parser() -> argparse.ArgumentParser:
         help="Comma-separated cognition propagation strengths.",
     )
     parser.add_argument("--k-t", type=float, default=0.02, help="Trust / migration propagation strength.")
+    parser.add_argument(
+        "--activation-threshold",
+        type=float,
+        default=0.0,
+        help="Minimum disturbance required before a node contributes to propagation.",
+    )
+    parser.add_argument(
+        "--deactivation-threshold",
+        type=float,
+        default=0.0,
+        help="Lower threshold for staying active once hysteresis is enabled.",
+    )
+    parser.add_argument(
+        "--propagation-exponent",
+        type=float,
+        default=1.0,
+        help="Nonlinear exponent applied to active-node disturbance during propagation.",
+    )
+    parser.add_argument(
+        "--neighbor-feedback-strength",
+        type=float,
+        default=0.0,
+        help="Additional reinforcement from the fraction of active neighbors.",
+    )
     parser.add_argument(
         "--intrinsic-decay-values",
         default="0.00",
@@ -387,6 +445,10 @@ def main() -> None:
         k_c_values=k_c_values,
         k_t=args.k_t,
         intrinsic_decay_values=intrinsic_decay_values,
+        activation_threshold=args.activation_threshold,
+        deactivation_threshold=args.deactivation_threshold,
+        propagation_exponent=args.propagation_exponent,
+        neighbor_feedback_strength=args.neighbor_feedback_strength,
     )
 
     summary_path = args.output_prefix.with_name(f"{args.output_prefix.name}_summary.csv")
