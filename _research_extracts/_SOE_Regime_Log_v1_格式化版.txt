@@ -1,0 +1,92 @@
+SOE_Regime_Log_v1
+Formatted Research Log
+Summary
+2) Why this log is essential
+Because you just discovered:
+system works in high-control regime
+variables become non-binding
+structure disappears
+If you don’t record this:
+future you will wrongly think:
+trust doesn’t matter
+cognition doesn’t matter
+But reality is
+they matter only under constraint
+3) I’ll generate it for you (clean + ready)
+SOE_Regime_Log_v1
+1. Document Metadata
+Document: SOE_Regime_Log_v1
+Related Model: SOE_Model_v1.2
+Purpose: Identify how system behavior changes under different control regimes
+Method: Integration tests and component-necessity tests under high-control conditions
+2. Regime Definition
+High-Control Regime:
+Characterized by sufficient intervention capacity, strong smoothing, and moderate disturbance.
+In this regime, control dominates system behavior and suppresses internal dynamics.
+3. Test Summary (Integration Phase)
+Test — Full Integration
+Configuration
+continuous control
+smoothing active
+derived trust cap
+cognition active
+Result
+stability rate: 1.00
+failures: 0.00
+Conclusion
+System operates as a unified whole under current calibration.
+Test — Trust Channel Removal
+Modification
+Control does not directly depend on trust
+Result
+stability rate: 1.00
+failures: 0.00
+Conclusion
+Trust is not required as a control input in high-control regime.
+Test — Cognition Shape
+Modification
+Linear vs nonlinear amplification
+Result
+no meaningful difference
+Conclusion
+Cognition form does not influence system behavior under current conditions.
+Test — Memory Window
+Modification
+memory_window ∈ {0, small, large}
+Result
+no observable change
+Conclusion
+Explicit memory does not influence system behavior in this regime.
+4. Regime Characteristics
+System exhibits near-perfect stability
+Failures are eliminated
+Recovery is rarely triggered (system remains stable)
+Internal variables (T, C, memory) have negligible effect
+5. Component Binding Analysis
+Non-Binding Components (in this regime)
+Trust (as control channel)
+Cognition (both linear and nonlinear)
+Memory (explicit window)
+Binding Components
+Control capacity
+Control smoothing (damping)
+Sensitivity calibration
+6. Key Finding
+In high-control conditions, system behavior is dominated by control mechanisms, and internal state variables become non-binding.
+7. Interpretation
+The system enters a control-dominated regime where stabilization is achieved regardless of internal structural details.
+This masks the role of trust, cognition, and memory, making it impossible to determine their necessity under these conditions.
+8. Implications
+High stability does not imply correct model structure
+Component necessity cannot be inferred from high-control regimes
+Additional testing under constrained conditions is required
+9. Transition to Next Phase
+Next phase: Constraint Activation
+Goal
+Reduce control dominance to expose underlying system dependencies.
+Approach
+reduce intervention capacity
+reduce smoothing
+increase disturbance intensity
+10. Final Statement
+The integration results demonstrate that the system is over-stabilized under current parameters, and that meaningful structural analysis requires operating in regimes where control is insufficient to mask internal dynamics.

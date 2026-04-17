@@ -1,0 +1,111 @@
+SOE_Falsification_Log_v1
+Formatted Research Log
+Summary
+Separate from:
+SOE_Model_v1.2
+SOE_Experiment_Log_v1
+3) Structure (clean and minimal)
+I’ll generate it for you now.
+SOE_Falsification_Log_v1
+1. Document Metadata
+Document: SOE_Falsification_Log_v1
+Related Model: SOE_Model_v1.1 → SOE_Model_v1.2
+Purpose: Identify which components of the system are necessary vs. artifacts
+Method: Targeted falsification tests based on external AI review
+2. Falsification Objective
+Determine whether observed system behavior reflects fundamental dynamics or simulation artifacts by systematically removing or replacing core assumptions.
+3. Test Summary
+Test 1 — De-Trust
+Modification
+Removed trust as the central state variable
+Result
+stability rate: 0.00
+failures: 1.00
+avg stability: 0.435
+Conclusion
+System collapses without trust
+trust is a necessary core variable
+Test 2 — Remove Thresholds
+Modification
+Replaced discrete trigger thresholds with continuous control
+Result
+stability rate: 0.85
+failures: 0.00
+avg stability: 0.916
+Conclusion
+System remains stable without thresholds
+thresholds are not the primary mechanism
+Test 3 — Delay vs Damping
+Modification
+Compared delayed execution vs continuous damping
+Result
+delay: stability 0.35
+damping: stability 0.60
+Conclusion
+Damping outperforms delay
+delay effect is a proxy for smoothing
+smoothing is the actual stabilizing mechanism
+Test 4 — Cognition Channel
+Modification A
+Removed cognition
+Result
+stability rate: 1.00
+failures: 0.00
+Modification B
+Amplified cognition
+Result
+stability rate: 0.00
+failures: 0.95
+Conclusion
+Cognition is not required for stability
+acts as a disturbance amplifier
+Test 5 — Derived Trust Cap
+Modification
+Replaced fixed trust cap with stress-derived cap
+Result
+stability rate: 1.00
+failures: 0.00
+Conclusion
+Trust cap can be derived from system state
+not an arbitrary parameter
+4. Component Classification
+Core Components (Necessary)
+Trust (T)
+Control capacity
+Control smoothing (damping)
+Sensitivity (responsiveness)
+Recovery constraint (bounded trust)
+Secondary Components (Contextual)
+Cognitive distortion (C) → disturbance amplifier
+Rejected / Replaced Components
+Execution delay as core mechanism → replaced by smoothing
+Threshold-based control → replaced by continuous control
+Fixed trust cap → replaced by derived constraint
+5. Model Transition
+From v1.1
+delay-based control
+threshold-triggered interventions
+fixed trust cap
+cognition as core variable
+To v1.2
+smoothed continuous control
+no reliance on thresholds
+derived trust constraint
+cognition as amplification factor
+6. Key Findings
+1. Trust is the central state variable and cannot be removed.
+2. Control smoothing is the true stabilizing mechanism.
+3. Threshold-based triggering is not required for stability.
+4. Cognitive distortion amplifies disturbance but is not structurally necessary.
+5. Recovery constraints can emerge from system stress.
+7. Implications
+The system is not a generic control system; it is trust-dependent.
+Observed delay effects were artifacts of smoothing behavior.
+The model now reflects underlying dynamics rather than simulation structure.
+8. Remaining Open Questions
+Does smoothing remain effective in continuous-time systems?
+How trust dynamics behave under multi-node interaction?
+Whether cognition introduces nonlinear tipping points in networked systems?
+How memory and adaptation affect stability?
+9. Final Statement
+The falsification process identified the minimal set of mechanisms required for stability and eliminated several previously assumed components. The resulting system reflects a trust-centered dynamic stabilized by smoothed control under disturbance with constrained recovery.

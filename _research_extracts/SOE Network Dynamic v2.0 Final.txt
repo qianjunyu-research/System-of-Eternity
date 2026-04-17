@@ -1,0 +1,143 @@
+SYSTEM OF ETERNITY
+Network Dynamics Core
+Version 2.0  ·  Final Lock
+SOE_Model_v2.0
+Multi-AI Review Complete  ·  All Patches Applied  ·  Formatted for Archive
+2026-03-28
+RESEARCH ARTIFACT  ·  SINGLE-NODE VALIDATED  ·  NETWORK BASELINE
+1.  Scope
+This version extends SOE from a single-node system (v1.x) to a multi-node interacting system. Each node retains the v1.3 state variables: Trust (T), Disturbance (D), Cognitive Distortion (C), Stability (S). Nodes are coupled through propagation channels.
+This document incorporates all patches identified through multi-AI review (Claude, GPT, Grok, Gemini), and should be read alongside SOE_Model_v1.3 and SOE_Experiment_Log_v1.
+2.  Model Architecture Declaration
+This section was absent from the original v2.0 draft and identified as the primary structural gap across all reviewers.
+The v2.0 model extends the v1.3 single-node system into a networked structure. Each node is assumed to follow v1.3 internal dynamics in isolation:
+STATE → DETECTION → CONTINUOUS CONTROL → STATE UPDATE
+Network interactions are introduced as additive coupling terms across nodes. The control layer (capacity, smoothing, sensitivity) is not explicitly re-modeled at the network level. Its effects are embedded within node-level dynamics and reflected indirectly through coupling parameters.
+Coupling parameters are treated as net values that incorporate node-level control effects. The decomposition of coupling strength from governance capacity has not been independently tested. This is a declared assumption, not a confirmed finding.
+3.  State Variables
+Each node carries the following state variables, inherited from v1.3:
+Variable
+Description
+T(t)
+Trust — governs recoverability under stress
+D(t)
+Disturbance — primary external/internal stress input
+C(t)
+Cognition — see §4 for role change from v1.3
+S(t)
+Stability — derived system condition
+4.  Variable Role Changes from v1.3
+4.1  Cognitive Distortion (C) — Role Promotion
+This change was implicit in the original v2.0 and identified as an undeclared structural shift. It is now explicit.
+In v1.3, C was an internal amplification factor — tertiary in the variable hierarchy, with an unspecified functional form. Its effect was local to each node.
+In v2.0, C is elevated to a network-level propagation channel. C now transmits between nodes via its own coupling coefficient (k_C), independent of disturbance propagation. This reflects scenarios where cognitive effects — such as information spread, perception shifts, or narrative contagion — propagate independently across nodes.
+The functional form of C's amplification within each node remains unspecified, carried forward from v1.3 open questions.
+5.  Network Structure
+Each node (i) evolves according to v1.3 dynamics, with added coupling terms from connected nodes (j):
+D_i  ←  D_i  +  k_D · D_j
+C_i  ←  C_i  +  k_C · C_j
+T_i  ←  T_i  +  k_T · T_j     (conditional recovery channel)
+k_D: Disturbance coupling coefficient
+k_C: Cognition coupling coefficient
+k_T: Recovery (trust) coupling coefficient
+Network topology: This model assumes a homogeneous, fully connected structure with linear additive coupling and synchronous update dynamics. Results should be interpreted as baseline behavior under these assumptions, not as properties of all networked systems.
+6.  Propagation Channels
+Disturbance (D): Propagates shocks and failure
+Cognition (C): Amplifies disturbance effects; also propagates independently across nodes in v2.0
+Trust (T): Propagates recovery — conditional on sufficient k_T
+7.  Core Asymmetry
+Failure propagation is default — D and C channels are structurally always active.
+Stability propagation is conditional — requires T channel coupling above threshold.
+This asymmetry does not imply relative propagation speed. It defines activation conditions under the current model structure: failure channels are always-on; recovery is gated by coupling threshold.
+8.  Delay Mechanisms — Disambiguation
+The original v2.0 used "delay" to describe two structurally different phenomena. This section separates them explicitly.
+8.1  τ_control — Node-Level Control Delay
+Inherited from v1.3. The delay between state detection and control execution within a single node. In v1.3 experiments, non-zero τ_control improved stability via smoothing effects. This parameter remains active at the node level in v2.0.
+8.2  τ_network — Network Propagation Delay
+New in v2.0. The delay between a state change at node j and its arrival at node i via coupling. Observed behavior by regime:
+Weak coupling: τ_network is irrelevant
+Intermediate coupling: τ_network activates and affects outcomes
+Strong coupling: τ_network worsens cascade propagation
+These two parameters represent structurally different processes and must be analyzed separately. The apparent reversal of delay effects between v1.3 (delay helps) and v2.0 strong-coupling conditions (delay hurts) is explained by this distinction — they are not the same mechanism.
+9.  Recovery Threshold
+A minimum recovery coupling coefficient (k_T*) is required to prevent node failure under coupling. The relationship between k_T* and the propagation environment is described by the observed patterns in §10.
+10.  Observed Patterns
+All statements previously labeled "Laws" have been downgraded to "Observed Patterns." These reflect behavior within tested simulation configurations, not universal theoretical claims.
+Observed Pattern 1 — Threshold Dependence
+Within tested regimes, the recovery threshold k_T* increases with total propagation strength (k_D + k_C). This holds independently of disturbance magnitude within the tested disturbance range. Whether it holds outside this range has not been tested.
+Observed Pattern 2 — Regime Structure
+Threshold values appear piecewise across coupling regimes rather than continuous. This was observed across discrete coupling values; the functional form between measured points is not established.
+Observed Pattern 3 — Conditional Delay Activation
+τ_network does not affect k_T* in weak coupling regimes. In intermediate regimes, τ_network activates and influences outcomes. In strong coupling regimes, τ_network worsens cascade propagation. These are regime-specific observations, not general properties.
+Observed Pattern 4 — Total Coupling Dominance
+Within the tested linear model regime, k_T* is primarily determined by total coupling magnitude (k_D + k_C) rather than the individual composition of disturbance and cognition coupling. This is a scope-bounded observation — it may not hold under nonlinear coupling.
+Observed Pattern 5 — Composition Secondary Effect
+While the recovery threshold is primarily determined by total coupling magnitude, the composition of disturbance and cognition coupling influences post-threshold recovery dynamics. Disturbance-heavy vs cognition-heavy configurations produce the same threshold but slightly different stability after recovery. These two patterns are compatible: threshold is composition-independent; recovery dynamics are composition-dependent.
+Observed Pattern 6 — Synchronization Behavior
+High coupling produces high synchronization. Intermediate coupling produces desynchronization. Strong coupling produces re-synchronization via shared collapse. This reflects regime transitions, not a monotonic relationship.
+Observed Pattern 7 — Conditional Vulnerability Concentration
+In tested configurations, system failure was more likely to originate at nodes with lower internal resilience. This observation is provisional. The current model uses a fully-connected symmetric topology, which does not support claims about structural position or directed dependency chains. This pattern is a candidate for testing under sparse or directed topologies in future versions.
+11.  Regime Classification
+System behavior is regime-dependent. The table below summarizes observed behavior across coupling regimes within tested configurations.
+Regime
+Coupling
+Behavior
+Delay Effect
+Weak
+Low
+Nodes behave independently; low k_T*
+Irrelevant
+Medium
+Moderate
+System stable; k_T* increases
+Minor
+Intermediate
+Moderate-high
+k_T* splits; timing-sensitive
+Activates
+Strong
+High
+Synchronized; global collapse risk
+Worsens cascade
+12.  Dual Dynamics
+The system operates under two competing propagation flows:
+Failure flow   =  D + C
+Recovery flow  =  T
+Observed outcome is determined by the ratio of k_T to (k_D + k_C). In tested configurations, stability was observed in regimes where recovery propagation exceeded failure propagation. This is a scope-bounded observation, not a necessary condition claim.
+13.  System Characterization
+SOE v2.0 is a threshold-governed, regime-dependent, networked dynamic system in which stability is conditional on sufficient recovery coupling relative to failure propagation.
+Extended from v1.3: SOE v2.0 retains the dual-attractor structure identified at the node level (collapse tendency and saturation tendency) and introduces a synchronized collapse mode observed under strong coupling conditions. Whether this constitutes a distinct attractor is not yet established.
+14.  Scope and Limitations
+14.1  Model Assumptions
+Homogeneous nodes — each node follows identical v1.3 dynamics
+Fully connected network — all nodes interact with all other nodes
+Linear additive coupling — coupling terms are proportional and additive
+Synchronous update dynamics — all nodes update simultaneously per time step
+Governance embedded in node dynamics — not independently modeled at network level
+Short-horizon memory only — no long-term learning or adaptation
+14.2  What Is Not Modeled
+Heterogeneous node behavior or adaptive agents
+Directed or asymmetric network topologies
+Stochastic timing or asynchronous propagation
+Nonlinear coupling functions
+Independent governance layer at network level
+These are deferred to future versions. They define the boundary within which current findings apply — they do not invalidate those findings.
+15.  Not Yet Established
+The following questions are outside the validation boundary of v2.0:
+Whether observed patterns hold under heterogeneous node behavior
+Whether results generalize to directed or sparse topologies
+Whether k_T* threshold relationships are linear or nonlinear beyond tested coupling range
+Whether τ_control and τ_network interact when both are varied simultaneously
+Whether cognitive amplification has threshold-dependent behavior at the network level
+Whether governance capacity can be independently varied at the network level without changing coupling coefficients
+16.  Continuity from v1.3
+The following v1.3 findings are carried forward and assumed to hold at the node level:
+Capacity requirement: sufficient intervention budget required for node-level stabilization
+Smoothing requirement: unsmoothed control destabilizes at node level
+Saturation constraint: trust cap prevents trivial high-trust equilibrium (v1.3.1 clarification)
+Regime dependence: node-level behavior depends on control-to-disturbance ratio
+The capacity null-result reconciliation from v1.3 §18.1 applies: capacity effects are regime-dependent and non-binding in high-control conditions. This is carried forward as context for interpreting coupling parameter behavior in v2.0.
+17.  Final Statement
+Within the modeled system, stability is not an intrinsic property but a threshold-dependent, regime-governed outcome determined by the balance between failure propagation (D + C channels) and recovery propagation (T channel) across nodes.
+Within the defined scope — homogeneous nodes, linear coupling, synchronous updates — the model is internally consistent and the observed patterns are defensible. Extension beyond this scope requires new experimental validation.
+SOE v2.0 is locked. No further edits without new experimental evidence or version increment.

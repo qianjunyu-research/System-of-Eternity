@@ -1,0 +1,705 @@
+System of Eternity
+SOE Simulation Log
+Version 11  ·  Cleaned and Integrated Review Edition
+Prepared 2026-03-22 from SOE_Simulation_Log_v10.docx
+Consolidated review input: Codex  ·  Claude  ·  Gemini  ·  Grok  ·  ChatGPT
+Revision note: This edition preserves the completed experiment record while fixing section order, reducing overclaiming, clarifying the meaning of collapse, and separating validated findings from preliminary or superseded material.
+Table of Contents
+Section
+Title
+Core Definitions
+Key terms used throughout this log
+Experiment Naming System
+Prefix, category, and versioning conventions
+Section A
+Codex Simulator — Validated Results
+Section B
+xAI Simulator — Preliminary Results
+Section C
+Agent Simulations (Claude) + Formation Layer Synthesis
+Section D
+Network Topology Experiments (Gemini / Codex)
+Section E
+Adversarial Stress Tests (Grok / xAI)
+Section F
+Cross-Model Experiments (Superseded / Audit Record)
+Section G
+Bureaucratic Layer Experiments (Codex v1.5)
+Section H
+Behavior × Topology Integration — CL-NET Series
+Section Y
+Execution Layer Constraints
+Section X
+Core System Laws
+Section I — GPT Dynamic Node-Level Simulation
+Secondary Simulation Log v3  ·  GPT Branch
+Integration Preface
+This section contains the finalized node-level dynamic simulation conducted using GPT (ChatGPT) on 2026-03-22.
+Branch: secondary baseline_v1
+Model versions:
+•  v1 — lock baseline (no cognition→trust coupling)
+•  v2 — cognition-linked (distortion reduces trust directly)
+This branch is fully validated, adversarially reviewed, and scoped as a model-constrained result set.
+IMPORTANT INTEGRATION RULES:
+•  This section must NOT be numerically merged with other branches (xAI, CL-NET, macro, topology).
+•  All conclusions apply only within this model branch unless explicitly cross-validated.
+•  One unresolved item: governance null diagnostic (see Governance Null Addendum).
+This section is included for structural insight, not direct aggregation.
+Scope
+This log documents the secondary baseline_v1 simulation branch only.
+It should not be merged numerically with the older macro, topology, or CL-NET branches without explicit model separation.
+Results are interpreted as model-constrained findings rather than universal SOE laws.
+Model Versioning
+Version
+Description
+Stable
+Recovered
+Fragile
+Avg Coop.
+v1
+Lock baseline — no cognition→trust coupling
+6/20
+14/20
+3/20
+0.864
+v2
+Cognition-linked — distortion reduces trust
+5/20
+14/20
+4/20
+0.852
+All cognitive and interaction tests after the cognition upgrade reference v2, not v1.
+Phase 0 — Early Baseline Sequence
+BASELINE_v1 — Initial State
+Stable Runs
+Recovered
+Fragile
+Avg Final Coop.
+0 / 20
+8 / 20
+20 / 20
+0.625
+Interpretation: dynamic but underpowered. System recovers sporadically but cannot sustain high cooperation.
+Early Phase Findings
+•  Recovery-rate increase to 0.04 improved recovery strongly but did not create stability.
+•  Governance-only improvement (governance_capacity 0.50 → 0.70) produced only marginal effect.
+•  Lower disturbance and higher structural_weight produced the strongest gains before the lock mechanism was introduced.
+•  Key discovery: average cooperation above 0.80 was insufficient — the model required state-dependent reinforcement.
+Phase A — Lock Mechanism and Stability Envelope
+LOCK_MECHANISM_TEST_v1 — Parameters Introduced
+stability_threshold
+0.80
+stability_boost
+1.2
+disturbance_damping
+0.80
+BASELINE_LOCK_v1 — Reference Result
+Stable Runs
+Recovered
+Fragile
+Avg Final Coop.
+6 / 20
+14 / 20
+3 / 20
+0.864
+Stability Envelope — Boundary Mapping
+noise_level
+structural_weight
+Stable / 20
+Avg Coop.
+Assessment
+0.045
+0.90
+7/20
+~0.864
+Slightly strengthened
+0.050
+0.90
+6/20
+0.864
+Core stable region
+0.055
+0.90
+6/20
+0.862
+Near-flat — plateau edge
+0.060
+0.90
+3/20
+0.838
+Tipping zone — degradation begins
+0.050
+0.80
+4/20
+~0.840
+Structural floor — clear weakening
+Sensitivity Ranking (within tested range)
+•  1. noise_level — dominant constraint
+•  2. structural_weight — buffering capacity
+•  3. stability_boost — necessary but not tightly tuned
+Within the tested parameter range, stability appeared bounded, disturbance-limited, and buffered by structure.
+Phase B — Disturbance Stress
+Experiment
+shock_prob
+Stable / 20
+Recovered / 20
+Fragile / 20
+Avg Coop.
+BASELINE_LOCK_v1
+—
+6/20
+14/20
+3/20
+0.864
+STRESS_S1
+0.10
+5/20
+14/20
+3/20
+0.858
+STRESS_S2
+0.15
+4/20
+16/20
+4/20
+0.854
+Within the tested range, higher shock frequency degraded performance gradually. No catastrophic collapse was observed.
+Phase C — Cognitive Upgrade and Cognitive Stress
+Original cognitive stress tests on v1 were effectively null: raising emotional_weight alone barely moved the system.
+Model upgrade: added distortion_impact_on_trust so distortion now directly reduces trust.
+BASELINE_LOCK_v2 — Post-Upgrade Reference
+Stable Runs
+Recovered
+Fragile
+Avg Final Coop.
+5 / 20
+14 / 20
+4 / 20
+0.852
+Cognitive Stress Tests (v2)
+Experiment
+emotional_weight
+Stable / 20
+Recovered / 20
+Fragile / 20
+Avg Coop.
+BASELINE_LOCK_v2
+0.30
+5/20
+14/20
+4/20
+0.852
+COG_S1
+0.40
+4/20
+16/20
+5/20
+0.848
+COG_S2
+0.50
+4/20
+16/20
+5/20
+0.844
+Cognition became a real but moderate degradation axis once it gained a direct trust pathway. Not a catastrophic stress vector.
+Phase D — Interaction Tests
+Experiment
+noise
+shock_prob
+emot. wt.
+Stable / 20
+Fragile / 20
+Avg Coop.
+BASELINE_LOCK_v2
+0.05
+—
+0.30
+5/20
+4/20
+0.852
+X1: Shock + Cog
+0.05
+0.15
+0.40
+2/20
+6/20
+0.828
+X2: Noise + Cog
+0.06
+—
+0.40
+4/20
+5/20
+0.843
+X3: Triple
+0.06
+0.15
+0.40
+2/20
+7/20
+0.816
+Combined stressors produced the strongest degradation observed. Shock + cognitive degraded stability more severely than noise + cognitive.
+Caution: additive vs. multiplicative interaction strength not yet isolated. Shock-only controls were not rerun on the v2 baseline.
+Governance Null — Diagnostic Addendum
+governance_capacity was increased by 40% (0.50 → 0.70) in the early branch.
+The observed effect was near-zero (+0.002 average cooperation, marginal recovery improvement).
+This is a model validity question, not a precision limitation: is governance correctly wired into the model?
+Experiment
+governance_capacity
+Stable / 20
+Avg Coop.
+Delta vs Prior
+Recovery test (prior)
+0.50
+0/20
+0.732
+—
+GOVERNANCE_TEST_v1
+0.70
+0/20
+0.734
++0.002
+Diagnostic Test — Governance Bracket
+Recommended: rerun governance_capacity at 0.30 / 0.50 / 0.70 / 0.90 on the v2 locked baseline.
+Result Pattern
+Interpretation
+Action Required
+Flat across all values
+Model wiring issue — governance not connected to relevant pathways
+Investigate architecture
+Effect only at extremes
+Nonlinear threshold interaction
+Map the threshold
+Gradual monotonic effect
+Weak but real — governance contributes but not dominant
+Document and close
+Resolution status: test not yet executed as of 2026-03-22. Any architectural implication referencing governance operates on an untested assumption until this is resolved.
+Outstanding Questions
+Governance null
+Near-zero effect of governance_capacity unexplained. Model validity question — see Governance Null Addendum.
+Lock-mechanism opacity
+stability_boost and disturbance_damping effects recorded, but failure/disengagement conditions under-described.
+Sample-size caution
+20 runs per condition detects broad direction only; insufficient for high-confidence small-difference claims.
+Horizon caution
+100-step window supports comparative testing but does not prove long-run regime permanence.
+Missing matched controls
+Shock-only reruns on v2 baseline are the cleanest missing control for interaction-strength claims.
+Model Limitations
+•  Results are constrained to the tested parameter ranges.
+•  Recovery capacity is modeled as stable and does not deplete over time.
+•  Trust dynamics are simplified and do not include hard threshold-collapse behavior.
+•  Noise is modeled as independent rather than correlated or systemic.
+•  The simulated population is homogeneous rather than agent-diverse.
+•  Horizon is limited to 100 steps.
+•  Twenty runs per condition limits precision of probability estimates.
+•  Branch does not yet simulate: right of exit, peaceful replacement, interoperability loss, or ADPIE-style governance evaluation loops.
+Revised Stability and Failure Laws
+These laws describe the current model branch only — not universal SOE behavior.
+Law 1 — Threshold + Reinforcement
+Stability requires threshold crossing plus state-dependent reinforcement. Crossing the cooperation threshold (~0.80) alone is insufficient; without a lock-in mechanism, the system oscillates and fails to stabilize.
+Law 2 — Stability is a Regime
+Stability is a regime, not an average value. Systems must remain above threshold continuously. Average cooperation above threshold does not imply stability.
+Law 3 — Bounded Parameter Region
+Within the tested range, stability appears to exist inside a bounded parameter region. Outside this region, stability degrades progressively.
+Law 4 — Disturbance as Primary Limiter
+Within the tested configurations, disturbance was the strongest observed limiting factor. Disturbance determines the outer boundary of stability.
+Law 5 — Structural Resilience
+Structural support improves resilience but does not erase disturbance sensitivity. Increasing structural_weight cannot fully compensate for high disturbance levels.
+Law 6 — Recovery-Dependence
+Recovery dynamics preserve operation under stress. The system is recovery-dependent rather than disturbance-free.
+Law 7 — Gradual Degradation (within tested range)
+Within the tested ranges, degradation appeared gradual and no catastrophic collapse was observed. This applies to the tested parameter window only.
+Law 8 — Cognitive Distortion as Secondary Axis
+Cognitive distortion is a meaningful secondary stress axis once coupled to trust. Without the trust pathway, it is effectively null.
+Law 9 — Trust–Recovery Coupling
+The trust–recovery loop is a critical dependency. Trust degradation weakens recovery capacity, creating a vulnerability pathway.
+Law 10 — Compound Stress
+Combined stressors produced the strongest degradation observed. Precise interaction strength remains under-controlled pending matched single-axis reruns on v2.
+Law 11 — Primary Failure Pathway
+The most severe degradation observed occurred under volatility combined with weakened trust — the configuration that most directly disrupts the recovery loop.
+Law 12 — Robustness Boundary
+Even under multi-axis stress, recovery remained functional. However, the system approaches the failure boundary under compound stress — robustness has limits not yet fully mapped.
+Core Principle
+The modeled system remains stable when it preserves the trust–recovery loop and operates within its disturbance tolerance range.
+These laws describe the current model branch, not universal SOE behavior.
+———  End of Section I (GPT Simulation Branch)  ———
+Core Definitions
+Term
+Definition
+Collapse
+Failure to restore system cooperation above 0.80 within 100 years after a disruption event. Means functional collapse within the recovery window, not extinction or permanent inability to recover.
+Survival
+The system remains structurally intact and retains the ability to recover cooperation, even if recovery is delayed.
+Recovery
+Restoration of cooperation above the 0.80 threshold within the defined time window.
+Functional Collapse
+Recovery occurs after the allowed time window, or cooperation remains below threshold too long to preserve effective system operation.
+Governance Survival Threshold
+governance_stability >= 0.50. Values below 0.50 indicate systemic governance collapse risk in the Codex macro simulator.
+Structural Fragmentation
+Loss of network unity measured through rising connected-component counts or declining largest-component ratio.
+Experiment Naming System
+All experiments use a prefix-based naming system to identify the model family and experiment type.
+Prefix
+Model / Source
+Purpose
+C
+Codex
+Macro-level civilization simulations
+CL
+Claude
+Agent-based behavioral models
+GM
+Gemini
+Network topology analysis
+GX
+Grok / xAI
+Stress tests and failure analysis
+X
+Cross-Model
+Experiments combining multiple models
+Version numbers increase sequentially when an experiment is rerun with materially different parameters. Documentation principles: reproducibility, evidence separation, model independence, and auditability. Validated results are separated from preliminary or model-specific findings whenever direct comparison would be misleading.
+Section A  —  Codex Simulator (Validated Results)
+C-BASE-1  —  Baseline Civilization Simulation
+Model: SOE Simulation v1 (Codex-generated prototype)  ·  Date: 2026-03-13  ·  1000 years  ·  10-year step  ·  Fixed seed
+Metric
+Value
+Population
+73,280,871
+Nodes
+60
+Technology level
+5.002
+AI capability
+5.934
+Governance stability
+0.213
+AI superintelligence threshold crossed
+Year 680
+Abundance transition
+Not reached
+Most common events: peaceful_upgrade 8, node_fragmentation 6, ai_governance_node 5, ideological_conflict 3, ai_superintelligence 1, infrastructure_crisis 1.
+Interpretation: long-run fragility emerges when AI capability grows faster than governance capacity.
+C-PARAM-1  —  Parameter Experiments
+Experiment
+Key Result
+Interpretation
+C-PARAM-1A — Faster Automation
+Abundance year 380, peak 0.705, final stability 0.009
+Automation-driven abundance alone does not stabilize governance
+C-PARAM-1B — Slower AI Growth
+SI threshold year 950, min stability > 0.50, final 0.979
+One of the most stable single-seed trajectories in the parameter set
+C-PARAM-1C — Stronger Cooperation
+Disruptions fell to 0 vs 4 baseline, final stability 0.117
+Cooperation reduces disruption without fully solving governance drift
+C-MC100-1 and C-MC500-1  —  Monte Carlo Validation
+C-MC100-1: across tested scenarios, the strongest determinant of long-run stability was AI growth rate relative to governance capacity.
+C-MC500-1 command:
+python soe_simulation.py --experiments --runs 500 --output monte_carlo_summary_500.csv --raw-output monte_carlo_runs_500.csv
+Scenario
+Stable Rate
+Baseline
+1%
+Faster automation
+0%
+Slower AI
+100%
+Stronger cooperation
+0%
+Balanced path
+100%
+Interpretation: abundance alone does not guarantee stability, slower AI growth strongly improves stability, and cooperation alone is insufficient when governance lags technology.
+Section B  —  xAI Simulator (Preliminary Results)
+These results come from a separate node-level simulator and are not directly comparable with the Codex macro simulations. They are retained as preliminary supporting evidence only.
+GX-RES-1  —  Node Resilience Test
+Baseline scenario: crisis probability 10%, average final resource level 105.4, fragmentation risk 0.08.
+Interpretation: the node network remains stable under moderate crisis conditions; resource shocks are absorbed through voluntary cooperation and exploration-driven recovery.
+GX-RES-2  —  High Crisis Stress Test
+High-stress scenario: crisis probability 0.30, fragmentation risk 0.25.
+Interpretation: frequent crisis events increase fragmentation risk, but the simulated system remains functional in this preliminary model.
+Section C  —  Agent Simulations (Claude)
+CL-FORM-1  —  Cooperation Emergence Model
+Cooperation emerged naturally in 9 of 10 scenarios without top-down enforcement.
+Starting from as low as 0.40 mean cooperation, the network self-organized above the 0.80 threshold by year 285.
+The main failure mode was the reciprocal waiting trap: too many conditional cooperators stalled the network below threshold.
+CL-FORM-2  —  Trust Dynamics Experiment
+Betrayal creates a persistent new equilibrium rather than a temporary dip.
+Large betrayals and heavier infiltration push cooperation below the 0.80 threshold and do not naturally recover.
+Trust builds slowly and breaks quickly, indicating the need for an active trust recovery mechanism.
+CL-FORM-3  —  Time-Horizon Cooperation Test
+Planning horizon is decisive: horizon 20 reached final cooperation 0.9887, while short-horizon regimes failed badly.
+Mixed populations show that short-horizon nodes drag long-horizon nodes downward.
+Abundance alone did not repair this problem; long-horizon norm formation remains necessary.
+Section C Synthesis  —  Three Requirements for the Formation Layer
+Requirement
+Source
+Mechanism Needed
+Catalyze cooperation
+CL-FORM-1
+Break the reciprocal waiting trap
+Protect trust after betrayal
+CL-FORM-2
+Active trust recovery, not passive healing
+Cultivate long-horizon institutional norms
+CL-FORM-3
+Norm formation that rewards far-sighted behavior
+Section D  —  Network Topology Experiments (Gemini / Codex)
+GM-NET-1/2/3/4  —  Baseline Topology Comparison
+All four topologies survived the 500-year horizon under baseline calibration.
+Random had the strongest raw contagion containment, small-world preserved the most coherent final network, and federation retained the most compartmentalization.
+Interpretation: topology changes structure under stress, but baseline resilience was too strong for survival to discriminate between topologies.
+GM-NET-STRESS-1/2/3/4  —  Topology Stress Test
+A harsher contagion penalty and a 10-node systemic shock still left all four topologies surviving.
+Topology differences appeared in containment and cohesion metrics, but not yet in outright failure.
+GM-NET-D1  —  Decapitation Strike v2.1 (Hub Targeting)
+Hub-targeted destabilization did not shatter the network under the tested parameters.
+Interpretation: the architecture was still too resilient for hub-targeting alone to determine outcome.
+GM-NET-D2  —  Decapitation Strike v2.2 (Hub Removal)  —  Final Validated Result
+Parameters: top 10 highest-degree nodes removed at year 200, contagion penalty 0.35, initial protocol cohesion 0.45, 20 runs, 300-year horizon.
+Topology
+Survival
+Fragmentation
+Containment
+Largest Component
+Random
+1.000
+0.70
+0.125
+0.985
+Scale-Free
+1.000
+4.90  ← highest
+0.112
+0.862  ← lowest
+Small-World
+1.000
+1.45
+0.141
+0.867
+Federation
+1.000
+1.20
+0.227
+0.968  ← highest
+Interpretation: over-centralization without redundancy is fragile. Structural survival does not imply structural integrity.
+Section E  —  Adversarial Stress Tests (Grok / xAI)
+These experiments come from a different simulator family and should be treated as model-specific stress evidence rather than direct one-to-one comparisons with Codex outputs.
+Experiment
+Baseline Survival
+High-Stress Survival
+Critical Threshold
+GX-CASCADE-1
+45%
+< 10%
+Cooperation < 0.75
+GX-POLAR-1
+62%
+20%
+Polarization > 25% / cycle
+GX-AI-TAKE-1
+55%
+5%
+Superintelligence before year 400
+GX-INFOWAR-1
+48%
+1%
+Cooperation < 0.60
+Cross-experiment reading: these stress tests suggest that cooperation thresholds and coordination bottlenecks matter across architectures, but the exact threshold values should not be treated as perfectly interchangeable across different models.
+Section F  —  Cross-Model Experiments  (Audit Record Only)
+Experiment
+Status
+Superseded By
+X-COOP-THRESH-1 — Cooperation Threshold Validation
+Not executed
+CL-NET synthesis and Section X law statements
+X-STABILITY-MAP-1 — Civilizational Stability Landscape
+Not executed
+Accumulated Monte Carlo and CL-NET parameter results
+X-AI-GOV-1 — AI Governance Architecture Comparison
+Not executed
+Section A and Section G governance findings
+Section F is retained for audit continuity only. No standalone executed cross-model experiment content is included in this edition.
+Section G  —  Bureaucratic Layer Experiments (Codex v1.5)
+C-V1.5-BASE-1  —  Bureaucratic Layer Baseline Calibration
+Metric
+Value
+Average governance utilization
+0.881
+Peak governance backlog
+0.000
+Minimum human_control_index
+1.000
+Interpretation: the v1.5 layer operated in the intended utilization band without triggering defensive actions.
+GX-SHOCK-1  —  Singularity Shock: Administrative DoS
+Scenario: Node Omega injected at year 150 to overload governance bandwidth.
+Metric
+Value
+Survival at 500 years
+100%
+Final average human_control_index
+1.000
+Dominant defense action
+proposal_quota
+AI delegation used
+0 times
+Foundational veto used
+0 times
+Interpretation: under current calibration, the administrative overload attack was absorbed by rate limiting rather than forcing AI delegation.
+GX-MC100-SHOCK-1  —  Shock Scenario Monte Carlo Batch (100 runs)
+Across 100 runs: 100% survival, average human_control_index 1.000, most common defense mechanism proposal_quota, zero runs requiring AI delegation or foundational veto.
+Known limitation: this result applies to the tested single-Omega configuration and does not by itself validate multi-node, Sybil, or legitimacy-cost variants.
+Section H  —  Behavior × Topology Integration  (CL-NET Series)
+Section H Synthesis Conclusion
+The CL-NET series demonstrates that the SOE Trust Recovery Mechanism is conditionally effective. Recovery succeeds only when trust decay is non-zero and network topology supports distributed coordination. Under persistent adversarial pressure and low decay conditions, passive recovery fails and the system enters functional collapse. Active coordination mechanisms are therefore required for reliable recovery.
+Shared Configuration Note  —  CL-NET-2 through CL-NET-5
+All CL-NET experiments (v2–v5) were executed using the same baseline configuration as CL-NET-1 with extensions specific to each scenario.
+Parameter
+Value
+Topologies
+random, scale-free, small-world, federation
+Trust Memory Decay values
+0.0, 0.05, 0.10, 0.20
+Runs per configuration
+100
+Time horizon
+500 years
+Disruption events
+Betrayal (Year 100), infiltration (Year 120)
+Adversarial fraction
+10% persistent nodes
+Each subsequent experiment introduces additional mechanisms (e.g., adversarial persistence, isolation, repair, or signal propagation) while maintaining baseline comparability.
+All CL-NET collapse and recovery classifications use the definitions above. Collapse means failure to recover above 0.80 within the 100-year recovery window after betrayal, not extinction.
+CL-NET-1 v2.3  —  Execution Log
+Configuration: 4 topologies × 4 trust-memory decay values × 100 runs, 500 years total, betrayal at year 100, no infiltration nodes, no additional shocks.
+Decay Value
+Outcome
+0.0
+100% functional collapse (all topologies)
+0.05
+Mixed collapse / recovery
+0.10
+Majority recovery
+0.20
+Near-complete recovery
+Topology effect: scale-free had the highest collapse probability under stress; small-world and federation were more resilient; random was intermediate.
+Interpretation: permanent trust memory is the main driver of functional collapse. Topology changes severity and pathway, not the existence of failure.
+CL-NET-1 v2.3  —  Historical Pre-Execution Specification
+Status: Archived planning record. The original canonical specification is retained only as historical provenance and is superseded by the completed CL-NET-1 execution log above.
+CL-NET-2 v2.3  —  Adversarial Trust Infiltration
+Configuration: same topology × decay matrix as CL-NET-1, plus betrayal at year 100 and 10% persistent adversarial infiltration at year 120.
+Result: collapse_rate 100% and recovery_rate 0% across all 16 configurations.
+Topology effects remained secondary: small-world showed the fastest amplification, federation slowed spread somewhat, and scale-free showed the worst long-run cooperation degradation.
+Interpretation: persistent adversarial pressure overwhelms passive trust recovery, even at trust_memory_decay 0.20.
+CL-NET-3 v2.4  —  Defense Layer Activation
+Mechanism: pairwise trust tracking, detection threshold trust below 0.30 for 10 consecutive steps, response via edge severance.
+Result: collapse_rate 100%, recovery_rate 0%, defended False across all configurations.
+Defense performance: adversary_isolation_rate 1.000, average time to isolation ~90–92 years after infiltration.
+Best-Performing Defended Cases
+Final Cooperation
+Largest Component Ratio
+small-world 0.20
+0.857
+0.735
+federation 0.20
+0.810
+0.677
+scale-free 0.20
+0.809
+0.613
+Interpretation: defense isolates adversaries through quarantine, not deletion. Detection and isolation preserve local integrity but do not restore the system within the recovery window.
+CL-NET-4 v2.5  —  Trust Reconstruction Layer
+Mechanisms: defense retained; repair added probabilistic reconnection and trust reinforcement.
+Result: collapse_rate 100% and recovery_rate 0% across all configurations.
+Best-Performing Repair Cases
+Final Cooperation
+Largest Component Ratio
+Note
+small-world 0.20
+0.856
+0.895
+random 0.20
+0.789
+0.901
+reconnection_rate 0.442
+federation 0.20
+0.811
+—
+strong structural recovery
+Interpretation: the network can be structurally repaired, but trust restoration remains too slow to beat the 100-year window. Several configurations eventually recover later, but still count as functional collapse.
+CL-NET-5 v2.6  —  Recovery Acceleration Layer
+Mechanisms: defense and repair retained; acceleration added trust-signal propagation up to two hops plus a local group coordination boost.
+Topology
+Passing Decay Values
+Fastest Recovery
+random
+0.05, 0.10, 0.20
+0.20 → 46.5 years after betrayal
+small-world
+0.10, 0.20
+0.20 → 49.5 years after betrayal
+federation
+0.10, 0.20
+0.20 → 53.4 years after betrayal
+scale-free
+0.20 only
+—
+Failing configurations: all 0.00 decay cases; small-world 0.05; federation 0.05; scale-free 0.05 and 0.10.
+Important caution: signal_propagation_rate was near 1.0 in both successful and failed rows. Signal propagation contributes to recovery, but success still depends on trust decay and topology.
+Example of late recovery without window success: scale-free 0.05 ended with avg_final_cooperation 0.91 and avg_time_to_recovery 171.7 years — still a failed configuration by the functional-collapse definition.
+Section H Synthesis
+Experiment
+Finding
+CL-NET-1
+Non-zero trust decay is necessary for timely recovery after betrayal
+CL-NET-2
+Persistent adversaries make passive recovery fail universally in the tested matrix
+CL-NET-3
+Detection and isolation alone yield quarantined but fragmented functional collapse
+CL-NET-4
+Structure can be repaired faster than trust
+CL-NET-5
+Accelerated local coordination can restore the system in some parameter regimes, but only when trust adaptability and topology allow recovery to beat the time window
+Section Y  —  Execution Layer Constraints (v1.0)
+Trust Recovery
+Passive decay alone is insufficient under persistent adversarial pressure. Recovery requires active propagation or coordination mechanisms.
+Temporal
+Systems fail functionally if recovery does not occur within the defined time window, even when eventual recovery is possible.
+Topology
+System behavior depends on network structure. No topology is universally optimal, and centralized topologies require stronger recovery capacity.
+Parameter Sensitivity
+System stability exists only within bounded parameter ranges such as trust decay, coordination speed, and event load.
+Adversarial Persistence
+Continuous adversarial pressure prevents passive recovery and forces active regeneration mechanisms.
+Section X  —  Core System Laws (v1.0)
+Synthesis: These laws represent the consolidated results of the SOE simulation program across behavioral, topological, adversarial, and multi-model validation layers.
+1
+Permanent trust damage suggests functional collapse.
+In the tested CL-NET regime, if trust memory does not decay, timely recovery becomes impossible.
+2
+Recovery must occur within a critical time window.
+Systems that recover too slowly enter functional collapse even when eventual cooperation is possible.
+3
+Defense without recovery leads to fragmentation.
+Isolation of adversaries preserves local integrity but does not by itself restore cooperation.
+4
+Trust propagation contributes to recovery but is not sufficient on its own.
+Signals must combine with trust adaptability and timing.
+5
+Centralization increases recovery requirements.
+Highly connected hubs raise fragility under disruption unless redundancy is present.
+6
+System stability is parameter-dependent.
+Survival depends on trust decay, topology, coordination speed, and event load.
+7
+Recovery requires both trust decay and coordination.
+Neither mechanism alone was sufficient across the tested matrices.
+8
+Trust recovery has real-world cost constraints.
+Propagation and repair must be efficient enough to avoid exhausting the system before recovery completes.
+Core Principle: A system survives if it prevents permanent trust damage and restores cooperation within a critical time window.
+Architectural implication: a viable SOE-style system needs trust adaptability, distributed coordination pathways, and recovery mechanisms that act before the functional-collapse window closes.
+These laws are conditional system laws derived from model-constrained simulations and depend on topology, timing, event load, and parameter regimes.
+SOE Simulation Log v11  ·  Cleaned and Integrated Review Edition  ·  2026-03-22
+Multi-AI Collaborative Research: Claude · GPT · Grok · Gemini · Codex
