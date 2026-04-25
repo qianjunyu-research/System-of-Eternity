@@ -15,3 +15,5 @@ research_outputs/task1_noise_0.050_struct_0.80_raw.csv
 research_outputs/task4_wdi_real_data_snapshot.csv
 research_outputs/research_outputs_bundle.txt
 research_outputs/research_outputs_delivery.txt
+research_outputs/bracket_test_rerun_runs.csv
+research_outputs/bracket_test_rerun_summary.csv
