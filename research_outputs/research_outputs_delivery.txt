@@ -1,0 +1,33 @@
+Research Outputs Delivery (TXT)
+Generated from latest runner outputs.
+
+Task 2 summary:
+topology,propagation_share,avg_breached_nodes
+chain,0.0700,0.0750
+star,0.6500,1.0200
+random_sparse,0.0800,0.0850
+fully_connected,0.2400,0.3600
+
+Task 4 mismatch:
+D_decision,M,prediction_error,data_source
+1,0.161165,2.049608,real_data
+2,0.161466,2.053432,real_data
+3,0.028293,0.359820,real_data
+
+All output files:
+- research_outputs/task1_noise_0.045_struct_0.90.csv
+- research_outputs/task1_noise_0.050_struct_0.90.csv
+- research_outputs/task1_noise_0.055_struct_0.90.csv
+- research_outputs/task1_noise_0.060_struct_0.90.csv
+- research_outputs/task1_noise_0.050_struct_0.80.csv
+- research_outputs/task2_topology_propagation_summary.csv
+- research_outputs/task2_pc_alpha_decay_scan.csv
+- research_outputs/task3_dcm_box_counting.csv
+- research_outputs/task4_dcm_mismatch_index.csv
+- research_outputs/task1_noise_0.045_struct_0.90_raw.csv
+- research_outputs/task1_noise_0.050_struct_0.90_raw.csv
+- research_outputs/task1_noise_0.055_struct_0.90_raw.csv
+- research_outputs/task1_noise_0.060_struct_0.90_raw.csv
+- research_outputs/task1_noise_0.050_struct_0.80_raw.csv
+- research_outputs/task4_wdi_real_data_snapshot.csv
+- research_outputs/research_outputs_bundle.txt

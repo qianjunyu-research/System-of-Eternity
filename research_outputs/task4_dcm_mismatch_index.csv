@@ -1,0 +1,4 @@
+D_decision,M,prediction_error,data_source
+1,0.161165,2.049608,real_data
+2,0.161466,2.053432,real_data
+3,0.028293,0.359820,real_data

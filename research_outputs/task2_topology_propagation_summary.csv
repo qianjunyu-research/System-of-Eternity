@@ -1,0 +1,5 @@
+topology,propagation_share,avg_breached_nodes
+chain,0.0700,0.0750
+star,0.6500,1.0200
+random_sparse,0.0800,0.0850
+fully_connected,0.2400,0.3600
