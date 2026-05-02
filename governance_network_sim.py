@@ -58,9 +58,19 @@ def build_node_config(overrides: List[str]) -> Config:
     return Config(**params)
 
 
-def build_neighbors(node_count: int, coupled: bool) -> List[List[int]]:
+def build_neighbors(node_count: int, coupled: bool, topology: str = "ring") -> List[List[int]]:
     if not coupled:
         return [[] for _ in range(node_count)]
+    if topology == "star":
+        if node_count <= 1:
+            return [[] for _ in range(node_count)]
+        neighbors = [[] for _ in range(node_count)]
+        for node_index in range(1, node_count):
+            neighbors[0].append(node_index)
+            neighbors[node_index].append(0)
+        return neighbors
+    if topology != "ring":
+        raise ValueError(f"Unsupported topology: {topology}")
     neighbors: List[List[int]] = []
     for index in range(node_count):
         left = (index - 1) % node_count
@@ -140,9 +150,21 @@ def apply_coupling(
     return updated
 
 
-def run_network(config: Config, node_count: int, steps: int, run_seed: int, coupled: bool, k_d: float, k_c: float, migration_rate: float) -> Tuple[List[NodeRuntime], Dict[str, float]]:
+def run_network(
+    config: Config,
+    node_count: int,
+    steps: int,
+    run_seed: int,
+    coupled: bool,
+    k_d: float,
+    k_c: float,
+    migration_rate: float,
+    topology: str = "ring",
+    hub_disturbance: float = 0.0,
+    hub_disturbance_cap: float = 1.0,
+) -> Tuple[List[NodeRuntime], Dict[str, float]]:
     nodes = initialize_nodes(config, node_count=node_count, run_seed=run_seed)
-    neighbors = build_neighbors(node_count, coupled=coupled)
+    neighbors = build_neighbors(node_count, coupled=coupled, topology=topology)
 
     for step in range(steps):
         local_next_states: List[State] = []
@@ -158,6 +180,14 @@ def run_network(config: Config, node_count: int, steps: int, run_seed: int, coup
             node.decision_queue, executed_actions, executed_decisions = drain_due_decisions(node.decision_queue, step)
             node.interventions = activate_interventions(node.interventions, executed_actions, config)
             next_state, extras = step_system(node.state, node.interventions, config, node.dynamics_rng)
+            if coupled and topology == "star" and node.node_index == 0 and hub_disturbance > 0.0:
+                stressed_disturbance = max(next_state.disturbance, hub_disturbance)
+                next_state = State(
+                    trust=next_state.trust,
+                    disturbance=clamp(min(stressed_disturbance, hub_disturbance_cap)),
+                    stability=next_state.stability,
+                    cognitive_distortion=next_state.cognitive_distortion,
+                )
 
             local_next_states.append(next_state)
             step_extras.append(extras)
@@ -310,10 +340,11 @@ def main() -> None:
                 steps=args.steps,
                 run_seed=args.seed + run_index,
                 coupled=coupled,
-                k_d=args.k_d,
-                k_c=args.k_c,
-                migration_rate=args.migration_rate,
-            )
+                    k_d=args.k_d,
+                    k_c=args.k_c,
+                    migration_rate=args.migration_rate,
+                    topology="ring",
+                )
             all_run_nodes.append(nodes)
             scenario_runs.append(
                 {

@@ -1,0 +1,6 @@
+First D_hub_cap where sustained_ignition_rate < 0.05: none_in_sweep.
+Ignition transition shape across cap sweep: gradient.
+Hub protection effectiveness verdict: not sufficient as standalone fix.
+Recommended D_hub_max for star deployments: < 0.1 required (further tests).
+Anomaly check: hub minimum stability trend improves as cap decreases while peripheral collapse risk remains non-zero.
+Baseline reproduction check passed.

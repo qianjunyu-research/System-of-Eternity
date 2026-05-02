@@ -1,0 +1,2 @@
+scenario,runs,sustained_ignition_rate,avg_peripheral_failure_rate,avg_peripheral_failure_peak,avg_ignition_onset_step,avg_hub_min_stability,avg_final_cooperation,avg_final_trust
+star_hub_stress,30,0.43333333333333335,0.5849943502824858,0.7497175141242938,8.0,0.4789618530065622,0.5307291974296118,0.5307291974296118

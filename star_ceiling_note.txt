@@ -1,0 +1,5 @@
+First k_D where sustained_ignition_rate < 0.05: none_in_sweep.
+Ignition transition shape across sweep: gradient.
+Recommended locked ceiling for star topology: < 0.05 (requires lower test range).
+Provisional 0.10 ceiling status: requires further reduction.
+Observed anomaly: hub stability remains comparatively high while peripheral failure can still surge in ignition regimes.
