@@ -1,0 +1,5 @@
+Sustained ignition rate: 0.433.
+Hub-to-peripheral propagation was qualitative/systemic.
+Claim 1 (topology modulator) is contradicted.
+Claim 2 (local coupling insufficient) is contradicted.
+Recommended status: TOPOLOGY-CONDITIONED

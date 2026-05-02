@@ -62,6 +62,8 @@ class Config:
     max_cognitive_filtering_effect: float = 0.60
     max_trust_recovery_effect: float = 0.30
     max_reinforcement_effect: float = 0.22
+    governance_coupling_floor: float = 0.05
+    governance_coupling_alpha: float = 0.10
 
 
 @dataclass

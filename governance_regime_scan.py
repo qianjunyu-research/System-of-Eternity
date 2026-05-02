@@ -46,6 +46,10 @@ def summarize_regime_batch(
 ) -> Dict[str, object]:
     summaries = [summarize_run(history, threshold=config.stability_threshold) for history in histories]
     stressors = [classify_first_stressor(history, config) for history in histories]
+    recovered_runs = sum(int(row["recovered_run"]) for row in summaries)
+    failure_runs = sum(int(row["failure_case"]) for row in summaries)
+    breached_runs = recovered_runs + failure_runs
+    recovery_to_stable_conversion_rate = (recovered_runs / breached_runs) if breached_runs else 0.0
 
     return {
         "test_name": test_name,
@@ -53,6 +57,7 @@ def summarize_regime_batch(
         "stable_run_rate": sum(int(row["stable_run"]) for row in summaries) / len(summaries),
         "failure_rate": sum(int(row["failure_case"]) for row in summaries) / len(summaries),
         "recovered_run_rate": sum(int(row["recovered_run"]) for row in summaries) / len(summaries),
+        "recovery_to_stable_conversion_rate": recovery_to_stable_conversion_rate,
         "avg_final_stability": sum(float(row["final_stability"]) for row in summaries) / len(summaries),
         "avg_min_stability": sum(float(row["min_stability"]) for row in summaries) / len(summaries),
         "avg_final_trust": sum(float(row["final_trust"]) for row in summaries) / len(summaries),
