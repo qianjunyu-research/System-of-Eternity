@@ -1,0 +1,3 @@
+method,false_alarm_rate,missed_detection_rate,avg_detection_lag_steps,sensitivity,specificity
+method_A,0.35802469135802467,0.0,0.0,1.0,0.6419753086419753
+method_B,0.25925925925925924,0.0,0.0,1.0,0.7407407407407407

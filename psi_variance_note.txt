@@ -1,0 +1,4 @@
+Recommended lambda value: 0.1.
+Average early warning lead time vs psi_base alone: 0.00 steps.
+False positive rate: 0.000, acceptable if deployment tolerance allows low-noise early warning.
+Recommendation: psi_extended should replace psi_base for federation deployments when paired with topology-specific thresholds.

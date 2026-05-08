@@ -1,0 +1,4 @@
+Lower false alarm rate: Method B.
+Lower missed detection rate: Method A or tie.
+Recommended federation aggregation: method_B_two_tier.
+Minimum-node method remains appropriate for star topology because a single hub can legitimately dominate network failure.
