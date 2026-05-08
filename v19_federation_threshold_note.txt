@@ -1,0 +1,5 @@
+Recommended federation S_threshold: 0.1.
+False alarm rate at recommended threshold: 0.000.
+False alarm target <= 10% achieved: yes.
+Ring/mesh comparison threshold: original ring/mesh S_threshold = 0.80; v19 sweep tested 0.10-0.50 for federation.
+Deployment recommendation: false-alarm-safe at recommended threshold, but automatic Trigger A sensitivity remains unvalidated because no threshold in 0.10-0.50 fired and no genuine collapse positives occurred in this sweep.

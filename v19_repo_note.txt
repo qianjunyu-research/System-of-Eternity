@@ -1,0 +1,9 @@
+v19 repo state note
+
+v18 standalone script and its 12 required output files were committed on branch codex/v18_federation_hub_redundancy before v19 execution.
+
+Branch v19_threshold_ssl was created from that v18 commit.
+
+governance_network_sim.py still contains merge-conflict markers and was intentionally left untouched, per the v19 prompt.
+
+The working tree still contains unrelated pre-existing modified and untracked files, so v19 was executed as a standalone script and only v19-specific files should be staged for the v19 result commit.
