@@ -1,0 +1,6 @@
+check,value,expected,status
+required_run_columns_present,,none missing,pass
+required_step_columns_present,,none missing,pass
+nonfederation_c07_trigger_a_sources,0,0,pass
+max_federation_step_term_regime,0.0,0.0,pass
+federation_positive_runs_all_have_on_time_nonnegative_lead,80,80,pass

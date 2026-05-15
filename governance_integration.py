@@ -37,6 +37,8 @@ def build_integrated_config(base: Config) -> Config:
             "alpha": 0.80,
             "intervention_decay": 0.65,
             "activation_gain": 1.00,
+            "governance_coupling_floor": 0.05,
+            "governance_coupling_alpha": 0.10,
         }
     )
     return Config(**params)
@@ -67,6 +69,7 @@ def make_integrated_step_function(
     cap_mode: str = "derived",
 ) -> StepFunction:
     erosion_history: List[float] = []
+    disturbance_coupling_k = None
 
     def step(
         current: State,
@@ -75,9 +78,24 @@ def make_integrated_step_function(
         config: Config,
         rng: random.Random,
     ) -> Tuple[State, Dict[str, float]]:
+        nonlocal disturbance_coupling_k
+        if disturbance_coupling_k is None:
+            disturbance_coupling_k = clamp(
+                config.governance_coupling_floor,
+                low=config.governance_coupling_floor,
+                high=config.max_disturbance_damping_effect,
+            )
+
         shock_event = 1 if rng.random() < config.shock_prob else 0
         disturbance_noise = rng.uniform(-config.disturbance_noise, config.disturbance_noise)
-        disturbance_damping = interventions.disturbance_damping * config.max_disturbance_damping_effect
+        disturbance_damping_target = interventions.disturbance_damping * config.max_disturbance_damping_effect
+        disturbance_coupling_k += config.governance_coupling_alpha * (disturbance_damping_target - disturbance_coupling_k)
+        disturbance_coupling_k = clamp(
+            disturbance_coupling_k,
+            low=config.governance_coupling_floor,
+            high=config.max_disturbance_damping_effect,
+        )
+        disturbance_damping = disturbance_coupling_k
 
         disturbance = current.disturbance
         disturbance += config.disturbance_baseline
@@ -170,6 +188,8 @@ def make_integrated_step_function(
             "disturbance_noise": disturbance_noise,
             "cognition_noise": cognition_noise,
             "disturbance_damping_effect": disturbance_damping,
+            "disturbance_damping_target": disturbance_damping_target,
+            "governance_coupling_k": disturbance_coupling_k,
             "cognitive_filtering_effect": cognitive_filtering,
             "trust_recovery_effect": trust_recovery_boost,
             "reinforcement_effect": reinforcement_effect,

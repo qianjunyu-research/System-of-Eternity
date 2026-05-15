@@ -1,0 +1,5 @@
+omitted_scenario,included_federation_runs,positive_event_rows,no_event_rows,detected_tpr,on_time_tpr,false_positive_rate,avg_lead_steps,min_lead_steps,max_lead_steps
+async_message_loss,90,70,20,1.0,1.0,0.0,7.414285714285715,0,20
+federation_bridge_stress,90,70,20,1.0,1.0,0.0,8.0,0,20
+federation_cluster_attack,90,50,40,1.0,1.0,0.0,5.64,0,13
+psi_corruption,90,50,40,1.0,1.0,0.0,11.12,6,20

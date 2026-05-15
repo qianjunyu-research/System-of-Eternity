@@ -1,0 +1,13 @@
+batch_id,scenario,profile,runs,positive_event_runs,negative_event_runs,on_time_detections,false_positive_runs,on_time_tpr,false_positive_rate,avg_lead_to_collapse30,min_lead_to_collapse30,max_lead_to_collapse30
+grand_sim_v0_5,async_message_loss,high_stress,10,10,0,10,0,1.0,0.0,12.0,11.0,13.0
+grand_sim_v0_5,async_message_loss,low_stress,10,0,10,0,0,0.0,0.0,,,
+grand_sim_v0_5,async_message_loss,mid_stress,10,0,10,0,0,0.0,0.0,,,
+grand_sim_v0_5,federation_bridge_stress,high_stress,10,10,0,10,0,1.0,0.0,7.9,7.0,9.0
+grand_sim_v0_5,federation_bridge_stress,low_stress,10,0,10,0,0,0.0,0.0,,,
+grand_sim_v0_5,federation_bridge_stress,mid_stress,10,0,10,0,0,0.0,0.0,,,
+grand_sim_v0_5,federation_cluster_attack,high_stress,10,10,0,10,0,1.0,0.0,8.1,7.0,9.0
+grand_sim_v0_5,federation_cluster_attack,low_stress,10,10,0,10,0,1.0,0.0,18.1,15.0,20.0
+grand_sim_v0_5,federation_cluster_attack,mid_stress,10,10,0,10,0,1.0,0.0,9.5,6.0,12.0
+grand_sim_v0_5,psi_corruption,high_stress,10,10,0,10,0,1.0,0.0,2.0,1.0,3.0
+grand_sim_v0_5,psi_corruption,low_stress,10,10,0,10,0,1.0,0.0,3.9,1.0,6.0
+grand_sim_v0_5,psi_corruption,mid_stress,10,10,0,10,0,1.0,0.0,2.4,0.0,4.0

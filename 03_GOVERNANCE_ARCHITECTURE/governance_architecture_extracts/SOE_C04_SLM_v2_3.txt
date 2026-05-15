@@ -1,0 +1,31 @@
+SYSTEM OF ETERNITY
+Architecture Design v2 — Post-Review Spec Update
+C04 · Stability Lock Mechanism · v2.3
+Fix 7 — Federation Trigger A Architectural Finding
+7.1 Why Trigger A Does Not Fire on Federation
+The two-tier S_network aggregation method (lower quartile per cluster, inter-cluster minimum) is designed to absorb local node failures before they propagate to the network-level S_effective signal. This is why federation is safe — local stress stays contained within clusters. The same property prevents S_network from accumulating enough signal to breach S_threshold, even under high disturbance.
+The architecture that makes federation safe is structurally identical to the architecture that prevents S-based stress detection. This is not a bug — it is a correct consequence of the two-tier design.
+7.2 Topology-Specific Trigger A Applicability
+7.3 Updated Deployment Constraint
+7.4 v19b Simulation Data
+Version History — C04
+SOE · C04 · Stability Lock Mechanism · v2.3 · Federation Trigger A Architectural Finding
+Version | v2.3 · 2026-05-07
+Supersedes | v2.2 · 2026-05-07
+Source | v19b Simulation — v19b_disturbance_calibration.csv, v19b_threshold_summary.csv
+Change | Fix 7 — Federation Trigger A architectural finding. S_network threshold does not activate Trigger A on federation topology under any tested disturbance level (D_hub 0.3–0.8, S_threshold 0.10–0.70). Federation stress detection is delegated to C07 Psi_extended cluster-variance term. S_threshold calibration question closed — not applicable to federation.
+v19b FINDING: Trigger A (S_network threshold breach) does not activate on federation topology under any tested disturbance level. D_hub swept from 0.3 to 0.8 — Trigger A fire rate = 0.000 at all values. S_threshold swept from 0.10 to 0.70 — Trigger A fire rate = 0.000 at all values. This is not a calibration failure. It is a structural property of federation topology.
+Topology | Trigger A (S_network) | Primary stress detection
+Ring / Mesh | APPLICABLE | S_network weighted average accumulates disturbance — threshold breach is the correct signal.
+Star | APPLICABLE | S_network minimum-node reflects hub failure directly — threshold breach is the correct signal.
+Federation | NOT APPLICABLE — delegate to C07 | Psi_extended cluster-variance term (C07) is the primary stress signal. S_network threshold will not fire by design.
+Unknown | APPLICABLE (conservative default) | Minimum-node method retained. Treat as star for monitoring purposes.
+FEDERATION DEPLOYMENT — REVISED: Do not configure S_threshold-based automatic Trigger A activation for federation topology. Trigger A is not the correct monitoring mechanism for federation. Configure Psi_extended monitoring (C07) with cluster-variance term (lambda = 0.1) as the primary stress signal for federation deployment. S_threshold calibration for federation is CLOSED — the question does not apply.
+Test | Values swept | Trigger A fire rate | Result
+Disturbance calibration | D_hub 0.3–0.8 (6 values, 20 runs each) | 0.000 at all values | No disturbance level triggers Trigger A on federation.
+S_threshold sweep | 0.10–0.70 (13 values, 30 runs each) | 0.000 at all values | No threshold value produces Trigger A activation on federation.
+Version | Date | Change
+v2.0 | 2026-04-xx | Initial Architecture Design v2 spec.
+v2.1 | 2026-05-01 | Fix 6 — two-tier federation S_network aggregation. Federation threshold flagged as requiring recalibration.
+v2.2 | 2026-05-07 | Section 6.3 corrected. Minimum 3 hubs required. 2-hub claim retracted.
+v2.3 | 2026-05-07 | Fix 7 — Federation Trigger A architectural finding. S_threshold calibration closed. Federation delegates to C07 Psi_extended.

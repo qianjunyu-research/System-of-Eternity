@@ -1,0 +1,6 @@
+focus,metric,value,status
+CL02 regression,on_time_tpr;false_positive_rate;avg_lead_to_collapse30,1.0;0.0;8.175,supported_in_v0_7_regression
+CL02 adversarial ablation,ablation_on_time_tpr;avg_ablation_lead,0.0;-4.1,adversarial_measured_v0_7
+CL09 impact coupling,avg_latency;avg_wrong_monitoring;avg_hidden_collapse;avg_blind_no_trigger;avg_topology_false_stability;max_wrong_window,46.666667;46.666667;0.244444;0.0;0.0;65,impact_tested_v0_7
+CL05 hub completeness,all_hub_delta;single_hub_delta;unbalanced_primary_delta;unbalanced_secondary_delta;hub3_secondary_ignition,0.0;0.333333;0.333333;0.0;0.333333,context_dependent_unbalanced_tested
+CL10 graded resource stress,resource_exhaustion_rate_all_runs;stress_exhaustion_rate;pressure_exhaustion_rate;avg_stress_floor_steps;avg_routing_delay_loss,0.470115;1.0;1.0;100.273333;0.004152,graded_stress_measured_v0_7

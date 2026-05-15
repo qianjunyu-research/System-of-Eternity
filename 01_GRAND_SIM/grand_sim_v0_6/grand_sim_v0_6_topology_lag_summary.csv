@@ -1,0 +1,10 @@
+scenario,profile,runs,avg_reclassification_latency_steps,avg_wrong_monitoring_steps,avg_centralizing_wrong_monitoring_steps,avg_star_wrong_monitoring_steps,avg_max_wrong_monitoring_window,avg_topology_false_stability_steps,sustained_ignition_rate,avg_peak_collapse
+topology_drift,low_stress,10,25.0,25.0,25.0,0.0,25.0,0.0,0.0,0.016667
+topology_drift,mid_stress,10,25.0,25.0,25.0,0.0,25.0,0.0,1.0,1.0
+topology_drift,high_stress,10,25.0,25.0,25.0,0.0,25.0,0.0,1.0,1.0
+topology_lag_centralizing,low_stress,10,50.0,50.0,25.0,25.0,50.0,0.0,0.0,0.016667
+topology_lag_centralizing,mid_stress,10,50.0,50.0,25.0,25.0,50.0,0.0,1.0,1.0
+topology_lag_centralizing,high_stress,10,50.0,50.0,25.0,25.0,50.0,0.0,1.0,1.0
+topology_misclassification_async,low_stress,10,65.0,65.0,25.0,40.0,65.0,0.0,0.0,0.016667
+topology_misclassification_async,mid_stress,10,65.0,65.0,25.0,40.0,65.0,0.0,1.0,1.0
+topology_misclassification_async,high_stress,10,65.0,65.0,25.0,40.0,65.0,0.0,1.0,1.0

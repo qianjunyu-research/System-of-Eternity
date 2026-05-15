@@ -1,0 +1,9 @@
+gate_id,gate_name,pass_condition,fail_condition,artifact_risk,required_before_container_test
+G01,Data completeness,At least 95 percent required fields are present and missingness is reported by node class and participant,More than 5 percent required fields missing or missingness hidden,False precision from imputation,yes
+G02,Bounds and normalization integrity,All derived T/D/C/I/S values are within 0.0 to 1.0; raw values caps normalization_profile_id and component scores remain auditable,Any derived value out of bounds or raw values caps profile id or component scores unavailable,Bounded variables hiding invalid raw data,yes
+G03,Artifact resistance,Delay/conflict/politeness/AI-belonging artifact flags checked,Artifact flags ignored or impossible to record,Subjective noise becomes structural signal,yes
+G04,Trigger sanity,Trigger source matches active_topology_type and source hierarchy; topology context fields are present,C04 used for federation Trigger A or C07 used for non-federation Trigger A or topology missing,Source hierarchy contamination,yes
+G05,HIA formula integrity,H/I/A node class formulas remain distinct,A nodes use belonging or H/I nodes lose belonging distinction,Node-class collapse,yes
+G06,Consent and safety,Participants can pause/exit and scores are not used for real authority,Hidden scoring or real authority use,Ethical and governance overreach,yes
+G07,Stop-condition enforcement,Abort/pause conditions are logged and respected,Stop condition ignored,Container test becomes uncontrolled,yes
+G08,Audit trail,Daily logs and reviewer notes are retained for inspection,Only summaries retained,Irreproducible interpretation,yes

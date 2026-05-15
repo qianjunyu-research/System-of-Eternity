@@ -1,0 +1,936 @@
+SYSTEM OF ETERNITY
+Architecture Design v2 — Institutional Mechanisms
+Integration Snapshot — v2.0
+2026-05-01
+Integration Checkpoint: PASSED — Zero contradictions across C00–C08
+Simulation program: v13–v17 complete
+Star topology: MANDATORY AVOIDANCE — three-round simulation confirmation
+DOCUMENT MANIFEST
+C00 — Program Index
+C01 — Trust Integrity Layer
+C02 — Recovery Engine
+C03 — Disturbance Buffer (v2.0)
+C03 — Disturbance Buffer v17 Addendum
+C04 — Stability Lock Mechanism
+C05 — Structural Support Layer
+C06 — Governance Module
+C07 — Meta Governance Layer
+C08 — Coordination Layer (v2.0)
+C08 — Coordination Layer v17 Addendum
+This document is the integration snapshot. It is not for editing.
+──────────────────── C00 — Program Index ────────────────────
+──────────────────── C01 — Trust Integrity Layer ────────────────────
+──────────────────── C02 — Recovery Engine ────────────────────
+──────────────────── C03 — Disturbance Buffer (v2.0) ────────────────────
+──────────────────── C03 — Disturbance Buffer v17 Addendum ────────────────────
+──────────────────── C04 — Stability Lock Mechanism ────────────────────
+──────────────────── C05 — Structural Support Layer ────────────────────
+──────────────────── C06 — Governance Module ────────────────────
+──────────────────── C07 — Meta Governance Layer ────────────────────
+──────────────────── C08 — Coordination Layer (v2.0) ────────────────────
+──────────────────── C08 — Coordination Layer v17 Addendum ────────────────────
+SYSTEM OF ETERNITY
+Architecture Design v2 — Institutional Mechanisms
+C00 · Program Index
+1. Document Naming Convention
+C00 is the index — always open this first. Each component is self-contained but cross-references others using CXX notation. Dependencies are listed explicitly in each document and summarized in Section 4 below.
+2. Component Registry
+3. Cross-Cutting Simulation Constraints
+These constraints apply across all six components. Locked by simulation. Cannot be overridden by any individual component spec.
+4. Component Dependency Map
+Row depends on column. → means 'provides input to'. Read across each row to see what that component needs.
+5. Recommended Writing Order
+Write in dependency order so each document can reference prior ones as complete.
+System of Eternity · Architecture Design v2 · C00: Program Index
+v2.0 · 2026-05-01 · Open C00 first. Always.
+SYSTEM OF ETERNITY
+Architecture Design v2 — Institutional Mechanisms
+C01 · Trust Integrity Layer
+1. What TIL Does
+The Trust Integrity Layer maintains T(t) — the trust state variable — for each node in the network. It receives disturbance inputs, identity inputs, cognitive distortion inputs, and recovery inputs, and computes the net rate of change of trust at each timestep. It is not a passive tracker — it is an active integration layer that determines whether the system is moving toward or away from stable function.
+Everything else in the architecture depends on T(t). The Recovery Engine reads T to determine recovery mode. The Stability Lock reads S(t) = g(T) to determine lock state. The Governance Module's effectiveness is T-conditional. If TIL fails — if T collapses without recovery — the entire architecture collapses with it.
+2. Core Equation
+3. Asymmetric Dynamics — Locked
+The following dynamic properties are locked by simulation. They are not assumptions — they are empirical constraints that any institutional trust mechanism must reproduce:
+4. Cognitive Distortion C(t)
+C(t) is the cognitive distortion term — the degree to which nodes have systematically distorted perception of the system state. It is not the same as disturbance. Disturbance is an external shock. Cognitive distortion is an internal state that amplifies the effect of disturbance and persists after disturbance ends.
+5. Asynchronous Update Architecture — LOCKED v2.0
+Async update has the following structural consequences:
+6. Required Institutional Properties
+The v2 question for C01 is: what institutional properties must any trust measure satisfy to be compatible with TIL dynamics? The following are necessary properties — not sufficient. They constrain what can count as a valid T(t) proxy in a real deployment.
+6.1 Observable
+T(t) must be measurable, not inferred from outcomes. If trust can only be detected after it has collapsed (e.g., through behavioral breakdown), the system has no early warning. The institutional mechanism must provide a signal while T is still in the recoverable range.
+6.2 Continuous
+T(t) is a continuous variable, not a binary state. The institutional measure must be capable of detecting gradual trust erosion — not just absence vs presence of trust. Binary measures (trusted / not trusted) are architecturally incompatible with TIL.
+6.3 Node-local
+Trust is tracked per node, not as a system average. The institutional measure must be capable of distinguishing which nodes are in trust decline from which are stable. System-average trust measures mask local collapse — this is the hub-stability masking problem at the measurement level.
+6.4 Directional
+The measure must distinguish trust rising from trust falling. Rate of change dT/dt is as important as level T(t). An institution that can only measure current trust level — not trajectory — cannot distinguish a node in stable low-trust from a node in collapse.
+6.5 Asymmetrically sensitive to decline
+Consistent with Simulation Law 3: the measure must be more sensitive to trust decline than to trust increase. A measure that treats a 10% drop the same as a 10% gain is miscalibrated — collapse dynamics are faster and the monitoring system must reflect this.
+6.6 Network-scoped
+Per the hub-stability masking finding (v15): trust monitoring cannot be hub-scoped. The institutional measure must aggregate across all nodes, with minimum-node weighting available as an option for star-adjacent structures. A central reporting structure that only collects trust signals from the hub node is architecturally unsafe.
+7. Processing Pipeline — v2
+TIL sits at the center of the processing pipeline. The sequence is:
+8. TIL-Specific Failure Modes
+9. Open Items
+System of Eternity · Architecture Design v2 · C01: Trust Integrity Layer
+v2.0 · 2026-05-01 · Async update locked · Node identity deferred
+SYSTEM OF ETERNITY
+Architecture Design v2 — Institutional Mechanisms
+C02 · Recovery Engine
+1. What the Recovery Engine Does
+The Recovery Engine computes R(t) — the active recovery input that TIL uses to push trust upward. It is the only component in the architecture whose primary function is to increase T(t). Every other component either maintains T (SSL), protects T from disturbance (DB), or reads T to determine system state (SLM, GM).
+R(t) is not a single mechanism. It is a composite of four distinct recovery pathways, each of which operates under different conditions and draws on different institutional resources. The four components add: R(t) = R_internal + R_network + R_gov + R_base.
+2. Core Equation
+3. The Four Recovery Components
+3.1 R_internal — Self-Recovery
+What this means institutionally: nodes with high existing trust can restore trust through normal internal processes — continued reliable behavior, self-correction, internal accountability. This requires no external intervention. But it only works when trust is already reasonably high. An institution that has lost most of its trust cannot recover through internal processes alone.
+3.2 R_network — Peer Trust Support
+What this means institutionally: peer support — other nodes actively extend trust to a declining node, providing it resources, backing, and legitimacy transfer. This is not automatic — it requires donor nodes to be above their own floor and willing to extend support. The T_reserve gate prevents peer support from cascading into network-wide depletion.
+3.3 R_gov — Governance Recovery
+What this means institutionally: governance recovery is indirect. Governance does not directly restore trust — it reduces the rate at which trust is being eroded, and provides mild identity support. The primary mechanism is interference suppression: active governance reduces how effectively disturbance and cognitive distortion translate into trust loss. This is why governance effectiveness is T-conditional — if trust is already very low, even strong governance produces limited recovery.
+3.4 R_base — Baseline Deadlock Breaker
+What this means institutionally: R_base is the unconditional baseline intervention — a recovery mechanism that operates regardless of trust level, governance state, or network condition. It is the last line of defense when all other recovery pathways have failed. In trust-governance deadlock (T → 0 and G(t) → 0 simultaneously), R_base is the only force pushing upward. It must be designed to function even when the institution appears non-functional.
+4. Recovery Regimes
+The Recovery Engine classifies each node's recovery condition into one of three regimes based on T and D state. Regime classification determines which R(t) components are primary:
+5. Re-entry — Gradient Mechanism
+Re-entry is the process by which a node transitions from a recovery regime back toward Stable classification. It uses a decaying accumulator to prevent false recovery declarations from brief trust improvements.
+What this means institutionally: a node cannot declare recovery from a single good period. Evidence of stable improvement must accumulate over time before re-entry is confirmed. Brief trust spikes do not qualify — sustained improvement does. The decay rate κ_re ensures that setbacks during recovery reduce but do not immediately eliminate accumulated evidence.
+6. Trust-Governance Deadlock
+The trust-governance deadlock is the most critical failure mode in the architecture. It occurs when T and G(t) collapse simultaneously, creating a mutual dependency loop where each needs the other to recover.
+7. Institutional Mechanisms — What Produces R(t)
+8. Recovery Engine Failure Modes
+9. Open Items
+System of Eternity · Architecture Design v2 · C02: Recovery Engine
+v2.0 · 2026-05-01 · Continuous recovery · Four-component composite · Deadlock breaker required
+SYSTEM OF ETERNITY
+Architecture Design v2 — Institutional Mechanisms
+C03 · Disturbance Buffer
+1. What the Disturbance Buffer Does
+The Disturbance Buffer is the first layer of protection between external shocks and trust dynamics. It receives raw disturbance D_raw — unfiltered external stress — and transforms it into D_effective, a damped and ceiling-capped signal that TIL can safely process.
+Without the Disturbance Buffer, every external shock hits trust dynamics directly at full intensity. The Buffer does three things: it damps transient spikes, it enforces topology-conditioned coupling ceilings, and it isolates the trust layer from direct exposure to raw environmental volatility.
+2. Processing Pipeline
+3. Topology-Conditioned Ceilings — LOCKED
+3.1 Current Ceiling Status
+3.2 The Star Topology Finding — Full Summary
+The v15 and v16 simulation results are the most significant finding in the entire v1 simulation program. They require careful architectural interpretation:
+4. Topology Detection — Deployment Prerequisite
+Topology detection is mandatory before any coupling ceiling can be set. It is not an optional diagnostic — it is a structural prerequisite. Deploying SOE without topology detection is equivalent to operating with an unknown safety parameter.
+4.1 Required Classification
+At minimum, topology detection must distinguish:
+4.2 Topology Monitoring — Ongoing
+Network topology is not a fixed deployment parameter. It can change over time as nodes are added or removed, as hub-like structures form organically, or as federation structures reorganize. The Buffer must re-evaluate topology classification when network structure changes significantly.
+5. Hub Protection Mechanisms
+Since coupling ceiling reduction alone is insufficient for star topology, additional hub protection mechanisms are required when star-adjacent structures exist or form. These are not yet simulated — they are architectural requirements derived from the v15/v16 findings.
+6. Required Institutional Properties
+What institutional processes correspond to the Disturbance Buffer? The following properties must be satisfied by any real mechanism that plays the Buffer role:
+6.1 Operates before trust dynamics
+The Buffer must intercept disturbance before it reaches the trust layer. An institution that only responds to trust decline after it begins has no buffer — it has a recovery mechanism. These are different. The Buffer acts on D_raw; recovery acts on T(t) after decline has begun.
+6.2 Topology-aware
+The Buffer must know the network structure it is protecting. A flat damping mechanism that applies the same ceiling regardless of topology is architecturally incomplete. The institutional equivalent: different governance structures require different levels of shock absorption at their central nodes.
+6.3 Continuously active
+The Buffer is not an emergency response mechanism — it operates continuously, on every disturbance signal, before any threshold is crossed. Institutions that only activate buffering mechanisms after stress reaches crisis levels have no effective buffer.
+6.4 Separates transient from sustained stress
+The damping function (Step 2 in the pipeline) distinguishes between brief spikes and sustained elevated disturbance. A single acute shock should not produce the same institutional response as prolonged chronic stress. The Buffer's smoothing window τ_smooth operationalizes this distinction.
+6.5 Does not suppress legitimate disturbance signals
+The Buffer damps and caps — it does not eliminate. D_effective is still a real signal that reflects real external stress. An institution that completely insulates its trust layer from all disturbance is not buffering — it is producing a false sense of stability. The ceiling must be set high enough to preserve signal fidelity.
+7. Disturbance Buffer Failure Modes
+8. Open Items
+System of Eternity · Architecture Design v2 · C03: Disturbance Buffer
+v2.0 · 2026-05-01 · TOPOLOGY-CONDITIONED · Star ceiling critical open item
+SYSTEM OF ETERNITY
+Architecture Design v1.3 — Addendum
+Component 03 · Disturbance Buffer · v17 Result Integration
+v17 Simulation Result — Hub Protection CONTRADICTED
+v17 Summary Data
+Why Capping Makes Things Worse — Mechanism
+The v17 result reveals the structural role the hub plays in star topology. The hub functions as a disturbance absorber — when it takes high D_hub, it is partly shielding peripherals from network-level disturbance load. When the hub is protected (D_hub capped), disturbance that would have been absorbed by the hub redistributes to peripherals who have less capacity to handle it.
+This creates a counter-intuitive pattern: hub minimum stability improves as the cap decreases (hub becomes more stable) while peripheral collapse rate rises. The hub appears healthier while the network collapses faster. This is hub-stability masking in reverse — a structurally protected hub that is no longer serving its disturbance absorption function.
+Updated Section 5 — Hub Protection Mechanisms
+Updated Topology Deployment Requirements
+System of Eternity · Architecture Design v1.3 · C03: Disturbance Buffer · v17 Addendum
+v1.3 · 2026-05-01 · Star topology MANDATORY AVOIDANCE — three-round simulation confirmation
+SYSTEM OF ETERNITY
+Architecture Design v2 — Institutional Mechanisms
+C04 · Stability Lock Mechanism
+1. What the Stability Lock Mechanism Does
+The Stability Lock Mechanism is the architecture's self-assessment layer. It reads stability signals from TIL, aggregates them across the network, and produces a regime classification — Stable, Metastable, Intermediate, or Collapse — that all other components use to calibrate their behavior.
+The SLM does not recover trust or reduce disturbance. It classifies. Its job is to give the rest of the architecture an accurate picture of what state the system is actually in, so that appropriate responses can be triggered. An SLM that misclassifies — declaring Stable when the network is in Collapse, or triggering recovery prematurely — produces worse outcomes than no SLM at all.
+2. Stability Signal S(t)
+2.1 Node-level stability
+2.2 Network-level stability — topology-conditioned
+3. Gradient Lock Engagement — LOCKED
+4. Four Regimes
+The SLM classifies the system into one of four regimes based on S_effective(t), A(t), and P_lock(t). Regimes determine which components activate and at what intensity.
+5. Lock Declaration Authority
+The v2 question for C04 is: who has authority to declare stable lock? This is the institutional equivalent of the lock confirmation mechanism.
+5.1 Requirements for lock declaration authority
+5.2 Lock declaration process
+6. Regime Transition Dynamics
+Regime transitions are probabilistic, not instantaneous. The system does not jump from Intermediate to Stable — it moves through Metastable as A(t) accumulates. Similarly, it does not jump from Stable to Collapse — it passes through Intermediate as A(t) decays.
+7. Required Institutional Properties
+What institutional mechanisms correspond to the Stability Lock? Any real mechanism that plays the SLM role must satisfy:
+8. SLM Failure Modes
+9. Open Items
+System of Eternity · Architecture Design v2 · C04: Stability Lock Mechanism
+v2.0 · 2026-05-01 · Gradient lock · Network-scoped · Distributed declaration authority
+SYSTEM OF ETERNITY
+Architecture Design v2 — Institutional Mechanisms
+C05 · Structural Support Layer
+1. What the Structural Support Layer Does
+The Structural Support Layer maintains I(t) — identity stability — and the civilizational belonging index CI. These are the slow-moving structural foundations that determine how resilient trust is under disturbance. They do not prevent disturbance from occurring. They determine how much damage a given disturbance does.
+High I(t) means nodes have stable, recognized roles and strong belonging. Under these conditions, trust erodes more slowly under equivalent disturbance — the b·I term in TIL's dT/dt provides active buffering. Low I(t) means nodes have ambiguous roles or feel disconnected from the system. Under these conditions, the same disturbance produces faster trust erosion.
+2. Composite I(t) — LOCKED v2.0
+2.1 I_role — Role Clarity
+I_role(t) reflects how clearly defined, stable, and recognized a node's role and function is within the system. It is the structural component of identity — what the node does, what authority it has, and whether that is stable and acknowledged.
+2.2 I_belong — Belonging
+I_belong(t) reflects how connected a node feels to the broader system — the sense of shared purpose, meaningful contribution, and recognized membership. It is the relational component of identity — not what the node does, but whether it feels part of something worth doing.
+2.3 Decoupling — The Key Insight
+I_role and I_belong can decouple. This is the most important property of the composite formulation:
+3. Civilizational Belonging Index CI
+CI is the system-level analogue of I_belong — the degree to which the network as a whole shares a common identity, purpose, and narrative framework. While I_belong is node-local, CI is a network-level property. It reflects whether the system has a coherent civilizational identity, not just whether individual nodes feel belonging.
+4. Timescale Architecture
+SSL operates on fundamentally different timescales from the other components. This is not a limitation — it is the mechanism by which SSL provides structural support rather than reactive response.
+The practical implication: SSL investments made during stable periods provide protection during future disturbance periods. An institution that has high I_role and I_belong going into a crisis has more structural resilience than one that tries to build these during the crisis. SSL cannot be built on demand.
+5. T_reserve Coordination with Recovery Engine
+The Structural Support Layer coordinates with the Recovery Engine (C02) on T_reserve — the network trust floor that governs when R_network can operate. This is the only direct coordination pathway between SSL and RE.
+6. Institutional Mechanisms — What Produces I(t)
+The following are the institutional processes that drive I_role and I_belong upward. These are not yet validated by simulation — they are architectural requirements derived from the SSL specification and the composite I(t) definition.
+6.1 I_role Mechanisms
+6.2 I_belong Mechanisms
+7. SSL Failure Modes
+8. Open Items
+System of Eternity · Architecture Design v2 · C05: Structural Support Layer
+v2.0 · 2026-05-01 · Composite I(t) locked · I_role + I_belong · Slow timescale base
+SYSTEM OF ETERNITY
+Architecture Design v2 — Institutional Mechanisms
+C06 · Governance Module
+1. What the Governance Module Does
+The Governance Module maintains G(t) — dynamic governance capacity — and uses it to modify how effectively disturbance and cognitive distortion translate into trust loss. It is not a direct trust restoration mechanism. It is an interference suppressor: active governance reduces the rate at which external stress damages trust.
+G(t) is T-conditional. When trust is high, governance can function effectively and G(t) responds well to trust dynamics. When trust collapses, G(t) degrades — not because governance institutions disappear, but because governance effectiveness requires trust to operate. This is the governance-trust dependency: governance cannot substitute for trust, it can only help maintain it.
+2. G(t) Dynamics — VALIDATED
+What G(t) dynamics mean institutionally: governance capacity must be actively maintained. An institution that builds governance structures and then runs them passively will see G(t) decay over time (−δG term). Governance requires ongoing investment — trust-driven renewal (γT) and active maintenance — not just initial construction.
+3. Dual-Path Architecture — VALIDATED
+3.1 Path 1 — Coupling Modification (Primary)
+What Path 1 means institutionally: governance reduces how effectively disturbance spreads into trust erosion, and how effectively cognitive distortion amplifies that erosion. Active governance does not prevent shocks from occurring — it reduces their impact on trust. This is the primary governance recovery mechanism.
+The f_min = 0.30 floor is structural, not calibration. Governance can reduce coupling but cannot eliminate it — disturbance must always have some pathway to trust dynamics, or the system loses its ability to detect real threats. This is a percolation constraint: the network must remain connected enough to transmit genuine signals.
+3.2 Path 2 — Identity Support (Secondary)
+What Path 2 means institutionally: governance bodies that actively recognize node contributions, affirm legitimacy, and maintain institutional memory provide a weak ongoing identity support signal. This is not the primary governance function — SSL (C05) is responsible for I(t). Path 2 is a secondary signal that persists as long as G(t) is active.
+4. Four-Layer Institutional Architecture — CANONICAL
+The Governance Module operates through four participant layers. Each layer has a distinct function. No single layer can substitute for another. All four must be present for G(t) to reach its maximum functional level.
+4.1 Layer interaction dynamics
+The four layers interact through G(t). Each layer's health contributes to the effective G(t) level:
+5. T-Conditional Dependency — LOCKED
+G(t) is T-conditional. This is not a calibration choice — it is a structural constraint that follows directly from the dG/dt equation:
+What T-conditionality means institutionally: governance institutions can remain structurally intact while their effective capacity (G(t)) falls toward zero. The buildings, bodies, and mandates exist — but the governance system cannot function because trust has eroded below the level at which governance is effective. This is why trust is load-bearing and governance is downstream of it.
+6. Hero Mechanism H(t)
+H(t) is the intervention signal that provides temporary governance amplification when the system is near a critical regime transition. It is not a routine governance tool — it is an emergency amplifier that operates on a time-limited basis.
+7. Topology Implications for Governance
+The star topology findings (v15/v16) have direct implications for how governance is structured:
+8. Relationship to Meta Governance — VALIDATED
+Meta Governance sits above the Governance Module. It constrains the governance system itself — it does not produce G(t) or participate in day-to-day governance. The hierarchy is:
+9. Governance Module Failure Modes
+10. Open Items
+System of Eternity · Architecture Design v2 · C06: Governance Module
+v2.0 · 2026-05-01 · VALIDATED · Dynamic G(t) · Four-layer · T-conditional · Distributed authority
+SYSTEM OF ETERNITY
+Architecture Design v2 — Institutional Mechanisms
+C07 · Meta Governance Layer
+1. What Meta Governance Does
+Meta Governance is the constraint layer above all other components. It does not produce trust, distribute resources, or coordinate nodes. It monitors the system's structural state, classifies what kind of condition the system is in, and triggers appropriate responses when conditions cross defined thresholds.
+The reason Meta Governance exists is the core question of SOE: who constrains the governance system itself? Without a layer above governance, the governance system can gradually rigidify, bypass its own constraints, or evolve into uncontrollable complexity. Meta Governance is the answer to that question — a structural watchdog that operates on the governance layer, not within it.
+2. The Detect → Classify → Trigger Cycle
+Meta Governance operates as a continuous three-phase cycle. All three phases run at all times — Meta Governance never sleeps.
+The cycle is not event-driven — it is continuous. Meta Governance does not wait for a crisis to begin monitoring. The composite stress index Ψ(t) is computed at every step, providing early warning before trigger thresholds are crossed.
+3. Composite System Stress Index Ψ(t)
+Ψ(t) is the composite signal that drives trigger classification. It aggregates the key system state variables into a single continuous index that rises as system health deteriorates.
+4. The Four Meta Triggers
+Four triggers are defined, corresponding to four qualitatively different system conditions. Each trigger has a detection condition, an activation threshold, an authority requirement, a response package, a duration limit, and a deactivation condition.
+4.1 Trigger A — Assisted Recovery
+4.2 Trigger B — Bootstrap
+4.3 Trigger C — Structural
+4.4 Trigger D — Existential
+5. Trigger Summary
+6. Meta Rules — Structural Constraints on Governance
+The Meta Rules are permanent constraints on how the governance system operates. They cannot be suspended by any trigger, including Trigger D. They are the constitutional layer of SOE's governance architecture.
+6.1 Meta Rule 1 — Falsifiability
+Every governance component must be removable or replaceable to verify its necessity. A component that cannot be removed without destroying the system has become structurally captured. The SOE Falsification Log v1 demonstrated this operationally — components were removed and the system tested. Any component that cannot survive this test must be redesigned.
+6.2 Meta Rule 2 — Non-Unilateral Trigger Authority
+No single body — including the Meta Governance body itself — can unilaterally activate a trigger, declare stable lock, or modify core parameters. All trigger activations require distributed confirmation per the authority requirements in Section 4. This prevents governance capture of the trigger mechanism.
+6.3 Meta Rule 3 — Upgrade Preserves Constraints
+When the SOE architecture is upgraded — new components added, equations modified, parameters calibrated — all Meta Rules must remain in force. Upgrades cannot use the upgrade process to bypass constraints. The versioning protocol (SOE Multi-Paper Governance Protocol) enforces this through dependent update tracking.
+6.4 Meta Rule 4 — Rollback
+Every trigger activation must have a defined deactivation condition and rollback pathway. Open-ended trigger activation without a deactivation condition is a governance failure mode. Triggers A and B have time limits; Triggers C and D have resolution conditions. No trigger can be permanent without explicit architectural review.
+6.5 Meta Rule 5 — Non-Terminal
+SOE is not a final system. No component, trigger, or Meta Rule is permanent. All are subject to revision through the SOE Multi-Paper Governance Protocol. The architecture must always retain the capacity to replace itself when superior arrangements emerge. This includes the Meta Governance layer itself.
+7. Position in the Architecture Hierarchy
+Meta Governance reads from all layers but writes to none directly. It operates through trigger activation — which modifies what other components are permitted to do — rather than through direct state modification. This is the key architectural distinction: Meta Governance constrains, it does not produce.
+8. Meta Governance Failure Modes
+9. Open Items
+System of Eternity · Architecture Design v2 · C07: Meta Governance Layer
+v2.0 · 2026-05-01 · Detect → Classify → Trigger · Four triggers specified · Five Meta Rules
+SYSTEM OF ETERNITY
+Architecture Design v2 — Institutional Mechanisms
+C08 · Coordination Layer
+1. What the Coordination Layer Does
+The Coordination Layer solves the network-level problem that no other component addresses: how do multiple nodes with different trust states, disturbance loads, and recovery conditions maintain compatible state evolution without centralized control?
+Every other component in the architecture operates at the node level — it tracks T_i, computes R_i, monitors S_i. The Coordination Layer operates at the network level. It monitors the relationships between nodes, detects when those relationships are breaking down, and intervenes to maintain the structural conditions under which recovery can propagate and disturbance is contained.
+2. Coordination: Definition and Failure Condition
+2.1 What Coordination Means
+Coordination is not agreement. Nodes do not need to have the same T values, the same disturbance exposure, or the same governance structures. Coordination means compatible state evolution — the network is moving in directions that do not progressively amplify divergence into collapse.
+2.2 Coordination Failure
+Coordination failure is not disagreement — it is state divergence exceeding the recoverable range. Two nodes can strongly disagree and still coordinate. Coordination fails when their state trajectories are diverging faster than any coupling mechanism can bridge.
+Coordination failure has three primary drivers from SOE v4.1 Ch.4: T out of sync (trust asymmetry exceeds bridgeable range), D asymmetric (some nodes absorbing far more disturbance than others), and C amplifying local conflicts (cognitive distortion spreading independently through k_C channel, making nodes mutually unpredictable).
+3. Three Constraints on Coordination
+For coordination to be maintained, three structural constraints must be satisfied simultaneously. Violation of any one is sufficient to produce coordination failure.
+3.1 Information Coherence
+Nodes must have basic consensus on key system states. Not identical information — basic coherence. When C(t) diverges sharply across nodes, nodes develop incompatible models of system reality. They cannot predict each other's behavior. Coordination collapse follows.
+3.2 Temporal Alignment
+Coordination requires nodes to update their states on compatible timescales. Not synchronously — the async update architecture (C01) is locked. But the timing differences cannot be so extreme that nodes are operating in fundamentally different temporal regimes.
+3.3 Protocol Compatibility
+Coordination requires that nodes' governance rules, trust update mechanisms, and recovery protocols are interoperable. A node that uses fundamentally incompatible rules for how it responds to disturbance cannot participate in network-level recovery — its behavior is unpredictable to other nodes.
+This is the mechanism by which SOE's modular architecture itself supports coordination: all nodes using the same component architecture (C01–C08) have compatible protocols by design. Nodes using different governance architectures require explicit bridging mechanisms.
+4. Coordination Stability Condition — LOCKED
+4.1 Stability Condition
+4.2 Coupling Coefficient Ceilings — LOCKED
+The coupling ceilings are simulation-validated exclusion zones. Operating above these values produces systematic collapse across all network topologies regardless of node count.
+5. Three Coordination Mechanisms
+5.1 Local Coordination
+Each node interacts only with adjacent nodes — not the entire network. This reduces coordination complexity from O(n²) to O(degree). Local coordination is the primary mechanism and the only one that scales to large networks without centralized control.
+5.2 Distributed Consistency
+No central control exists, but multiple nodes achieve approximate consensus on key system parameters — coupling ceilings, trigger thresholds, regime classification. Distributed consistency does not require all nodes to agree — it requires that disagreements remain within the coordination stability condition.
+5.3 Asynchronous Tolerance
+The Coordination Layer does not require synchronization. Consistent with the async update architecture locked in C01. Nodes update on their own timescales. Coordination is maintained through coupling parameters and shared trigger awareness, not through synchronized state updates.
+Asynchronous tolerance means coordination is robust to timing differences — but it does not mean timing is irrelevant. Phase divergence (Section 3.2) is still a failure mode. The damping mechanisms in C03 (τ_smooth) and the gradient framing in C04 (A(t) accumulator) both provide timing stabilization without requiring synchronization.
+6. Three Core Functions
+6.1 Disturbance Isolation
+Disturbance isolation prevents local D_i spikes from propagating through the k_D coupling channel to destabilize otherwise-stable nodes. The Coordination Layer monitors disturbance differentials across adjacent node pairs and activates isolation when propagation risk is elevated.
+6.2 Trust Bridging
+Trust bridging enables nodes with high T to transmit recovery support to nodes with low T through the k_T coupling channel. It is the network-level mechanism by which R_network (C02) operates. The Coordination Layer manages the routing and gating of trust bridges.
+Trust bridging is topology-sensitive. In ring/mesh topology, multiple bridge pathways exist — the network can route around failed links. In star topology, all bridges route through the hub. When the hub is under stress (D_hub elevated), trust bridges are disrupted precisely when peripheral nodes need them most. Hub protection (C03 Section 5) is the coordination prerequisite for trust bridging in star-adjacent structures.
+6.3 Cognitive Dampening
+Cognitive dampening limits the amplification of cognitive distortion (C) through the k_C coupling channel. C propagates independently of D — a node can receive high C from its neighbors even when its own local disturbance is low. Cognitive dampening detects and suppresses pathological C propagation.
+7. Disturbance Dynamics — Full Equation
+SOE v4.1 Ch.2 specifies the full disturbance dynamics equation, which includes an external source term E(t) and a damping coefficient λ that are not yet fully specified in C03. The Coordination Layer is where these terms become architecturally significant.
+8. Topology Implications for Coordination
+The star topology findings (v15/v16) are the most consequential simulation results for the Coordination Layer. They specify when and why coordination fails structurally, not just parametrically.
+9. Relationship to C07 Meta Governance
+The Coordination Layer has a bidirectional relationship with Meta Governance. C07 constrains what the Coordination Layer can do (trigger authority, coupling ceiling enforcement). The Coordination Layer provides signals that feed C07's Ψ(t) computation and trigger classification.
+10. Coordination Layer Failure Modes
+11. Open Items
+System of Eternity · Architecture Design v2 · C08: Coordination Layer
+v2.0 · 2026-05-01 · No centralized control · Three mechanisms · Topology-conditioned · Cluster-aware
+SYSTEM OF ETERNITY
+Architecture Design v2.1 — Addendum
+Component 08 · Coordination Layer · v17 Result Integration
+v17 Result — The Hub's Dual Role
+The Dual Role — Mechanism Detail
+v17 tested whether limiting hub disturbance exposure (D_hub_cap) would reduce star topology ignition. The result was the opposite: as hub protection increased, ignition rate rose from 43.3% to 83.3%.
+Updated Coordination Stability Analysis for Star Topology
+The coordination stability condition from Section 4.1 becomes illuminating in this context:
+Updated Section 8 — Topology Implications
+Updated Failure Mode CL-C
+Coordination Design Principle — LOCKED
+The Only Viable Fix — Hub Redundancy
+Of the hub protection mechanisms proposed in C03, only hub redundancy remains viable after v17. Hub redundancy distributes hub function across multiple nodes, converting star topology to partial mesh. This simultaneously:
+System of Eternity · Architecture Design v2.1 · C08: Coordination Layer · v17 Addendum
+v2.1 · 2026-05-01 · Hub dual role confirmed · Star topology STRUCTURALLY IRREVERSIBLE · Hub redundancy only viable fix
+Program phase | Architecture Design v2 — Institutional Mechanisms
+Status | In progress — 2026-05-01
+Follows | Architecture Design v1 (6 components, all validated or flagged)
+Purpose | Convert validated simulation components into institutional mechanisms applicable to any governance context at any scale
+Scope | General — not scoped to any specific deployment context
+Node identity | UNSPECIFIED at this stage — deliberately deferred to implementation layer
+Simulation language | Retained throughout v2 — governance language translation is a subsequent pass
+Drive folder ID | 16zLKgRb2dZUmAGZYxx7miMTH0PaKT2IA
+SOE_v2_C00_Index.docx — This document. Open first. SOE_v2_C01_TrustIntegrityLayer.docx SOE_v2_C02_RecoveryEngine.docx SOE_v2_C03_DisturbanceBuffer.docx SOE_v2_C04_StabilityLock.docx SOE_v2_C05_StructuralSupportLayer.docx SOE_v2_C06_GovernanceModule.docx
+C01 | Trust Integrity Layer | v1 source: v1.1 · 2026-04-25 · v2 status: PENDING
+Core | T(t) — trust state variable. dT/dt = -aD + bI - cC + R(T,t). Load-bearing base of entire architecture. | T(t) — trust state variable. dT/dt = -aD + bI - cC + R(T,t). Load-bearing base of entire architecture.
+v1 open | All parameters (a, b, c) unspecified. Node identity unspecified. Deployment async architecture unspecified. | All parameters (a, b, c) unspecified. Node identity unspecified. Deployment async architecture unspecified.
+v2 question | What institutional properties must any trust measure satisfy to be compatible with TIL dynamics? | What institutional properties must any trust measure satisfy to be compatible with TIL dynamics?
+C02 | Recovery Engine | v1 source: v1.2 · 2026-05-01 · v2 status: PENDING
+Core | R(t) = R_internal + R_network + R_gov + R_base. Adaptive R_base, T_reserve donor gate, gradient re-entry. Governance dual-path VALIDATED. | R(t) = R_internal + R_network + R_gov + R_base. Adaptive R_base, T_reserve donor gate, gradient re-entry. Governance dual-path VALIDATED.
+v1 open | γ, β, T_reserve, re-entry weights, k_gI, f(G) form — all unspecified. | γ, β, T_reserve, re-entry weights, k_gI, f(G) form — all unspecified.
+v2 question | What are the concrete intervention mechanisms corresponding to each R(t) component institutionally? | What are the concrete intervention mechanisms corresponding to each R(t) component institutionally?
+C03 | Disturbance Buffer | v1 source: v1.2 · 2026-05-01 · v2 status: PENDING
+Core | D_raw → D_effective. Topology-conditioned ceilings. k_D_max = f(topology). Star safe ceiling below 0.05 — v16 confirmed. | D_raw → D_effective. Topology-conditioned ceilings. k_D_max = f(topology). Star safe ceiling below 0.05 — v16 confirmed.
+v1 open | Star safe ceiling undetermined (below 0.05). Federation topology untested. Topology detection mechanism unspecified. | Star safe ceiling undetermined (below 0.05). Federation topology untested. Topology detection mechanism unspecified.
+v2 question | What institutional processes absorb and dampen external shocks before they reach trust dynamics? | What institutional processes absorb and dampen external shocks before they reach trust dynamics?
+C04 | Stability Lock Mechanism | v1 source: v1.3 · 2026-05-01 · v2 status: PENDING
+Core | P_lock(t) probability rising with A(t). Four regimes. S_network(t) required for star topology — hub-stability masking fix. | P_lock(t) probability rising with A(t). Four regimes. S_network(t) required for star topology — hub-stability masking fix.
+v1 open | α, β_lock, P_threshold, τ_confirm unspecified. S_network(t) computation not yet simulated. | α, β_lock, P_threshold, τ_confirm unspecified. S_network(t) computation not yet simulated.
+v2 question | How does an institution know it has achieved stable lock, and who has authority to declare it? | How does an institution know it has achieved stable lock, and who has authority to declare it?
+C05 | Structural Support Layer | v1 source: v1.1 · 2026-04-25 · v2 status: PENDING
+Core | I(t) identity stability, CI civilizational belonging, coordination infrastructure. Dual-track: simulation (continuous) vs deployment (slow proxy). | I(t) identity stability, CI civilizational belonging, coordination infrastructure. Dual-track: simulation (continuous) vs deployment (slow proxy).
+v1 open | CI deployment proxy metrics unspecified. Coordination infrastructure deployment architecture unspecified. | CI deployment proxy metrics unspecified. Coordination infrastructure deployment architecture unspecified.
+v2 question | What are the identity, belonging, and coordination mechanisms that provide structural support in practice? | What are the identity, belonging, and coordination mechanisms that provide structural support in practice?
+C06 | Governance Module | v1 source: v1.4 · 2026-05-01 · v2 status: PENDING
+Core | G(t) dynamic. dG/dt = γT - δG + H(t). VALIDATED. Dual-path G → k_D,k_C + G → I(t). Four-layer: Citizen / Expert / Institutional / AI. | G(t) dynamic. dG/dt = γT - δG + H(t). VALIDATED. Dual-path G → k_D,k_C + G → I(t). Four-layer: Citizen / Expert / Institutional / AI.
+v1 open | k_gI, f(G) form, H(t) adversarial testing, γ/δ refinement — pending. | k_gI, f(G) form, H(t) adversarial testing, γ/δ refinement — pending.
+v2 question | What do the four governance layers look like as real institutional bodies, and how do they interact? | What do the four governance layers look like as real institutional bodies, and how do they interact?
+Constraint | Description | Status
+Disturbance primacy | 94–100% disturbance-first across all high-stress scenarios. Disturbance is the dominant limiting variable. Any institutional mechanism must prioritize disturbance management above all others. | LOCKED — v13/v14
+f_min = 0.30 | Governance coupling floor. Percolation-preserving constraint. Not tunable — structural. Non-fragile Pareto region confirmed (f_min 0.26–0.32 all safe). | LOCKED — v13 fine sweep
+Topology-conditioned ceilings | k_D_max = f(topology). Universal k_D ≤ 0.15 replaced. Star safe ceiling below 0.05 — effectively: avoid star-adjacent institutional structures or implement explicit hub protection. | LOCKED — v15/v16
+Recovery asymmetry | Collapse rate exceeds natural recovery rate. Institutional recovery mechanisms must be asymmetrically stronger than natural trust restoration. | LOCKED — Sim Law 3
+Trust-recovery deadlock | When T → 0 and G(t) → 0 simultaneously, only R_base breaks the deadlock. An institutional baseline intervention mechanism must operate independently of trust and governance state. | LOCKED — v1 architecture
+Hub-stability masking | In star-adjacent structures, the central body can appear stable while the governed network collapses. Monitoring must be network-scoped, not hub-scoped. | CONFIRMED — v15
+Dynamic G(t) | Governance is a dynamic regulator (dG/dt = γT - δG + H(t)), not a static constraint. γ = 0.05, δ = 0.02 confirmed functional. Reduces failure rate by 75% vs static G. | VALIDATED — v14
+ | C01 TIL | C02 RE | C03 DB | C04 SLM | C05 SSL | C06 GM
+C01 TIL | — | receives R(t) | receives D_eff | provides S(t) | receives bI | receives G(t)
+C02 RE | reads T | — | reads D | → regime class | T_reserve coord | reads G(t)
+C03 DB | outputs D_eff | — | — | — | — | receives k_D,k_C
+C04 SLM | reads S(t) | reads regime | reads D_eff | — | — | —
+C05 SSL | outputs I(t) | T_reserve coord | — | — | — | —
+C06 GM | reads T | outputs couplings | outputs k_D,k_C | indirect | outputs δI | —
+Order | Component | Reason
+1 | C01 — Trust Integrity Layer | Load-bearing base. All other components reference T(t) and dT/dt. Define first.
+2 | C03 — Disturbance Buffer | First in processing pipeline. D_effective feeds C01. Topology constraints documented here.
+3 | C05 — Structural Support Layer | Provides bI to C01. Identity and belonging mechanisms. Relatively self-contained.
+4 | C02 — Recovery Engine | Depends on C01, C03, C05, C06. Write after all inputs specified.
+5 | C04 — Stability Lock | Reads S(t) from C01, regime from C02. Write after both.
+6 | C06 — Governance Module | Most complex. Depends on all others. Write last.
+Status | v2.0 — 2026-05-01
+v1 source | Trust Integrity Layer v1.1 (2026-04-25)
+Role in architecture | Load-bearing base. T(t) is the primary state variable. All other components read from or write to T(t).
+Depends on | C03 Disturbance Buffer (receives D_effective) · C05 SSL (receives I(t)) · C02 Recovery Engine (receives R(t)) · C06 Governance Module (receives G(t) indirectly via coupling)
+Required by | C02 Recovery Engine · C04 Stability Lock · C06 Governance Module
+Update mode | ASYNCHRONOUS — LOCKED v2.0. Nodes update T independently. No global clock assumed.
+Node identity | UNSPECIFIED — deliberately deferred to implementation layer
+LOAD-BEARING: T(t) is the single most critical state variable in the architecture. All five other components are either inputs to TIL or consumers of TIL output. No component can substitute for TIL.
+dT/dt = -a·D_effective(t) + b·I(t) - c·C(t) + R(T,t) T(t+1) = clip( T(t) + dT/dt · dt, T_floor, T_ceiling ) T ∈ [T_floor, T_ceiling] where T_floor > 0 (prevents permanent collapse) T_ceiling = 1.0 (normalized maximum trust)
+Term | Name | Description | Source
+-a·D_eff | Disturbance decay | Disturbance erodes trust. D_effective is already damped by C03 — TIL never receives raw disturbance. Rate a > 0. | C03 Disturbance Buffer
++b·I(t) | Identity support | Identity stability supports trust maintenance. Higher I → slower trust decay under disturbance. Rate b > 0. | C05 Structural Support Layer
+-c·C(t) | Cognitive distortion | Cognitive distortion (misinformation, narrative capture, distorted perception) erodes trust independently of external disturbance. Rate c > 0. | Internal — TIL tracks C(t)
++R(T,t) | Recovery input | Active trust restoration. Composite of R_internal, R_network, R_gov, R_base. T-dependent — recovery weakens as T falls toward 0. | C02 Recovery Engine
+OPEN — Parameters a, b, c are unspecified. Must be calibrated such that: (1) collapse rate exceeds natural recovery rate under high disturbance (Simulation Law 3), (2) identity support b·I provides meaningful stabilization but cannot alone prevent collapse under sustained high D.
+Property | Description | Status
+Collapse faster than recovery | Under high disturbance, dT/dt < 0 dominates. The -a·D term outpaces +R(T,t). Natural trust restoration is slower than disturbance-driven erosion. Institutional recovery mechanisms must be asymmetrically strong to compensate. | LOCKED — Sim Law 3
+T-conditional recovery | R(T,t) weakens as T → 0. Recovery becomes harder the lower trust falls — the system is not linearly reversible. This is not a calibration choice — it is a structural property. | LOCKED — RE v1.2
+Disturbance primacy | 94–100% of high-stress collapses are disturbance-first. Trust erosion via -a·D_eff is the primary failure pathway. Identity and cognitive distortion are secondary. | LOCKED — v13/v14
+T_floor > 0 | Complete trust collapse to zero is a terminal state — recovery from T = 0 requires external intervention (R_base). T_floor prevents permanent collapse but does not prevent functional collapse (trust can be too low to sustain governance while remaining above T_floor). | LOCKED — architecture
+Property | Description
+C(t) ∈ [0, 1] | 0 = undistorted perception. 1 = maximum distortion — node cannot accurately perceive system state.
+C(t) is node-local | Each node has its own C(t). Network-level cognitive distortion is the aggregate — not a single shared value.
+C(t) evolves independently of T | Cognitive distortion can rise even when trust is stable — through misinformation, narrative capture, or isolation. It is a separate attack surface.
+High C(t) amplifies -a·D effect | A node with high C(t) misinterprets disturbance signals — amplifying their effect on T. This is the mechanism by which misinformation accelerates trust collapse.
+C(t) is slow to reverse | Cognitive distortion is sticky — once established, it resists correction even when accurate information is available. Recovery of C(t) is slower than recovery of T.
+dC/dt = +e·M(t) - f·E(t) - g·C(t) M(t) = misinformation exposure rate E(t) = accurate information exposure rate (correction signal) g·C(t) = natural decay (slow) e, f, g > 0 — UNSPECIFIED, calibration pending
+OPEN — C(t) dynamics (e, f, g) are unspecified. The institutional v2 question is: what are the concrete mechanisms that drive M(t) up and E(t) up? These correspond to real institutional processes — information environment management, transparency mechanisms, corrective communication structures.
+LOCKED — v2.0. T(t) updates asynchronously. Nodes update trust independently based on local conditions and interaction events. No global clock. No synchronization required.
+Consequence | Implication
+T is node-local | Each node maintains its own T_i(t). Network trust is not a single number — it is a distribution across nodes. TIL tracks T_i for each node i.
+T_i updates on interaction | T_i changes when node i receives disturbance, engages in trust-relevant interaction, or receives recovery input. Not on a fixed schedule.
+Phase lag across network | Different nodes will be at different T values at any given moment. This is realistic — it is also a monitoring challenge.
+S_network(t) requires aggregation | The Stability Lock cannot read a single T — it must aggregate T_i across all nodes to compute S_network(t). This aggregation method must be specified (see C04).
+Recovery propagates with lag | When the Recovery Engine activates, its effect reaches different nodes at different times. Network-wide recovery is not instantaneous.
+Collapse can be localized | A subset of nodes can collapse (T_i → T_floor) while the rest remain stable. This is the star topology masking scenario — hub stable, peripherals collapsed.
+OPEN — What observable proxy captures trust state with sufficient lead time before collapse? This is the primary open question for any real deployment. Candidates: interaction frequency, compliance rate, escalation rate, voluntary participation rate, information-sharing behavior. None are yet specified.
+Step 0: Topology detection → ceiling set selection (C03) Step 1: D_raw(t) enters C03 → D_effective(t) exits C03 Step 2: I(t) updated by C05 (slow-moving — not every step) Step 3: C(t) updated by TIL internal dynamics Step 4: R(T,t) computed by C02 based on current T_i Step 5: TIL integrates: dT_i/dt = -a·D_eff + b·I_i - c·C_i + R(T_i,t) Step 6: T_i(t+1) = clip(T_i + dT_i/dt, T_floor, T_ceiling) Step 7: S_i(t) = g(T_i(t)) → read by C04 for lock state Step 8: G(t) updated by C06 based on T (network aggregate) Steps 2 and 8 update on slower timescales than Steps 1 and 5. All steps are asynchronous across nodes.
+Type | Description | Status
+TIL-A: Measurement masking | Trust proxy captures hub-level trust only. Node-level collapse invisible. System appears stable while network degrades. | CONFIRMED — v15. Requires node-local measurement.
+TIL-B: Proxy drift | The institutional trust proxy diverges from actual T(t) over time — measuring something correlated with trust but not trust itself. Produces false readings. | PROPOSED — not yet tested. Requires periodic proxy validation.
+TIL-C: C(t) masking T decline | High cognitive distortion causes nodes to report high trust while behaviorally exhibiting low-trust patterns. Proxy captures reported trust, not actual trust. | PROPOSED — requires behavioral vs self-report distinction in proxy design.
+TIL-D: Recovery signal lag | R(T,t) input from C02 reaches different nodes at different times under async updates. Some nodes begin recovering while others continue declining. | STRUCTURAL — inherent in async architecture. Monitoring must account for this.
+The following items are open for future specification. None block v2 framing — they are deferred to implementation layer or future simulation rounds.
+Open Item | Detail | Priority
+Parameters a, b, c | Trust dynamics rates. Must satisfy: collapse faster than recovery under high D. Calibration requires simulation sweep with institutional proxy values. | HIGH
+T_floor value | Minimum trust floor. Must be > 0 but low enough that near-zero trust reflects functional collapse. Not yet quantified. | HIGH
+Institutional trust proxy | What observable measure tracks T(t) in a real deployment? Must satisfy all six properties in Section 6. Not yet specified. | HIGH — blocks deployment
+C(t) parameters e, f, g | Cognitive distortion dynamics. M(t) and E(t) institutional sources not yet identified. | MEDIUM
+T_i aggregation method | How are node-level T_i values aggregated for network-level readings by C04 and C06? Minimum, weighted average, or other? | MEDIUM — needed for C04
+Node identity | What entities are nodes? Individuals, institutions, geographic units, roles? Deliberately unspecified at v2. Implementation layer decides. | DEFERRED
+Status | v2.0 — 2026-05-01
+v1 source | Recovery Engine v1.2 (2026-05-01) — Gradient framing + Governance VALIDATED
+Role in architecture | Computes R(t) — the active trust recovery input to TIL (C01). Four-component composite. The only mechanism that actively pushes T upward.
+Depends on | C01 TIL (reads T) · C03 Disturbance Buffer (reads D_effective) · C05 SSL (T_reserve coordination) · C06 Governance Module (reads G(t) for dual-path coupling)
+Required by | C01 TIL (receives R(t)) · C04 Stability Lock (regime classification input)
+Critical property | Recovery is CONTINUOUS — scales with stress, not threshold-triggered. R(t) > 0 at all times. Gradient re-entry into stable regime.
+Governance status | Dual-path G(t) → coupling VALIDATED (v14). R_gov architecture confirmed. k_gI and f(G) form open.
+ASYMMETRY CONSTRAINT — LOCKED: Recovery is slower than collapse. This is not a design choice — it is a locked simulation finding. Institutional recovery mechanisms must therefore be disproportionately strong relative to disturbance mechanisms. A recovery system sized to match disturbance will always lose.
+R(t) = R_internal(T,t) + R_network(T,t) + R_gov(G,t) + R_base(D,T,t) All four components are always active — R(t) > 0 at all times. Recovery is continuous, not threshold-triggered. R(t) → C01 TIL as the +R(T,t) term in dT/dt
+Component | Primary condition | Mechanism
+R_internal | High T, low D — self-recovery | Internal trust restoration. Scales with T. Dominant when system is only mildly stressed. Weakens as T falls — cannot sustain recovery alone under high D.
+R_network | T above T_reserve — peer support | Network trust donation. Nodes above T_reserve threshold provide trust support to nodes in decline. Subject to T_reserve gate — donors cannot fall below their own floor. Gated by I(t) from C05.
+R_gov | G(t) active — governance coupling | Governance-mediated recovery. Operates via two paths: (1) G → k_D, k_C — reduces disturbance and cognitive coupling coefficients, slowing trust erosion; (2) G → I(t) — provides weak identity stabilization support. VALIDATED v14.
+R_base | Always active — deadlock breaker | Baseline recovery. Adaptive form: k_b·(1+γD)·e^(-βT). Provides upward pressure even when T → 0 and G(t) → 0. The only mechanism that can break the trust-governance deadlock. Must be independent of T and G state.
+R_internal = k_i · T(t) k_i: internal recovery rate — UNSPECIFIED Scales linearly with current trust level. When T is high: R_internal is the dominant recovery force. When T is low: R_internal collapses — cannot self-recover from low-trust states.
+R_network = k_n · Σ_j [ max(0, T_j - T_reserve) ] for nodes j adjacent to i subject to: T_j(t) ≥ T_reserve (donor gate) k_n: network coupling rate — UNSPECIFIED T_reserve: minimum trust floor for donation — UNSPECIFIED (coordinate with C05) Donor gate: node j can only donate if T_j > T_reserve I(t) effect: higher I_belong raises effective T_reserve ceiling for donors
+TOPOLOGY NOTE: R_network is the component most affected by topology. In ring/mesh topology, peer support propagates through multiple pathways. In star topology, R_network routes almost entirely through the hub — which is both the strength (hub can amplify) and the vulnerability (hub stress cuts off network recovery). Hub protection (C03 Section 5) directly protects R_network function.
+R_gov operates via two validated paths: Path 1 (primary): G(t) → k_D, k_C modification k_D_effective = k_D · (1 - α_gov · f(G(t))) k_C_effective = k_C · (1 - α_gov · f(G(t))) → Governance reduces disturbance and cognitive distortion coupling rates → Slows trust erosion rather than directly restoring trust → f_min = 0.30 floor maintained at all times Path 2 (secondary): G(t) → δI(t) → Governance provides weak identity stabilization support → k_gI: UNSPECIFIED — must be small Both paths VALIDATED — v14 (−75% failure rate vs static G)
+C06 DEPENDENCY: R_gov requires G(t) from the Governance Module (C06 — not yet written). The dual-path architecture is validated but k_gI and f(G) functional form remain open. These will be specified in C06.
+R_base = k_b · (1 + γ·D_effective(t)) · e^(-β·T(t)) k_b: baseline recovery constant — UNSPECIFIED γ: disturbance amplification factor — UNSPECIFIED β: trust-level damping factor — UNSPECIFIED Properties: → Active at all T levels, including T → 0 → Rises with D (more disturbance → more baseline support) → Dampened by high T (unnecessary when self-recovery works) → Independent of G(t) — operates even when governance collapses → The ONLY mechanism that functions in trust-governance deadlock
+DESIGN REQUIREMENT: R_base must be institutionally independent of the trust and governance state it is trying to recover. An R_base mechanism that requires trust to activate, or that requires governance approval to deploy, is not a deadlock breaker — it is another component that fails in deadlock. R_base must have an independent activation pathway.
+Regime | Conditions | Primary mechanism and behavior
+Self-Recovery | T high, D moderate. R_internal dominant. | System stabilizes through internal processes. R_network and R_gov provide supplementary support. R_base dampened (e^(-βT) low). No external intervention needed. Most common stable-state recovery.
+Assisted Recovery | T falling toward T_threshold, D high. R_internal insufficient. | R_network becomes primary. R_gov interference suppression active. R_base elevated via (1+γD) scaling. Meta Trigger A activation probability rises continuously as T approaches T_threshold — not a binary switch. External peer and governance support required.
+Bootstrap | T ≈ T_floor, network at T_reserve floor, G(t) ≈ 0. | R_base is the only significant recovery force. All other components severely weakened. Upward pressure maintained but slow. Bootstrap is not a permanent trap under realistic R_base parameters — but recovery timescale is long. External intervention from outside the system may be required.
+GRADIENT FRAMING — LOCKED: Regime transitions are probabilistic, not binary. The probability of moving from Self-Recovery to Assisted Recovery rises continuously as T declines and D rises. There is no threshold at which the system switches instantaneously. This applies to all regime transitions.
+S_re(t) = weighted composite score of recovery indicators = w_T · T(t) + w_D · (1 - D_effective) + w_I · I(t) + w_C · (1 - C(t)) Re-entry accumulator B(t): B(t+1) = B(t) + 1 if S_re(t) ≥ θ_re max(0, B(t) - κ_re) otherwise P_entry(t) = σ(α_re · B(t) - β_re) Stage 1 entered when P_entry(t) ≥ P_entry_threshold All parameters (w_T, w_D, w_I, w_C, θ_re, κ_re, α_re, β_re, P_entry_threshold): UNSPECIFIED
+Re-entry weight | What it measures
+w_T · T(t) | Trust level — primary indicator. Must be sustained, not spiked.
+w_D · (1-D_effective) | Disturbance reduction — recovery is more credible when disturbance has actually decreased, not just when trust has temporarily risen despite ongoing disturbance.
+w_I · I(t) | Identity stability — structural support available for sustained recovery. High I raises re-entry probability.
+w_C · (1-C(t)) | Cognitive clarity — distortion reduction. Recovery under high cognitive distortion is fragile.
+Deadlock condition: T(t) → T_floor (trust near minimum) G(t) → 0 (governance capacity near zero) Why it deadlocks: R_internal ≈ 0 (k_i · T ≈ 0 when T is minimal) R_network ≈ 0 (nodes at T_reserve floor, cannot donate) R_gov ≈ 0 (G(t) ≈ 0, no governance coupling) Only R_base remains. Recovery is possible but extremely slow. External intervention may be required.
+Deadlock property | Implication
+R_base is the only active mechanism | Must be designed to function without T or G support. Independent activation pathway required.
+Recovery timescale is very long | R_base alone produces slow upward pressure. Institutions must plan for extended bootstrap periods.
+External intervention may be required | If R_base is insufficient to overcome ongoing D_effective, external support from outside the node's network may be required. This is an architectural boundary — beyond what the Recovery Engine can do alone.
+Deadlock prevention is the priority | Preventing deadlock is far more effective than recovering from it. High I(t) (C05) and active G(t) (C06) during stable periods reduce deadlock probability. SSL investment is deadlock prevention.
+Component | Mechanism type | Institutional form | Status
+R_internal | Self-correction | Transparent accountability processes, internal review, self-reporting, reliable follow-through on commitments. Operates without external activation. | ARCHITECTURAL — can implement now
+R_network | Peer support | Formal and informal peer endorsement, resource sharing agreements, inter-node legitimacy transfer, backup support protocols. Subject to T_reserve gate. | ARCHITECTURAL — design principle. T_reserve value open.
+R_gov (Path 1) | Interference suppression | Governance bodies that actively reduce misinformation propagation, mediate disputes, enforce norms that slow trust erosion. Not direct trust restoration — disturbance damping. | VALIDATED structurally — v14. Specific mechanisms open.
+R_gov (Path 2) | Identity support | Governance recognition of node contributions, legitimacy affirmation, structural acknowledgment. Weak signal but persistent. | VALIDATED structurally — v14. k_gI value open.
+R_base | Unconditional baseline | Non-discretionary minimum support: baseline resource provision, unconditional legitimacy floor, guaranteed access to recovery processes. Must not require approval or trust to activate. | ARCHITECTURAL — design principle. Parameters open.
+Type | Description | Status
+RE-A: Trust-governance deadlock | T and G(t) collapse simultaneously. R_internal, R_network, R_gov all fail. Only R_base remains. Long recovery timescale. | CONFIRMED — architecture. R_base design requirement addresses this.
+RE-B: T_reserve cascade | Multiple nodes fall to T_reserve floor simultaneously. R_network donor pool collapses. Network-wide peer support unavailable. | CONFIRMED RISK — simulation. Prevented by maintaining high I(t) across network (C05).
+RE-C: R_base activation dependency | R_base designed to require governance approval or trust threshold to activate. Fails in deadlock — the condition it was designed to break. | DESIGN ERROR — prevented by independent activation pathway requirement (Section 3.4).
+RE-D: False re-entry | Brief trust spike triggers re-entry before genuine recovery is established. Node re-enters stable regime and external support withdraws. Trust collapses again. | ADDRESSED — gradient re-entry accumulator B(t) prevents this.
+RE-E: Topology disruption of R_network | Star topology hub stress cuts off R_network pathways. Peripheral nodes lose access to peer support precisely when they need it most. | CONFIRMED — v15. Hub protection (C03) required to maintain R_network function under hub stress.
+Open Item | Detail | Priority
+k_i, k_n, k_b parameters | Internal, network, baseline recovery rates. Must satisfy asymmetry constraint: recovery slower than collapse under high D. | HIGH
+γ, β (R_base) | Disturbance amplification and trust damping factors in adaptive R_base. Shape of the response curve. | HIGH
+T_reserve value | Minimum trust floor for peer donation. Coordinate with C05 I(t) relationship. | HIGH — coordinate with C05
+f(G) functional form | How G(t) modifies k_D and k_C in Path 1. Must maintain f_min = 0.30 floor at all G values. | HIGH — coordinate with C06
+k_gI value | Governance-to-identity support strength in Path 2. Must be small. | MEDIUM — coordinate with C06
+Re-entry weights and thresholds | w_T, w_D, w_I, w_C, θ_re, κ_re, α_re, β_re, P_entry_threshold — all unspecified. | MEDIUM
+R_base independent activation pathway | What institutional mechanism activates R_base when trust and governance have both failed? Must be specified and protected from dependency on T or G. | HIGH — design requirement
+External intervention boundary | At what point does the architecture require external support from outside the network? Not yet defined. | MEDIUM — architectural boundary
+Status | v2.0 — 2026-05-01
+v1 source | Disturbance Buffer v1.2 (2026-05-01) — TOPOLOGY-CONDITIONED
+Role in architecture | First in processing pipeline. Converts D_raw into D_effective before trust dynamics. TIL (C01) never receives raw disturbance.
+Depends on | Topology Detection (prerequisite — must run before any parameter is set)
+Required by | C01 Trust Integrity Layer (receives D_effective) · C04 Stability Lock (reads D_effective) · C06 Governance Module (coupling ceilings)
+Critical finding | TOPOLOGY-CONDITIONED. Star topology ceiling below 0.05 — confirmed v16. Coupling ceiling reduction is ineffective above this threshold.
+Topology ceilings | Ring/mesh: k_D ≤ 0.15 LOCKED · Star: k_D < 0.05 (safe ceiling not yet found) · Federation: UNDETERMINED · Unknown: k_D ≤ 0.10 provisional
+DISTURBANCE PRIMACY — LOCKED: 94–100% of all high-stress collapses in simulation were disturbance-first. The Disturbance Buffer is therefore the most consequential single intervention point in the entire architecture. Its failure or miscalibration produces cascade failure faster than any other component failure.
+Step 0: TOPOLOGY DETECTION → Classify network topology → Select ceiling set: k_D_max(topology), k_C_max(topology) → This step is MANDATORY before any other step Step 1: D_raw(t) enters Buffer → External disturbance signal, unfiltered Step 2: DAMPING → D_damped(t) = smooth(D_raw, window=τ_smooth) → Removes transient spikes that would produce overreaction → τ_smooth: UNSPECIFIED — must be calibrated Step 3: CEILING ENFORCEMENT → D_effective(t) = min(D_damped(t), k_D_max(topology)) → Hard cap — D_effective never exceeds topology ceiling → Topology ceiling selected in Step 0 Step 4: OUTPUT → D_effective(t) → C01 TIL → D_effective(t) → C04 Stability Lock (for regime classification)
+ARCHITECTURAL PRINCIPLE — LOCKED: SOE is a family of systems parameterized by topology. k_D_max = f(topology). There is no universal coupling ceiling. The ceiling must be selected based on detected network topology before any other parameter is set.
+Topology | k_D_max | Status and Evidence
+Ring / Mesh | 0.15 | LOCKED — confirmed safe across all prior simulations (v13, v14). No sustained ignition observed. Universal baseline.
+Star | < 0.05 | CRITICAL — v15 confirmed 43.3% sustained ignition at k_D = 0.15. v16 sweep confirmed ignition persists across entire range 0.05–0.15. Safe ceiling not yet found. Requires dedicated sweep below 0.05.
+Federation | 0.10 provisional | UNDETERMINED — not yet tested. Conservative default applied. Must not use 0.15 until tested.
+Unknown topology | 0.10 provisional | CONSERVATIVE DEFAULT — apply when topology cannot be determined. Unknown topology = treat as star-adjacent until characterized.
+Finding | Implication
+43.3% sustained ignition at k_D = 0.15 (v15) | Star topology is not safe at the standard ring/mesh ceiling. Topology-specific ceiling required.
+Ignition rate flat from k_D = 0.09 to 0.15 (v16) | Coupling ceiling reduction is ineffective in this range. Reducing k_D from 0.15 to 0.09 produces zero benefit. The ceiling is not the primary driver of ignition.
+Still 33% ignition at k_D = 0.05 (v16) | Even at the lowest tested ceiling, ignition persists. Safe ceiling has not been found in range 0.05–0.15.
+Hub broadcasts failure while remaining stable | Hub node maintains stability 0.82–0.91 while 96–97% of peripherals collapse. The disturbance is propagating outward from the hub, not inward to it.
+Ceiling reduction alone cannot fix star topology | The fundamental issue is hub topology and sustained hub stress, not coupling strength. The architectural response must be structural — hub protection or topology avoidance — not parameter reduction.
+KEY INSIGHT: The v16 result means that for star topology under sustained hub stress, the Disturbance Buffer's ceiling enforcement mechanism is insufficient as a sole protection. The Buffer must be supplemented by hub protection mechanisms — either preventing sustained hub stress from occurring (upstream), or structural topology design that avoids star formation.
+Topology class | Detection criterion | Ceiling applied
+Ring / Mesh | Max node degree ≤ threshold_ring. No node connects to more than threshold_ring% of all nodes. | k_D ≤ 0.15
+Star / Hub-dominant | Any node degree > threshold_star. One or more nodes connect to a dominant fraction of all others. | k_D < 0.05 (or safer)
+Federation | Clustered structure — dense within clusters, sparse between. No dominant hub. | k_D ≤ 0.10 provisional
+Unknown / unclassified | Cannot be reliably classified with available information. | k_D ≤ 0.10 conservative default
+OPEN — threshold_ring and threshold_star are unspecified. Must be defined to operationalize topology detection. These thresholds determine when a network is classified as star-adjacent and the more restrictive ceiling applied.
+Topology change event | Required response
+New hub forms (degree crosses threshold_star) | Immediately apply star ceiling. Do not wait for next scheduled evaluation.
+Hub removed or fragmented | Re-evaluate topology. May allow ceiling relaxation after confirmation.
+Network partition | Each partition evaluated independently. Ceiling applied per partition.
+Topology cannot be determined | Apply conservative default immediately. Alert governance layer.
+Mechanism | Description | Status
+D_hub cap | Hard limit on disturbance input to hub node. Prevents D_hub from reaching sustained high values (0.8+ in v15). Must be enforced upstream of the Buffer. | PROPOSED — not yet simulated. Highest priority for v17.
+Hub redundancy | Distribute hub function across 2–3 nodes. No single node carries full hub load. Converts star to partial mesh. | PROPOSED — topological fix. Changes architecture, not parameters.
+Hub isolation under stress | When D_hub exceeds threshold, temporarily reduce hub connectivity to limit propagation. Trade governance reach for network stability. | PROPOSED — requires dynamic topology modification capability.
+Star avoidance by design | Institutional design principle: do not build governance structures that concentrate routing through a single node. Prefer federated or mesh architectures. | ARCHITECTURAL PRINCIPLE — can be applied now without simulation.
+NEXT SIMULATION REQUIRED: v17 should test D_hub capping — applying a disturbance ceiling specifically to the hub node and measuring whether sustained ignition rate falls below 0.05. This directly tests whether hub protection is the correct architectural fix.
+Type | Description | Status
+DB-A: Topology misclassification | Network classified as ring/mesh when it has hub-dominant structure. Higher ceiling applied. Star topology ignition risk active. | CONFIRMED RISK — v15/v16. Topology detection prerequisite exists to prevent this.
+DB-B: Ceiling creep | Ceiling gradually raised over time under pressure from governance or operational convenience. Erodes topology-conditioned safety constraint. | PROPOSED — Meta Governance Rule 1 (Falsifiability) must enforce ceiling integrity.
+DB-C: Sustained hub stress undetected | Hub node receives sustained high D_hub but topology detection does not flag it as a hub-stress condition. Buffer applies ring ceiling instead of hub protection. | CONFIRMED RISK — v15 scenario. Hub protection mechanism (Section 5) required.
+DB-D: Smoothing window miscalibration | τ_smooth too long: sustained stress masked as transient. τ_smooth too short: transient spikes treated as sustained. Both produce incorrect D_effective. | OPEN — τ_smooth unspecified. Calibration required.
+DB-E: Buffer bypass | Disturbance reaches TIL through a pathway not monitored by the Buffer. Common in complex institutional structures with multiple information channels. | PROPOSED — requires comprehensive disturbance pathway mapping at deployment.
+Open Item | Detail | Priority
+Star safe ceiling | Safe k_D for star topology not found — below 0.05. Requires sweep from 0.01 to 0.05. Blocks star ceiling from PROVISIONAL to LOCKED. | CRITICAL
+Hub protection simulation (v17) | Test D_hub capping as primary fix for star topology ignition. Determine whether ceiling below 0.05 is necessary or hub cap is sufficient. | CRITICAL
+Federation topology testing | k_D ceiling for federation topology untested. Provisional 0.10 applied. Must be validated before federation deployment. | HIGH
+threshold_ring, threshold_star | Hub degree thresholds for topology classification unspecified. Must be defined to operationalize topology detection. | HIGH
+τ_smooth calibration | Smoothing window for damping function unspecified. Must distinguish transient from sustained stress. | MEDIUM
+Disturbance pathway mapping | Real deployments may have multiple D_raw sources. All pathways must route through Buffer. Mapping required at deployment. | MEDIUM — deployment specific
+Addendum version | v1.3 — 2026-05-01
+Supersedes | Disturbance Buffer v1.2 — Section 5 (Hub Protection Mechanisms)
+Source | v17 hub protection simulation (branch v17_hub_protection: ef2a7da)
+Change | Hub protection mechanisms — status changed from PROPOSED to CONTRADICTED. Star topology avoidance upgraded from PRINCIPLE to MANDATORY.
+ARCHITECTURAL VERDICT — FINAL: Hub protection via D_hub capping is not an effective fix for star topology ignition. Ignition rate rises as cap decreases. Star topology is structurally unsafe regardless of hub protection mechanism. Star avoidance is MANDATORY.
+D_hub_cap | Ignition rate | Avg peripheral failure | Hub min stability
+0.8 (baseline) | 43.3% | 58.5% | 0.484
+0.6 | 46.7% | 60.0% | 0.539
+0.4 | 50.0% | 60.4% | 0.598
+0.3 | 66.7% | 69.9% | 0.711
+0.2 | 73.3% | 74.2% | 0.756
+0.1 | 83.3% | 80.7% | 0.811
+KEY INSIGHT: The hub in star topology serves two contradictory roles simultaneously — it broadcasts failure AND absorbs disturbance on behalf of peripherals. These two functions cannot be separated by hub protection. Protecting the hub eliminates its failure-broadcasting role but also eliminates its disturbance-absorption role, leaving peripherals more exposed. Star topology has no safe configuration.
+SUPERSEDED: Section 5 of Disturbance Buffer v1.2 listed hub protection mechanisms (D_hub cap, hub redundancy, hub isolation, star avoidance by design) with status PROPOSED. v17 confirms that D_hub capping is CONTRADICTED as a standalone fix. The remaining three mechanisms are updated below.
+Mechanism | Updated assessment | Status
+D_hub cap | CONTRADICTED — v17. Capping D_hub increases peripheral collapse rate by redistributing disturbance load to nodes with less capacity. Ignition rate rises from 43.3% to 83.3% as cap decreases from 0.8 to 0.1. | CONTRADICTED — do not use
+Hub redundancy | Distribute hub function across 2–3 nodes. Converts star to partial mesh. Eliminates single-point disturbance concentration. Not directly tested but consistent with mesh topology safety (v13/v14). The only structural fix that addresses both failure-broadcasting and disturbance-absorption simultaneously. | PROPOSED — topology redesign. Most promising remaining option.
+Hub isolation under stress | RECONSIDERED — v17 shows isolation increases peripheral exposure. Dynamic isolation must be carefully designed to not simply remove hub disturbance absorption. May be net negative without hub redundancy in place. | RECONSIDER — may be net negative without hub redundancy
+Star avoidance by design | MANDATORY — confirmed as the primary architectural requirement for star topology safety. No tested parameter or protection mechanism produces sustained_ignition_rate < 0.05 in star topology. | MANDATORY — architectural requirement
+MANDATORY ARCHITECTURAL REQUIREMENT: SOE must not be deployed on star-adjacent network topology. If the institutional structure is star-adjacent, it must be redesigned toward mesh or federation topology before SOE deployment. This is not a recommendation — it is a structural requirement confirmed by three simulation rounds (v15, v16, v17).
+Topology | Deployment status | Evidence
+Ring / Mesh | SAFE — deploy | k_D ≤ 0.15 confirmed safe. v13/v14 validated.
+Star | UNSAFE — do not deploy | v15: 43.3% ignition. v16: no safe ceiling found. v17: hub protection increases ignition. Three rounds confirming structural unsafety.
+Federation | PROVISIONAL — test first | Not yet simulated. Use k_D ≤ 0.10 provisional ceiling. Cluster-aware detection required.
+Unknown | ASSESS first | Topology detection mandatory before deployment. Apply conservative defaults until classified.
+Status | v2.0 — 2026-05-01
+v1 source | Stability Lock Mechanism v1.3 (2026-05-01) — Gradient framing + Topology-conditioned
+Role in architecture | Classifies system regime and determines when stable lock is confirmed. The system's self-assessment layer — it tells the architecture what state it is in.
+Depends on | C01 TIL (reads S(t) = g(T) per node) · C02 Recovery Engine (regime classification input) · C03 Disturbance Buffer (reads D_effective for regime context)
+Required by | C06 Governance Module (reads regime for G(t) prioritization) · C02 Recovery Engine (reads lock state for recovery mode) · Meta Governance (trigger authority)
+Critical finding | Hub-stability masking (v15): hub can appear stable while network collapses. S_network(t) required — monitoring must be network-scoped, not hub-scoped.
+Lock engagement | GRADIENT — P_lock(t) rises continuously with accumulated stability evidence A(t). Not a binary switch.
+ACCURACY REQUIREMENT: The SLM's classification must reflect actual network state, not hub-reported state. The hub-stability masking finding (v15) confirms that a hub-scoped SLM will systematically misclassify star-topology collapse as Stable. S_network(t) is a mandatory input for any topology that includes hub-dominant structures.
+S_i(t) = g(T_i(t)) g(·): monotone increasing function of trust S_i ∈ [0, 1] S_i = 1: node i at maximum stability S_i = 0: node i at minimum stability (T at floor) g(T) functional form: UNSPECIFIED Minimum: g must be monotone increasing in T Constraint: g(T_floor) > 0 — stability floor exists
+S_effective(t) = min(S_hub(t), S_network(t)) [topology-conditioned] S_hub(t) = g(T_hub(t)) — hub node stability S_network(t) = aggregation of S_i across all nodes Aggregation options: Option A (recommended for star): min_i(S_i(t)) → Cannot be dominated by single high-stability node → Prevents hub-stability masking Option B (ring/mesh): weighted average Σ_i w_i · S_i(t) → Topology-appropriate when no hub dominance S_effective used in all lock engagement computations. In ring/mesh: S_network ≈ S_hub — no effective change. In star: S_network may be << S_hub — masking prevented.
+OPEN — g(T) functional form and aggregation weights w_i are unspecified. S_network(t) computation with minimum-node weighting is not yet simulated. Must be validated in the star topology calibration sweep (v17 or dedicated run).
+LOCKED v1.2/v2.0: Lock engagement is a probability P_lock(t) rising continuously with accumulated stability evidence A(t). It is not a binary switch. The W-consecutive-steps description from v1.0 is a limiting case — the underlying mechanism is a continuous accumulator with decay.
+Stability evidence accumulator: A(t+1) = A(t) + 1 if S_effective(t) ≥ S_threshold max(0, A(t) - κ) otherwise Lock engagement probability: P_lock(t) = σ(α · A(t) - β_lock) σ(·) = sigmoid function → P_lock ∈ (0, 1) Lock confirmation: Lock confirmed when P_lock(t) ≥ P_threshold sustained for τ_confirm steps Parameters: α, β_lock, κ, S_threshold, P_threshold, τ_confirm — UNSPECIFIED Constraint: κ < 1/W_equivalent — decay slow enough to survive brief dips
+Parameter | Role
+A(t) | Accumulated stability evidence. Rises on above-threshold steps, decays by κ on sub-threshold steps. Continuous — not a counter.
+κ | Decay rate. Controls how quickly accumulated evidence erodes during below-threshold periods. Must be slow enough that genuine recovery survives brief disturbance dips.
+α | Accumulation sensitivity. Controls how steeply P_lock rises with A(t). High α → sharp transition. Low α → gradual.
+β_lock | Offset. Sets the A(t) level at which P_lock = 0.50. Determines how much evidence is required before lock becomes more likely than not.
+P_threshold | Confirmation threshold. P_lock must exceed this before lock confirmation begins.
+τ_confirm | Confirmation window. P_lock must sustain above P_threshold for this many steps. Prevents false positives from brief probability spikes.
+Regime | Conditions | System state | Primary response
+STABLE | P_lock ≥ P_threshold sustained τ_confirm steps. A(t) high. S_effective consistently above S_threshold. | Lock confirmed. Trust dynamics self-sustaining. R_internal dominant. No external intervention needed. | Maintenance mode. SSL investment. Ongoing monitoring.
+METASTABLE | A(t) accumulating but P_lock < P_threshold. S_effective above threshold but insufficiently sustained for confirmation. | Trending toward Stable but not confirmed. System is improving but evidence incomplete. Vulnerable to disturbance reversal. | Continue recovery support. Do not withdraw assistance. Monitor A(t) trajectory.
+INTERMEDIATE | S_effective variable — above and below S_threshold. A(t) oscillating. P_lock low. | Trust dynamics contested. Disturbance and recovery roughly matched. Outcome uncertain. | Assisted recovery active. R_network and R_gov prioritized. Governance intervention elevated.
+COLLAPSE | S_effective persistently below S_threshold. A(t) near zero. P_lock ≈ 0. | Trust dynamics dominated by disturbance. R_internal and R_network severely weakened. R_base primary. | Bootstrap mode. R_base primary. External intervention may be required. Meta Governance alert.
+METASTABLE IS THE FOURTH REGIME — LOCKED: Metastable is not a subtype of Intermediate. It is a distinct regime: the system is trending toward Stable but has not confirmed lock. A(t) is accumulating. Withdrawing support during Metastable is the most common cause of failed recovery — the system appears to be recovering and support is reduced before lock is confirmed.
+ARCHITECTURAL PRINCIPLE: Lock declaration must not be unilateral. A single node — including the hub — cannot declare the network to be in Stable regime. Lock must be confirmed by network-scope evidence, not hub-scope reporting.
+Requirement | Rationale
+Must use S_network(t), not S_hub(t) | Hub-stability masking (v15) — hub can be stable while network collapses. Lock declaration based on hub signal alone will misclassify collapse as Stable.
+Must be distributed — not unilateral | No single node can declare lock. Multiple independent nodes must confirm above-threshold stability before confirmation begins.
+Must require sustained evidence (τ_confirm) | Single-period above-threshold does not qualify. P_lock must exceed P_threshold for τ_confirm steps. Prevents false lock from brief improvement.
+Must be revocable | Lock can be broken if S_effective falls back below threshold. Meta Governance Rule 4 (Rollback) applies. Lock is a confirmation, not a permanent state.
+Must be transparent | The evidence basis for lock declaration must be visible to all network nodes. Opaque lock declarations violate Meta Governance Rule 1 (Falsifiability).
+Step 1: S_effective(t) computed from S_network(t) — all nodes Step 2: A(t) updated based on S_effective Step 3: P_lock(t) = σ(α · A(t) - β_lock) computed Step 4: If P_lock ≥ P_threshold → confirmation window opens Step 5: Confirmation sustained for τ_confirm steps Step 6: Lock declared — distributed acknowledgment required No single node can block or unilaterally confirm Step 7: Continued monitoring — lock is revocable Lock revocation: If S_effective falls below S_threshold: A(t) begins decaying If A(t) falls below revocation threshold: lock suspended Recovery mode re-activates
+Transition | Mechanism
+Intermediate → Metastable | S_effective rises above S_threshold. A(t) begins accumulating. P_lock rising but below P_threshold. System improving but not confirmed.
+Metastable → Stable | P_lock reaches and sustains P_threshold for τ_confirm steps. Lock confirmed. A(t) at high level.
+Stable → Metastable | S_effective dips below S_threshold. A(t) begins decaying at rate κ. P_lock falling. If A(t) recovers before revocation threshold: returns to Stable.
+Metastable → Intermediate | A(t) falls below the level where P_lock ≥ P_threshold is achievable. Evidence depleted. System back in contested dynamics.
+Intermediate → Collapse | S_effective persistently below threshold. A(t) near zero. R_internal and R_network unable to sustain upward pressure.
+Collapse → Intermediate | R_base maintains upward pressure. D_effective declines or external intervention reduces disturbance. S_effective begins rising. A(t) accumulation begins.
+Property | Description
+Network-scoped measurement | Must aggregate stability signals across all nodes, not just the hub or leadership level. Hub-scoped assessment is architecturally unsafe for star-adjacent structures.
+Evidence accumulation over time | Cannot declare stability from a single assessment. Must track stability trajectory — is the system improving, stable, or declining? Duration matters.
+Decay sensitivity | Must be more sensitive to stability decline than to stability improvement. Consistent with the asymmetric dynamics of trust collapse vs recovery (Simulation Law 3).
+Revocability | Lock declarations must be revocable. An institution that cannot un-declare stability when conditions deteriorate has a non-functional SLM.
+Independence from those being assessed | The SLM cannot be operated solely by the nodes it is assessing. Captures self-serving misclassification risk — institutions that assess their own stability will systematically overreport it.
+Transparent evidence basis | The data underlying regime classification must be accessible to all nodes. Opaque stability declarations undermine the legitimacy of the classification.
+Type | Description | Status
+SLM-A: Hub-stability masking | S(t) computed from hub node only. Hub maintains high stability while peripheral network collapses. SLM classifies Stable. Recovery Engine not triggered. | CONFIRMED — v15. S_network(t) with minimum-node weighting required.
+SLM-B: Premature lock declaration | Lock declared during Metastable phase before τ_confirm is satisfied. Recovery support withdrawn. System collapses back from Metastable to Intermediate. | ADDRESSED — τ_confirm confirmation window prevents this.
+SLM-C: Self-assessment capture | SLM operated by nodes being assessed. Systematic overreporting of stability. Regime classification reflects preferred state, not actual state. | PROPOSED — prevented by independence requirement (Section 7).
+SLM-D: Revocation resistance | Lock declared and treated as permanent. When conditions deteriorate, lock is not revoked due to institutional inertia or political resistance. | PROPOSED — Meta Governance Rule 4 (Rollback) and revocation process (Section 5.2) address this.
+SLM-E: Metastable misclassification | Metastable classified as Stable (premature) or as Intermediate (pessimistic). In both cases, wrong response triggered — either support withdrawal or unnecessary escalation. | STRUCTURAL — requires accurate A(t) tracking and clear regime boundary definitions.
+Open Item | Detail | Priority
+g(T) functional form | Mapping from trust T to stability S. Must be monotone increasing. Shape unspecified. | HIGH
+S_network aggregation validation | Minimum-node S_network(t) proposed but not yet simulated. Must be validated in star topology context. | HIGH — v17 or dedicated run
+α, β_lock, κ calibration | Accumulation sensitivity, offset, and decay rate. Must reproduce W-step behavior in noise-free case and survive noise at 0.050–0.055. | HIGH
+S_threshold, P_threshold, τ_confirm | Regime boundary thresholds and confirmation window. Must be jointly calibrated. | HIGH
+Lock declaration institutional design | Which bodies participate in distributed lock confirmation? What is the minimum quorum? How is independence from assessed nodes maintained? | HIGH — institutional design
+Revocation threshold | At what A(t) level is lock suspended? Must be specified alongside declaration thresholds. | MEDIUM
+Regime boundary simulation | Precise S_effective values marking regime transitions not yet characterized. Requires dedicated boundary sweep. | MEDIUM — future simulation
+Status | v2.0 — 2026-05-01
+v1 source | Structural Support Layer v1.1 (2026-04-25)
+Role in architecture | Provides I(t) identity stability input to TIL (C01). Slow-moving structural base. Does not respond to individual disturbance events — responds to sustained structural conditions.
+Depends on | No upstream simulation inputs — SSL reads system state but is not driven by other components. T_reserve coordination with C02 Recovery Engine.
+Required by | C01 Trust Integrity Layer (receives b·I(t)) · C02 Recovery Engine (T_reserve coordination)
+v2 decision | I(t) is COMPOSITE — two distinct sub-components: I_role (role clarity) and I_belong (belonging). LOCKED v2.0.
+Timescale | SLOW — I(t) changes on timescales much longer than T(t). Months to years in real deployment. Not reactive to individual events.
+STRUCTURAL ROLE: SSL is not a response mechanism. It is a maintenance mechanism. Its job is to keep I(t) high during stable periods so the system has structural reserves when disturbance arrives. An institution that only invests in identity and belonging during crises has no SSL — it has a delayed recovery attempt.
+LOCKED v2.0: I(t) is composite. I(t) = w_role · I_role(t) + w_belong · I_belong(t) where w_role + w_belong = 1. The two sub-components are distinct, respond to different interventions, and can decouple from each other. Both must be tracked independently.
+Property | Description
+High I_role | Node has clear mandate, defined responsibilities, recognized authority. Role is stable over time. Others know what this node does and why.
+Low I_role | Role ambiguity, mandate drift, contested authority, unclear scope. Node is uncertain of its function or others are uncertain of it.
+What raises I_role | Clear mandate documentation, stable organizational structure, explicit authority delegation, role recognition by peers and superiors, consistent scope.
+What lowers I_role | Restructuring without clarity, mandate expansion without resources, contested authority, role overlap, unclear accountability.
+Timescale | Changes on organizational timescales — weeks to months. Faster than I_belong but slower than T(t).
+Property | Description
+High I_belong | Node experiences shared purpose, recognized contribution, meaningful participation. Feels the system's goals are worth pursuing and that its contribution matters.
+Low I_belong | Alienation, exclusion, sense of irrelevance. Node may still perform its role but without connection to why it matters. Trust erodes despite structural clarity.
+What raises I_belong | Visible impact of contribution, inclusion in decision processes, shared narrative, peer recognition, connection between node's work and system outcomes.
+What lowers I_belong | Invisible contribution, exclusion from decisions that affect the node, narrative fragmentation, perceived dispensability, disconnection from outcomes.
+Timescale | Changes on cultural timescales — months to years. Slowest-moving variable in the architecture.
+Scenario | I_role | I_belong
+Clear role, no belonging | HIGH — mandate is clear, authority is defined | LOW — node performs its role but feels disconnected from purpose. Compliant but not invested. Vulnerable to trust erosion under sustained disturbance.
+Strong belonging, unclear role | LOW — ambiguous mandate, contested scope | HIGH — node is deeply committed to the system's purpose. Motivated but ineffective. May create coordination failures that erode others' trust.
+Both high | HIGH | HIGH — maximum structural support. Node is both clear on what it does and why it matters. Highest resilience to disturbance.
+Both low | LOW | LOW — terminal structural deficit. Node is in identity crisis. T(t) will decline even without external disturbance.
+OPEN — w_role and w_belong weighting unspecified. The relative contribution of role clarity vs belonging to I(t) is not yet calibrated. Initial assumption: equal weighting (w_role = w_belong = 0.5). Must be validated against deployment proxy data.
+Property | Description
+CI ∈ [0, 1] | 0 = civilizational identity collapse — no shared narrative, fragmented purpose, competing foundational claims. 1 = maximum shared identity.
+CI vs I_belong | I_belong is node-local: does this node feel it belongs? CI is network-level: does the network share a coherent identity? Both can be high or low independently.
+CI affects I_belong ceiling | A node's I_belong cannot sustainably exceed CI. If the network's shared identity collapses, individual belonging eventually follows regardless of local conditions.
+CI changes very slowly | Civilizational identity is the slowest-moving variable in the architecture. It can be maintained, eroded, or reconstructed — but never quickly.
+CI collapse is asymmetric | Like trust, CI collapses faster than it rebuilds. Narrative fragmentation spreads faster than narrative coherence. This is not a calibration artifact — it is structural.
+I_belong_ceiling(t) = f(CI(t)) I_belong(t) ≤ I_belong_ceiling(t) When CI → 0: I_belong ceiling falls regardless of local belonging conditions. When CI is high: I_belong can reach its node-local maximum. f(CI) functional form: UNSPECIFIED — must be monotone increasing in CI.
+OPEN — CI proxy metrics for real deployment are unspecified. Candidates: shared narrative coherence scores, cross-node voluntary cooperation rates, inter-node recognition of common purpose, shared foundational document adherence. None are yet validated as CI proxies.
+Variable | Timescale | Institutional equivalent
+D_effective(t) | Fast — per event | Individual crisis, shock, incident
+T(t) | Medium — per period | Trust climate within a quarter or season
+I_role(t) | Slow — organizational | Structural clarity over months
+I_belong(t) | Very slow — cultural | Belonging and purpose over years
+CI | Slowest — civilizational | Shared identity over decades
+T_reserve = minimum trust level at which a node can donate trust to others via R_network without falling below its own survival threshold SSL contribution: high I(t) raises the effective T_reserve ceiling → nodes with high identity stability can sustain more network-level trust donation before reaching their own floor SSL contribution: low I(t) lowers effective T_reserve → nodes with identity instability cannot safely donate trust even if their absolute T level appears adequate T_reserve value: UNSPECIFIED — calibration pending in C02
+OPEN — The precise relationship between I(t) and T_reserve is unspecified. The direction is clear (higher I raises effective T_reserve) but the functional form is not. Must be specified when C02 is written.
+Mechanism | Description | Status
+Mandate documentation | Clear, written, accessible specification of each node's role, authority, and scope. Updated when structure changes. | ARCHITECTURAL — can implement now
+Authority delegation protocol | Explicit process by which authority is granted, bounded, and recognized across nodes. Prevents contested authority. | ARCHITECTURAL — can implement now
+Role stability monitoring | Track I_role proxy (e.g., mandate clarity score, role conflict rate) over time. Alert when I_role falls below threshold. | OPEN — proxy unspecified
+Restructuring protocol | When organizational structure changes, I_role intervention required. New roles must be defined before old ones are dissolved. | ARCHITECTURAL — can implement now
+Mechanism | Description | Status
+Contribution visibility | Processes that make each node's contribution to system outcomes visible to other nodes and to itself. Prevents invisible contribution erosion. | ARCHITECTURAL — design principle
+Participatory decision inclusion | Nodes affected by decisions have meaningful input into those decisions. Not necessarily veto — meaningful voice. | ARCHITECTURAL — governance design
+Shared narrative maintenance | Active maintenance of a coherent narrative connecting node-level work to system-level purpose. Not propaganda — authentic connection. | OPEN — CI proxy needed
+Belonging monitoring | Track I_belong proxy over time. Belonging decline is slower and harder to detect than role clarity decline — requires longer observation windows. | OPEN — proxy unspecified
+Exit and re-entry support | Nodes that leave and return (or new nodes entering) require explicit belonging reconstruction. Structural clarity alone is insufficient. | ARCHITECTURAL — design principle
+Type | Description | Status
+SSL-A: Role-belonging decoupling | I_role high, I_belong low. Nodes are structurally clear but alienated. Compliant but not invested. Trust erodes slowly but continuously even in absence of external disturbance. Hardest SSL failure to detect. | STRUCTURAL — inherent in composite formulation. Requires separate tracking of both sub-components.
+SSL-B: CI-I_belong divergence | Individual I_belong appears healthy but CI is declining. Local belonging is sustained by sub-group identity rather than system identity. Network-level coherence eroding while local metrics look fine. | CONFIRMED RISK — requires CI monitoring separate from I_belong monitoring.
+SSL-C: Structural investment deficit | SSL neglected during stable periods. I(t) erodes slowly. When disturbance arrives, structural reserve is depleted and b·I term provides insufficient buffering. | PROPOSED — most common failure mode in real organizations. Prevented by proactive SSL maintenance.
+SSL-D: Restructuring shock | Organizational restructuring destroys I_role faster than new I_role can be built. Trust decline follows structural clarity collapse, not external disturbance. | PROPOSED — restructuring protocol (Section 6.1) designed to prevent this.
+SSL-E: T_reserve miscalibration | T_reserve set without accounting for I(t) state. High-I nodes restricted from trust donation; low-I nodes allowed to donate despite identity instability. | OPEN — coordination with C02 required to prevent.
+Open Item | Detail | Priority
+w_role, w_belong weights | Relative weighting of I_role and I_belong in composite I(t). Initial assumption: equal (0.5/0.5). Must be validated. | HIGH
+I_role proxy | What observable measure tracks role clarity in a real deployment? Candidates: mandate clarity score, role conflict rate, authority dispute frequency. | HIGH — blocks deployment
+I_belong proxy | What observable measure tracks belonging? Longer observation window required. Candidates: voluntary participation rate, cross-node recognition frequency, self-report belonging score. | HIGH — blocks deployment
+CI proxy metrics | Network-level civilizational belonging. Slowest to measure. Candidates: shared narrative coherence, cross-node cooperative behavior rates. | MEDIUM
+I_belong_ceiling = f(CI) | Functional form of CI constraint on I_belong ceiling. Must be monotone increasing. Shape unspecified. | MEDIUM
+T_reserve / I(t) relationship | Precise functional form of I(t) effect on effective T_reserve. Direction locked, form unspecified. | MEDIUM — coordinate with C02
+SSL simulation | SSL dynamics not directly simulated in v1. I(t) was treated as a parameter, not a dynamic variable. v2 may require dedicated SSL dynamics simulation. | MEDIUM — future simulation round
+Status | v2.0 — 2026-05-01
+v1 source | Governance Module v1.4 (2026-05-01) — VALIDATED, bracket lifted
+Role in architecture | Maintains G(t) — dynamic governance capacity. Modifies disturbance and cognitive coupling rates via dual-path. The regulator of the system's self-correction capability.
+Depends on | C01 TIL (reads T — G(t) is T-conditional) · C03 DB (outputs k_D, k_C modifications) · C04 SLM (reads regime for prioritization) · C05 SSL (outputs δI — identity support)
+Required by | C02 Recovery Engine (receives G(t) for R_gov) · C03 DB (coupling ceiling modifications) · C04 SLM (indirect — regime informs G prioritization)
+Validated | dG/dt = γT − δG + H(t) VALIDATED v14. Dual-path G → k_D,k_C + G → I(t) VALIDATED v14. −75% failure rate vs static G.
+Four-layer architecture | Citizen / Expert / Institutional / AI — canonical. Written into SOE v4.1 Ch.4. Unaffected by simulation results.
+VALIDATED FINDING: G(t) as a dynamic regulator (not static constraint) produces −75% reduction in failure rate vs static G under disturbance_high conditions. Governance dynamics matter. The difference between an active governance module and a passive one is a 75% reduction in terminal failures.
+VALIDATED v14: dG/dt = γT − δG + H(t) with γ = 0.05, δ = 0.02. Non-zero dG/dt confirmed across all 149 steps. Functional. Parameters are initial values — refinement pending.
+dG/dt = γ·T(t) − δ·G(t) + H(t) G(t+1) = clip(G(t) + dG/dt, 0.0, 1.0) γ = 0.05 trust-to-governance coupling rate [VALIDATED — initial value] δ = 0.02 governance decay rate [VALIDATED — initial value] H(t) = intervention signal (Hero mechanism) [VALIDATED in equation form]
+Term | Name | Description
++γT(t) | Trust-driven growth | Higher trust enables more effective governance. G(t) rises when T is high. Collapses when T → 0. This is the T-conditional dependency — governance cannot self-sustain without trust.
+−δG(t) | Governance decay | Institutional entropy — governance capacity degrades without active maintenance. Prevents permanent high-G without ongoing effort. δ = 0.02 means G(t) decays ~2% per step without trust input.
++H(t) | Hero mechanism | Temporary governance amplification signal. Activated in critical zone transitions — when the system is near a regime boundary and short-term governance boost may prevent collapse. Time-limited. Cannot substitute for sustained governance.
+VALIDATED v14: Both governance paths confirmed functional. Path 1 (G → k_D, k_C) is primary — produces the measurable failure reduction. Path 2 (G → I(t)) is secondary — weak but persistent.
+k_D_effective(t) = k_D · (1 − α_gov · f(G(t))) k_C_effective(t) = k_C · (1 − α_gov · f(G(t))) α_gov = 0.10 damped coupling rate [LOCKED — operationally equivalent 0.03–0.15] f_min = 0.30 coupling floor [LOCKED — percolation constraint] Constraint: k_D_effective ≥ f_min · k_D at all G values Constraint: f(G) functional form — UNSPECIFIED Must be monotone increasing in G Must satisfy f_min = 0.30 floor at all G
+δI(t) = k_gI · G(t) k_gI: governance-to-identity supplement — UNSPECIFIED Must be small — governance is not a substitute for SSL Direction: higher G → small positive δI contribution Effect: governance recognition and legitimacy affirmation provide weak but persistent identity stabilization
+CANONICAL — written into SOE v4.1 Ch.4. The four-layer architecture is not derived from simulation — it is a foundational structural specification. Simulation results constrain how layers interact, not whether they exist.
+Layer | Primary function | What it contributes to G(t)
+Citizen Layer | Democratic legitimacy, social value expression | Legitimacy base. G(t) without citizen participation is governance capacity without democratic foundation — structurally fragile. Citizen trust is the deepest source of γT input.
+Expert System | Decision quality, policy analysis, technical clarity | Competence signal. G(t) without expert input produces governance that is legitimate but ineffective. Expert participation converts trust into functionally correct decisions.
+Institutional Bodies | Policy implementation, legal framework, structural stability | Continuity base. G(t) without institutional bodies has no persistent structure — governance capacity decays rapidly (δG term dominates). Institutions are the decay-resistance mechanism.
+AI Systems | Data analysis, risk assessment, policy simulation, monitoring | Amplification and early warning. AI systems extend governance reach and accelerate signal processing. Decision support only — not replacement. AI cannot substitute for any of the other three layers.
+AI CONSTRAINT — LOCKED: AI systems provide decision support. They do not replace citizen legitimacy, expert judgment, or institutional continuity. An AI system that takes on decision authority — rather than supporting it — is not performing a Governance Module function. It is undermining one.
+G_effective(t) = G(t) · L_citizen(t) · L_expert(t) · L_institution(t) · L_AI(t) Where L_x(t) ∈ [L_min, 1.0] — layer participation multiplier L_min > 0: layer cannot be zero — minimum participation required If any single layer collapses to L_min: G_effective falls proportionally Other layers cannot fully compensate L_x functional forms: UNSPECIFIED What drives L_x up and down: OPEN — layer-specific mechanisms
+When T is high: γT(t) term is large → G(t) grows or is sustained Governance functions effectively G(t) can reach high levels When T falls: γT(t) term shrinks → G(t) begins decaying δG(t) term dominates if T falls far enough G(t) degrades even if governance institutions remain intact When T → 0: γT(t) ≈ 0 → G(t) → 0 (without H(t) intervention) Trust-governance deadlock condition approached Only H(t) and R_base can break this
+Property | Description
+H(t) is time-limited | H(t) cannot be sustained indefinitely. It is a temporary boost — governance amplification during a critical window. An H(t) that becomes permanent is no longer a hero mechanism — it is a governance distortion.
+H(t) activates near regime boundaries | Most effective when the system is in Metastable or upper Intermediate — where a short boost can push A(t) over the confirmation threshold. Less effective in deep Collapse where trust is too low for G(t) to operate.
+H(t) is not unilateral | Consistent with Meta Governance: no single body can activate H(t). Trigger authority is distributed. Unilateral H(t) activation is a governance abuse risk.
+H(t) decays after activation | After H(t) activation window, governance returns to baseline dG/dt dynamics. The system must sustain stability through normal mechanisms after the intervention window closes.
+H(t) adversarial testing pending | H(t) is validated in equation form (v14). Full stress test of H(t) activation under multi-node failure, adversarial conditions, and abuse scenarios not yet executed.
+OPEN — H(t) activation criteria, duration limits, trigger authority, and abuse prevention mechanisms are all unspecified. These are high-priority institutional design questions. An H(t) mechanism without clear activation criteria and time limits is an unlimited emergency power — a known governance failure mode.
+Finding | Governance implication
+Hub broadcasts failure while remaining stable | A governance body that sits at the hub of a star network may report high G(t) — its own governance capacity — while the network it governs has collapsed. Governance self-assessment is insufficient. Network-scoped assessment required (C04 S_network principle applies to G(t) monitoring too).
+Coupling ceiling reduction ineffective under hub stress | Governance cannot simply reduce its coupling parameters to protect a star network. The fix is structural — hub protection, topology design, or redistribution of governance function across multiple nodes.
+Distributed governance is safer than centralized governance | Mesh/ring topology outperforms star topology under all disturbance conditions tested. The governance architecture should prefer distribution over centralization. A governance body that concentrates all G(t) in a single hub is a star topology by institutional design.
+G(t) should be distributed across layers | The four-layer architecture distributes governance capacity across Citizen, Expert, Institutional, and AI layers. This is not just normatively desirable — it is structurally safer. Single-layer governance is star-topology governance.
+Meta Governance Layer ↓ constrains Governance Module — G(t) ↓ modifies Coupling rates → Trust dynamics → Stability Lock
+Meta Governance Rule | Application to Governance Module
+Rule 1 — Falsifiability | Governance components must be removable or replaceable to verify necessity. G(t) was bracketed and tested — now validated. The bracket was a Meta Rule 1 test.
+Rule 4 — Rollback | If G(t) dynamics produce instability, rollback window must exist. The δG decay term provides natural rollback — G(t) decays without active trust maintenance.
+Trigger Authority — 3.5.1 | No single governance body may unilaterally declare trigger conditions met. Applies to H(t) activation, lock declaration, and regime classification. Distributed confirmation required.
+Type | Description | Status
+GM-A: Trust-governance deadlock | T → 0 and G(t) → 0 simultaneously. γT term collapses. G(t) degrades. Governance cannot function. Only R_base and H(t) remain. | CONFIRMED — architecture. H(t) and R_base are the designed responses.
+GM-B: Layer collapse | One of the four layers (Citizen, Expert, Institutional, AI) collapses. G_effective falls proportionally. Other layers cannot fully compensate. | STRUCTURAL — inherent in four-layer architecture. Each layer must be independently maintained.
+GM-C: AI substitution | AI systems take on decision authority rather than decision support. Citizen legitimacy and expert judgment are bypassed. G_effective appears high but lacks democratic and competence foundations. | DESIGN ERROR — prevented by AI constraint (Section 4).
+GM-D: H(t) abuse | H(t) activated without proper trigger authority, or sustained beyond time limit. Emergency governance power becomes permanent. Governance distortion. | PROPOSED — H(t) activation criteria required to prevent (Section 6).
+GM-E: Star governance structure | Governance concentrated in a single body — star topology by institutional design. Hub governance body stable while governed network collapses. Hub-stability masking at governance level. | CONFIRMED RISK — v15. Distributed four-layer architecture is the structural prevention.
+GM-F: Decay without maintenance | G(t) decays (−δG term) because trust is insufficient to sustain it (low γT) and no active maintenance occurs. Governance capacity erodes without visible crisis. | STRUCTURAL — inherent in G(t) dynamics. Proactive G(t) maintenance required during stable periods.
+Open Item | Detail | Priority
+f(G) functional form | How G(t) modifies k_D and k_C in Path 1. Must maintain f_min = 0.30 floor at all G values. Monotone increasing. | HIGH — coordinate with C03
+k_gI value | Path 2 governance-to-identity supplement strength. Must be small. Calibration pending. | MEDIUM — coordinate with C05
+γ, δ refinement | Initial values γ = 0.05, δ = 0.02 validated as functional. Precise calibration requires additional runs across capacity and disturbance ranges. | MEDIUM
+H(t) activation criteria | When does H(t) activate? What triggers it? What are the time limits? What is the trigger authority structure? All unspecified. | HIGH — institutional design
+H(t) adversarial testing | Full stress test of H(t) under multi-node failure and abuse scenarios. Not yet executed. | MEDIUM — future simulation
+L_x layer participation functions | What drives each layer's participation multiplier up and down? Functional forms unspecified. | MEDIUM — institutional design
+G(t) network-scoped monitoring | How is G_effective monitored across the network rather than just at governance hub? Consistent with S_network principle from C04. | MEDIUM
+Combined constraint scenario (v17) | G(t) dynamics under combined low-capacity + high-disturbance not yet tested in v14. v14 ran disturbance_high only. | MEDIUM — future simulation
+Status | v2.0 — 2026-05-01
+SOE v4.1 source | Chapter 3 — Meta Governance Layer (Detect → Classify → Trigger)
+Role in architecture | Constrains the governance system itself. Sits above C06 Governance Module. Does not participate in day-to-day governance — monitors, classifies, and triggers when structural conditions require it.
+Depends on | C01 TIL (reads T network state) · C03 DB (reads D_effective) · C04 SLM (reads regime classification) · C06 GM (reads G(t) — constrains it)
+Required by | C06 GM (constrained by Meta Rules) · C02 RE (trigger activation authority) · C04 SLM (lock declaration authority) · C08 Coordination Layer (coordination trigger authority)
+Core function | Detect → Classify → Trigger. Three-phase cycle. Runs continuously above all other components.
+Trigger status | Four triggers specified: A (Assisted Recovery), B (Bootstrap), C (Structural), D (Existential). Conditions derived from simulation data. Revisable.
+POSITION IN HIERARCHY: Meta Governance sits above C06 Governance Module. It constrains G(t) — it does not produce it. The Governance Module operates within the space Meta Governance defines. When Meta Governance triggers, it overrides normal governance operation for the duration of the trigger window.
+Phase 1: DETECT Monitor T_network(t), D_effective(t), G(t), S_network(t), regime classification from C04 Compute composite system stress index Ψ(t) Compare Ψ(t) against trigger condition thresholds Phase 2: CLASSIFY Determine which trigger condition(s) are approaching or active Assess trajectory — is the system improving or deteriorating? Determine trigger severity: approach / threshold / confirmed Phase 3: TRIGGER If trigger condition confirmed: activate appropriate trigger (A, B, C, or D) Notify all components of trigger state Enforce trigger constraints on governance operation Monitor trigger window — deactivate when conditions no longer met Log trigger event with evidence basis
+Ψ(t) = w_T · (1 − T_network(t)) + w_D · D_effective(t) + w_G · (1 − G(t)) + w_S · (1 − S_network(t)) + w_R · regime_weight(t) Ψ(t) ∈ [0, 1] — 0 = full health, 1 = maximum stress regime_weight: Stable=0.0 · Metastable=0.25 · Intermediate=0.50 · Collapse=1.0 Weights w_T, w_D, w_G, w_S, w_R: UNSPECIFIED — must sum to 1.0 Initial assumption: w_T = 0.35, w_D = 0.30, w_G = 0.15, w_S = 0.15, w_R = 0.05 Rationale: disturbance primacy finding (v13/v14) justifies high w_T and w_D
+Term | Rationale
+1−T_network | Trust deficit. Most important single signal — trust collapse is the primary failure pathway. High weight justified by disturbance primacy finding.
+D_effective | Active disturbance load. Already damped by C03. Measures current stress on trust dynamics.
+1−G(t) | Governance capacity deficit. G(t) degradation signals approaching governance-trust deadlock.
+1−S_network | Network-level stability deficit. Network-scoped — prevents hub-stability masking.
+regime_weight | Regime classification from C04 SLM. Converts discrete regime into continuous stress contribution.
+TRIGGER CONDITIONS ARE PROBABILISTIC — NOT BINARY: Consistent with the gradient framing locked across all v2 components. Triggers activate when P_trigger(t) ≥ P_threshold and is sustained for τ_trigger steps. P_trigger rises continuously as Ψ(t) approaches the trigger zone. No instantaneous switches.
+Purpose | Activate assisted recovery mode when self-recovery is insufficient. Primary intervention trigger — most frequently activated.
+Detection condition | T_network(t) falling toward T_threshold. D_effective elevated. S_network in Intermediate regime. R_internal unable to sustain upward pressure. Ψ(t) ∈ [0.35, 0.60].
+Activation threshold | P_A(t) ≥ 0.60 sustained for τ_A steps. P_A rises as T approaches T_threshold and D_effective remains elevated.
+Authority requirement | Distributed confirmation — minimum 2 of 3 independent monitoring bodies. No single body can activate Trigger A unilaterally.
+Response package | R_network elevated — peer support protocols activated. R_gov Path 1 priority — interference suppression strengthened. H(t) may be activated (see C06). External peer support mobilized.
+Duration limit | τ_A_max steps. If system has not entered Metastable regime by τ_A_max, escalate to Trigger B assessment.
+Deactivation condition | S_network enters Metastable regime (A(t) accumulating, P_lock rising). Trigger A suspended — monitoring continues.
+Simulation basis | disturbance_high scenario (v13/v14): 16% stable, 84% conversion. Trigger A corresponds to the Assisted Recovery regime. 96% disturbance-first confirms D_effective monitoring as primary signal.
+Purpose | Activate bootstrap mode when T and G(t) have both degraded severely. Trust-governance deadlock response. R_base becomes primary mechanism.
+Detection condition | T_network(t) ≈ T_floor. G(t) severely degraded. R_internal ≈ 0. R_network at T_reserve floor. Regime = Collapse. Ψ(t) ∈ [0.60, 0.85].
+Activation threshold | P_B(t) ≥ 0.70 sustained for τ_B steps. Higher threshold than A — bootstrap is a more severe response and requires stronger evidence before activation.
+Authority requirement | Distributed confirmation — minimum 3 of 5 independent monitoring bodies. Trigger B activation is a major governance event requiring broader consensus than Trigger A.
+Response package | R_base becomes primary recovery mechanism. External intervention from outside the node network may be authorized. Normal governance constraints partially suspended for duration. H(t) activated if not already.
+Duration limit | τ_B_max steps. If system has not entered Intermediate regime by τ_B_max, escalate to Trigger C assessment.
+Deactivation condition | T_network(t) rises above T_floor + δ_B and Ψ(t) falls below 0.60. Trigger A reassessed on deactivation.
+Simulation basis | combined_constraint scenario (v13): 0% stable, 84% failure. Trust-governance deadlock confirmed structurally. Bootstrap regime is the architecture's designed response.
+Purpose | Activate structural review when the architecture itself appears to be failing — not just the current state variables. Topology has changed, components are producing unreliable signals, or fundamental assumptions have been violated.
+Detection condition | One or more of: (1) topology classification change detected — star hub formed in mesh network; (2) S_network and S_hub severely diverged — masking condition active; (3) component producing outputs inconsistent with declared behavior; (4) Meta Rule violation detected (falsifiability, rollback, trigger authority).
+Activation threshold | Any confirmed Trigger C condition activates immediately — no probability accumulation required. Structural violations are not gradual.
+Authority requirement | Meta Governance body itself — no external confirmation required. Trigger C is activated by the detection mechanism, not by governance bodies. This prevents governance capture of the structural review process.
+Response package | Halt: affected components are flagged and their outputs treated as unreliable pending review. Audit: full component necessity analysis initiated. Ceiling reset: if topology change triggered C, apply topology-conditioned ceilings immediately. No normal governance operations proceed on flagged components until audit complete.
+Duration limit | No fixed limit — Trigger C remains active until structural issue is resolved and confirmed by full multi-AI audit. Cannot be time-limited.
+Deactivation condition | Structural issue resolved and confirmed. Component audit complete. All Meta Rules verified. Trigger C deactivated by Meta Governance body — not by governance layer.
+Simulation basis | v15/v16 topology finding — star hub formation is a structural event, not a parameter event. The detection of hub-stability masking (SLM misclassifying Collapse as Stable) is a Trigger C condition.
+Purpose | Activate when the system faces conditions that threaten its continued existence or that the current architecture cannot address. Reserved for scenarios beyond the designed operational envelope.
+Detection condition | Ψ(t) > 0.85 sustained. Trigger B active and failing. External conditions fundamentally outside the simulation envelope (e.g., adversarial AI objective drift, total civilizational coordination breakdown, scenarios not yet tested).
+Activation threshold | P_D(t) ≥ 0.85 sustained for τ_D steps AND Trigger B already active. Trigger D cannot activate without Trigger B already running.
+Authority requirement | Maximum distributed confirmation — all available independent monitoring bodies plus external review. Trigger D cannot be activated by any internal body alone. Requires external validation.
+Response package | System preservation mode: halt all non-essential operations. Preserve state records. Initiate SOE v4.1 Appendix D versioning protocol. Assess whether architectural replacement is required (SOE Replaceability Principle). This is the governance architecture's version of a graceful shutdown.
+Duration limit | No limit. Trigger D remains active until external resolution or system replacement.
+Deactivation condition | External resolution confirmed and system restored, OR system replaced per SOE Replaceability Principle.
+Simulation basis | Not yet simulated. Trigger D is defined architecturally from SOE's non-terminal principle — the system must have a graceful failure mode, not just a cascade collapse.
+Trigger | Condition | Ψ(t) range | Authority | Duration | Primary response
+A | Assisted Recovery | 0.35–0.60 | 2 of 3 bodies | τ_A_max | R_network + R_gov elevated
+B | Bootstrap | 0.60–0.85 | 3 of 5 bodies | τ_B_max | R_base primary, external intervention
+C | Structural | Any | Meta Governance | Until resolved | Component halt, audit, ceiling reset
+D | Existential | > 0.85 | All bodies + external | Until external resolution | System preservation, assess replacement
+Violation condition: a component claims it cannot be removed or tested Response: Trigger C activated immediately Resolution: component redesigned to allow removal without system destruction
+Violation condition: single body activates trigger without required distributed confirmation Exception: Trigger C detection (structural violations detected by mechanism, not body) Response: trigger activation declared invalid. Trigger C activated to audit the violation.
+Violation condition: upgrade removes or weakens a Meta Rule Response: upgrade halted. Trigger C activated. Full audit required before upgrade proceeds.
+Violation condition: trigger active beyond duration limit without escalation or resolution Response: automatic escalation to next trigger level. Audit of why resolution has not occurred.
+Violation condition: any component declares itself unrevisable or final Response: Trigger C activated. Component flagged for audit. Note: Meta Rule 5 applies to Meta Rule 5 itself.
+C07 Meta Governance Layer ↓ constrains and monitors C06 Governance Module | C04 Stability Lock | C08 Coordination Layer ↓ operates within Meta-defined space C02 Recovery Engine | C03 Disturbance Buffer | C05 SSL ↓ reads and writes C01 Trust Integrity Layer — T(t)
+Type | Description | Status
+MG-A: Governance capture | The governance layer gradually gains control of the Meta Governance detection mechanism. Triggers are suppressed or delayed to protect existing governance arrangements. | PROPOSED — Meta Rule 2 (Non-Unilateral) and Trigger C self-activation are the designed preventions.
+MG-B: Ψ(t) masking | Composite stress index Ψ(t) is computed from hub-scoped signals. Hub maintains apparent health while network collapses. Ψ(t) does not rise. Trigger A never activates. | CONFIRMED RISK — v15. S_network (minimum-node) must be used in Ψ(t) computation. Hub-scoped S cannot be the sole input.
+MG-C: Trigger escalation deadlock | System escalates from A → B but trigger B fails to resolve. Escalation to C or D is blocked by authority requirements. System remains in B indefinitely. | ADDRESSED — Trigger C has no authority confirmation requirement when detecting structural violations. Cannot be blocked.
+MG-D: Meta Rule ossification | Meta Rules become entrenched and cannot be revised despite becoming outdated. Violates Meta Rule 5 (Non-Terminal). | PROPOSED — SOE Multi-Paper Governance Protocol and versioning system are designed to prevent this. Meta Rules must be revisable through the protocol.
+MG-E: Ψ(t) weight drift | Initial Ψ(t) weights are gradually modified without formal protocol. Disturbance primacy weighting (w_T, w_D) is reduced, making Ψ(t) less sensitive to the primary failure pathway. | PROPOSED — weight changes are a Structural Update under the Governance Protocol. Requires full system integration review.
+Open Item | Detail | Priority
+Ψ(t) weights | w_T, w_D, w_G, w_S, w_R initial values proposed but not calibrated. Must be validated against simulation scenarios where known trigger conditions occurred. | HIGH
+P_A, P_B, P_D thresholds | Probability thresholds for trigger activation specified directionally (A < B < D) but exact values unspecified. Must be calibrated. | HIGH
+τ_A_max, τ_B_max, τ_D | Duration limits for triggers A and B. Must be long enough for genuine recovery but short enough to force escalation when recovery is failing. | HIGH
+T_threshold value | Trust level at which Trigger A activates. Referenced in C02 as T_threshold but not yet quantified. | HIGH — coordinate with C02
+δ_B (B deactivation margin) | How far above T_floor must T rise before Trigger B deactivates? Must be specified. | MEDIUM
+Independent monitoring bodies | What are the independent bodies that provide distributed confirmation for triggers A and B? How is independence maintained? Not yet specified. | HIGH — institutional design
+Trigger D simulation | Trigger D conditions not yet simulated. Defined architecturally only. | MEDIUM — future simulation
+Ψ(t) update frequency | How often is Ψ(t) computed? At every TIL step (fast) or on a slower governance cycle? Must align with async update architecture (C01). | MEDIUM
+Status | v2.0 — 2026-05-01
+SOE v4.1 source | Chapter 4 — Coordination Layer (Multi-node coordination; disturbance isolation; trust bridging)
+Role in architecture | Maintains compatible state evolution across nodes without centralized control. Suppresses failure propagation. Enables trust recovery to propagate. Bridges nodes in distress to nodes with surplus.
+Depends on | C01 TIL (reads T_i per node) · C03 DB (reads D_effective, enforces k_D, k_C ceilings) · C02 RE (reads R_i, k_T recovery coupling) · C07 Meta Governance (coordination trigger authority)
+Required by | C07 Meta Governance (coordination failure detection) · C04 SLM (network stability aggregation) · C02 RE (R_network pathway routing)
+Core problem | Single-node stability does not guarantee network stability. Failure propagates by default. Recovery propagates only conditionally. Coordination Layer actively suppresses failure and enables recovery propagation.
+No centralized control | LOCKED — coordination must be achievable without a central hub. Star-topology centralization is a coordination vulnerability, not a solution.
+CORE ASYMMETRY — LOCKED: Failure propagation is always-on. The disturbance coupling term Σ k_D D_j and cognitive coupling Σ k_C C_j are structurally active at all times. Recovery propagation (Σ k_T T_j) is conditional — it requires T_j > T_reserve. The Coordination Layer exists because the system is not neutral: left unmanaged, the failure pathway dominates.
+Property | What it means
+Cooperable | Nodes can exchange trust, disturbance signals, and recovery support even when their T values differ.
+Predictable | Node behavior is consistent enough that other nodes can anticipate state trajectories. Cognitive distortion (C) destroys predictability.
+Alignable | When coordination begins to fail, a recovery pathway exists. The system can be brought back into compatible evolution without destroying individual node autonomy.
+Coordination failure condition: ∃ node pair (i, j) such that |T_i - T_j| > Δ_max AND divergence rate d|T_i - T_j|/dt > 0 AND Σ k_T T_j < threshold for bridging In words: two nodes are far apart in trust, getting farther apart, and recovery coupling is insufficient to bridge the gap. Δ_max: maximum recoverable trust divergence — UNSPECIFIED
+Information coherence condition: max_i(C_i) - min_j(C_j) < C_divergence_threshold C_divergence_threshold: UNSPECIFIED What breaks it: misinformation asymmetry — some nodes exposed to high M(t), others not. k_C channel allows cognitive divergence to propagate but does not guarantee cognitive convergence.
+CLUSTER-AWARE DETECTION (v4.1 addition): Information coherence must be monitored at the cluster level, not just network-wide. Cluster-internal C divergence can produce local coordination failure that does not register in global network metrics. False-stability rate confirmed at 1.0 under timing attacks in clustered topologies — average 24% invisible node failure. C07 Meta Governance Detect step activates when cluster-internal variance exceeds local threshold regardless of global mean T value.
+Failure mode | Description
+Too fast (oscillation) | Node updates so rapidly that it responds to its own previous output before the network can respond. Creates self-reinforcing oscillation. Damping mechanisms (τ_smooth in C03) designed to prevent this.
+Too slow (loss of control) | Node updates so slowly that by the time it responds to disturbance, the network state has already changed fundamentally. Response is misaligned with current conditions.
+Phase divergence | Nodes update at compatible speeds but become phase-shifted — responding to the same events at different times in ways that amplify rather than cancel disturbance.
+LOCKED — SOE v4.1 Ch.4 Section 4.7 + simulation-validated coupling ceilings. The coordination stability condition and coupling ceiling constraints are architectural requirements, not parameters.
+For each node i, coordination stability requires: b·I_i + R_i + Σ_j k_T·T_j > a·D_i + c·C_i + Σ_j k_D·D_j Left side: recovery capacity + identity support + trust coupling from neighbors Right side: local disturbance + cognitive distortion + disturbance coupling from neighbors In words: each node's recovery capacity plus the support it receives from the network must outweigh its local disturbance load plus the disturbance it is absorbing from the network. When this condition fails for any node: coordination failure begins at that node. When it fails for a connected cluster: network-level collapse risk elevated.
+Coefficient | Ceiling | Status and Evidence
+k_D (disturbance) | ≤ 0.15 (ring/mesh) < 0.05 (star) | LOCKED — v13/v14 validated ring/mesh ceiling. v15/v16 confirmed star topology requires far lower ceiling. Topology-conditioned (C03). 54 systematic-collapse cells observed at k_D = 0.16 in strong-coupling exclusion zone.
+k_C (cognitive) | ≤ 0.10 | LOCKED — v13/v14. Cognitive distortion coupling ceiling. Exceeded ceiling at k_C = 0.14 contributes to exclusion zone.
+k_T (trust/recovery) | ≤ 0.20 | LOCKED — upper bound on trust coupling. High k_T can produce over-coupling — recovery propagation that exhausts donor nodes. Ceiling prevents T_reserve cascade failure.
+ENFORCEMENT: Coupling ceiling enforcement is routed through C07 Meta Governance Rule 2 (Bounded Propagation) via multi-source verification. No single node or AI system may authorize operation above these ceilings. Ceiling violations trigger Trigger C (Structural) immediately.
+Property | Institutional implication
+Scope-limited | Each node is responsible for coordinating with its direct neighbors, not the entire network. Global coordination emerges from local interactions.
+No central authority required | Local coordination does not require a hub node to route interactions. Star topology is not necessary — and as v15 confirms, is dangerous.
+Failure-contained | Local coordination failure does not automatically propagate to the full network. Containment (Section 5.3) can isolate the failure zone.
+Computationally tractable | Each node only needs to track its neighbors' states, not the full network state. Scales to civilization-scale networks.
+Distributed consistency operates on three levels: Level 1 — Coupling parameters: all nodes apply the same topology-conditioned coupling ceilings (from C03). This is the structural base of consistency. Level 2 — Regime awareness: nodes share regime classification signals so that recovery support is directed to nodes in declining regimes. Level 3 — Trigger awareness: when C07 activates a trigger, all nodes receive the trigger signal and modify their behavior accordingly. No node can opt out of a confirmed trigger.
+Disturbance isolation trigger: D_i > D_isolation_threshold AND trajectory: dD_i/dt > 0 AND adjacent nodes have T_j < T_buffer Isolation response: Reduce k_D effective for node i's outbound coupling Maintain k_D for inbound coupling (node i still receives support) Alert C07 Meta Governance — potential Trigger A condition D_isolation_threshold, T_buffer: UNSPECIFIED
+TOPOLOGY NOTE: Disturbance isolation is most critical in star topology. In v15, hub disturbance (D_hub = 0.8) propagated to 96–97% peripheral failure because no isolation mechanism prevented the hub from broadcasting failure outward. Hub isolation is the Coordination Layer's specific response to star topology risk — when D_hub crosses threshold, hub outbound k_D is reduced while hub remains connected for inbound support.
+Trust bridge activation condition: T_donor > T_reserve + δ_donor (donor above floor plus safety margin) T_recipient < T_bridge_threshold (recipient in declining state) I_donor(t) ≥ I_bridge_min (donor has identity stability to sustain donation) Bridge routing: Direct bridge: donor and recipient are adjacent — k_T coupling direct Relay bridge: donor and recipient separated — intermediate nodes relay Emergency bridge: Trigger A active — bridge priority elevated, T_reserve temporarily reduced for high-I donors T_bridge_threshold, δ_donor, I_bridge_min: UNSPECIFIED
+Cognitive dampening trigger: Σ_j k_C · C_j > C_dampening_threshold for node i OR cluster-internal C_variance > C_cluster_threshold Dampening response: Reduce k_C effective for the high-C propagation pathway Elevate E(t) correction signal — accurate information injection Alert C07 — information coherence constraint at risk C_dampening_threshold, C_cluster_threshold: UNSPECIFIED
+Full disturbance dynamics (SOE v4.1 Ch.2 Eq.2): dD_i/dt = E_i(t) + Σ_j k_D · D_j − λ · D_i E_i(t): external disturbance source entering node i (environmental events, external shocks, adversarial inputs) Σ_j k_D·D_j: disturbance propagated from adjacent nodes (network coupling) λ·D_i: natural disturbance decay (damping) λ: disturbance decay coefficient — UNSPECIFIED Note: C03 Disturbance Buffer processes D_raw → D_effective via ceiling enforcement. The full dD/dt dynamics sit below the Buffer — D_raw is what evolves per this equation. D_effective is the ceiling-capped output that enters TIL.
+Term | Coordination Layer implication
+E_i(t) | External source. The Coordination Layer cannot control E_i — it can only respond to it. Disturbance isolation (Section 6.1) is the response when E_i is high.
+Σ k_D D_j | Network propagation. This is what the Coordination Layer directly manages through coupling ceiling enforcement and disturbance isolation.
+−λ D_i | Natural decay. λ is the τ_smooth analogue at the dynamic level — the system's inherent tendency to damp disturbance. λ calibration affects how quickly isolated disturbance fades without intervention.
+Topology | Coordination properties
+Ring / Mesh | Multiple coordination pathways. Disturbance isolation can contain local failures without disrupting the whole network. Trust bridges can route around failed links. Cognitive dampening has redundant pathways. Safe at k_D ≤ 0.15. CONFIRMED.
+Star | Single coordination pathway through hub. Hub disturbance disrupts all three functions simultaneously: isolation fails (hub cannot isolate its own outbound coupling from within), trust bridges all route through distressed hub, cognitive dampening pathways all pass through hub. k_D < 0.05 ceiling insufficient alone — hub protection required. CONFIRMED v15/v16.
+Federation | Cluster-level coordination internally, bridge-level coordination between clusters. Cluster-internal coordination failure can be invisible in global metrics (false-stability rate 1.0 confirmed). Requires cluster-aware detection (C07 Ψ(t) cluster monitoring). k_D ≤ 0.10 provisional.
+COORDINATION DESIGN PRINCIPLE: The Coordination Layer performs best on mesh/ring topology. Star topology is a coordination vulnerability by structure, not by parameter. The correct response to star topology is topology redesign — distributing hub function across multiple nodes — not parameter reduction. This mirrors the finding in C03 and C06.
+Signal / Constraint | Direction and Description
+Coordination failure detection → C07 | When coordination failure condition is confirmed, alert sent to C07. This contributes to Ψ(t) and may trigger Trigger A (disturbance isolation active) or Trigger C (structural failure in coordination layer).
+Cluster-internal variance → C07 | Cluster-level C divergence reported to C07 Detect phase. Activates global Detect step regardless of mean T. Prevents false-stability misclassification in federated topologies.
+Trigger A activation → CL | When C07 activates Trigger A, Coordination Layer elevates trust bridge priority and authorizes temporary T_reserve reduction for high-I donors.
+Trigger C activation → CL | When C07 activates Trigger C (structural), Coordination Layer halts affected coupling pathways. No isolation or bridging proceeds on flagged pathways until audit complete.
+Coupling ceiling enforcement → CL | Meta Rule 2 enforces coupling ceilings. Coordination Layer implements the enforcement — detects ceiling violations and reports to C07 for Trigger C activation.
+Type | Description | Status
+CL-A: Over-coupling cascade | k_D or k_C above ceiling. Local disturbance or cognitive distortion propagates rapidly to adjacent nodes. Network-wide cascade. Systematic collapse observed at k_D = 0.16 in simulation. | CONFIRMED — exclusion zone. Coupling ceilings enforced via C07 Meta Rule 2.
+CL-B: Over-decoupling fragmentation | Excessive isolation. Nodes so decoupled that trust bridges cannot operate. R_network collapses. Recovery cannot propagate. Network fragments into isolated nodes with no peer support. | PROPOSED — balance required. Isolation must be targeted, not wholesale.
+CL-C: Hub coordination bottleneck | Star topology. All coordination routes through hub. Hub stress disrupts all three coordination functions simultaneously. Isolation, bridging, dampening all fail at once. | CONFIRMED — v15. Hub protection (C03) required. Topology redesign preferred.
+CL-D: Cluster-invisible failure | Federated topology. Cluster-internal coordination failure invisible in global metrics. False-stability rate 1.0 confirmed. Global mean T appears healthy while 24% of nodes are failing. | CONFIRMED — v4.1. Cluster-aware detection in C07 Ψ(t) required.
+CL-E: Cognitive escalation | C divergence between nodes produces incompatible system models. Nodes cannot predict each other's behavior. Coordination collapse follows even when T levels are adequate. | PROPOSED — cognitive dampening (Section 6.3) and E(t) injection are designed responses.
+CL-F: Trust bridge exhaustion | High-I donor nodes donate to T_reserve floor. R_network donor pool collapses. Trust bridges unavailable at exactly the moment most needed. | CONFIRMED RISK — T_reserve cascade (RE-B in C02). Bridge gating via I_bridge_min prevents this.
+Open Item | Detail | Priority
+λ (disturbance decay) | Natural disturbance damping coefficient in dD_i/dt. Determines how quickly isolated disturbance fades. Coordinate with C03 τ_smooth. | HIGH — coordinate with C03
+Δ_max (coordination failure threshold) | Maximum recoverable trust divergence between adjacent nodes. Determines when coordination failure condition is confirmed. | HIGH
+D_isolation_threshold, T_buffer | Disturbance isolation trigger values. Must be set relative to topology-conditioned ceilings. | HIGH
+T_bridge_threshold, δ_donor, I_bridge_min | Trust bridging activation conditions. Must coordinate with T_reserve in C02. | HIGH — coordinate with C02
+C_dampening_threshold, C_cluster_threshold | Cognitive dampening trigger values. Cluster threshold must be set to detect invisible failure in federated topology. | HIGH
+E(t) injection mechanism | What institutional process injects accurate information (E(t) correction signal) when cognitive dampening triggers? Not yet specified. | MEDIUM — institutional design
+Federation topology testing | Cluster-aware coordination not yet simulated. Cluster-internal failure detection validated conceptually (v4.1) but not in Codex simulation. | MEDIUM — future simulation
+Hub protection simulation (v17) | Does D_hub capping eliminate star coordination failure? Directly tests whether hub protection restores coordination function in star topology. | HIGH — pending v17
+Addendum version | v2.1 — 2026-05-01
+Supersedes | Coordination Layer v2.0 — Section 8 (Topology Implications), Section 10 failure mode CL-C
+Source | v17 hub protection simulation (branch v17_hub_protection: ef2a7da)
+Change | Hub coordination bottleneck failure mode upgraded from CONFIRMED to STRUCTURALLY IRREVERSIBLE. Hub protection framing replaced by dual-role understanding. Star avoidance upgraded to MANDATORY.
+FINDING: The hub in star topology performs two contradictory functions simultaneously: (1) it broadcasts failure to peripherals, and (2) it absorbs disturbance on behalf of peripherals. Hub protection eliminates (1) but also eliminates (2), leaving peripherals more exposed. There is no configuration of star topology that separates these two functions. Star topology is structurally irreversible as a coordination architecture.
+Hub function | What happens when hub is protected
+Failure broadcaster — hub sends high D to peripherals via k_D coupling | Protected hub has lower D_hub → less disturbance propagated outward. This is the intended benefit.
+Disturbance absorber — hub absorbs network-level disturbance load that would otherwise reach peripherals | Protected hub absorbs less disturbance → redistribution to peripherals. Peripheral D_effective rises. Ignition rate increases.
+Net result | The disturbance absorption loss outweighs the failure broadcasting reduction. Peripheral collapse rises. Hub stability improves. Hub-stability masking worsens.
+Coordination stability per node i: b·I_i + R_i + Σ_j k_T·T_j > a·D_i + c·C_i + Σ_j k_D·D_j For peripheral nodes in star topology under hub protection: Left side unchanged — peripheral recovery capacity not improved by hub protection Right side: Σ_j k_D·D_j RISES — hub absorbs less, peripherals absorb more Result: coordination stability condition becomes HARDER to satisfy for peripherals as hub protection increases. Hub protection destabilizes the peripherals it was intended to protect.
+SUPERSEDED: Section 8 of C08 v2.0 listed star topology as 'hub protection required.' This framing is CONTRADICTED by v17. Updated assessment below.
+Topology | Updated coordination assessment
+Ring / Mesh | CONFIRMED SAFE. Multiple coordination pathways. All three coordination functions (disturbance isolation, trust bridging, cognitive dampening) have redundant routes. No single node failure destabilizes coordination. Deploy at k_D ≤ 0.15.
+Star | MANDATORY AVOIDANCE — CONFIRMED v15/v16/v17. Star topology has no safe coordination configuration. Hub protection worsens outcomes by redistributing disturbance load to peripherals. The hub's dual role (failure broadcaster + disturbance absorber) cannot be separated. Coordination architecture must not be star-adjacent.
+Federation | PROVISIONAL. Cluster-internal coordination requires cluster-aware detection. False-stability rate 1.0 confirmed under timing attacks. Global coordination metrics insufficient — cluster-level monitoring required. Use k_D ≤ 0.10 until tested.
+CL-C: Hub Coordination Bottleneck — upgraded from CONFIRMED to STRUCTURALLY IRREVERSIBLE.
+Type | Updated description | Status
+CL-C: Hub coordination bottleneck | Star topology routes all coordination through hub. Hub's dual role (failure broadcaster + disturbance absorber) cannot be separated by any tested protection mechanism. Hub protection (D_hub capping) redistributes disturbance to peripherals and worsens ignition. Three-round simulation confirmation: v15 (43.3% ignition), v16 (no safe ceiling), v17 (protection worsens outcomes). No parameter fix exists. Topology redesign is the only resolution. | STRUCTURALLY IRREVERSIBLE — v15/v16/v17. Mandatory topology avoidance.
+LOCKED — three-round simulation confirmation: SOE coordination architecture must not be star-adjacent. If the institutional structure naturally forms a star — one central body through which all coordination routes — the architecture must be redesigned toward hub redundancy (distribute hub function across 2–3 nodes) or mesh topology before SOE deployment. This is not a design preference. It is a structural requirement.
+Property | Effect of hub redundancy
+Eliminates single-point failure broadcasting | No single node can broadcast failure to all peripherals simultaneously. Failure is contained to the subset of nodes connected to the affected hub node.
+Distributes disturbance absorption | Multiple hub nodes share the disturbance absorption load. No single node is over-relied upon for both routing and absorption.
+Restores redundant coordination pathways | Partial mesh topology restores multiple coordination routes. Coordination Layer's three functions can operate with redundancy.
+Not yet simulated | Hub redundancy (2–3 hub nodes replacing 1) has not been directly tested. Recommended as v18 simulation target.

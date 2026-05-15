@@ -1,0 +1,11 @@
+claim_id,claim,source,output_columns,metric,value,status
+CL01,Federation C04 S-threshold Trigger A is not applicable.,C04 v2.3; C07 v2.2,"trigger_A_source,S_network,psi_extended",federation_c04_trigger_A_violations,0,supported
+CL02,Psi_extended is the federation detector.,C07 v2.2,"psi_extended,cluster_variance,trigger_A_source",federation_psi_detector_run_rate,0.333333,inconclusive
+CL03,T-G loop has floor-regime break condition.,C02 v2.1,"break_condition_margin,trigger_B_count,G_effective",avg_deadlock_trigger_B_count,93.466667,supported
+CL04,Star topology remains unsafe under current assumptions.,C00; C03/C08 v17,"sustained_ignition,collapse_share_peak",star_sustained_ignition_rate,0.666667,supported
+CL05,"Three hubs are minimum tested mitigation, not mesh equivalence.",C00/C04; v18,hub_2_balanced vs hub_3_balanced sustained_ignition,hub2_minus_hub3_ignition_rate,0.0,inconclusive
+CL06,H/I/A node classes require separate identity formulas.,C05 v2.1,"scenario=mixed_hia_identity,final_I_mean,collapse_share_peak",mixed_hia_identity_peak_collapse,0.333889,measured
+CL07,Formal governance can mask ineffective governance.,C06; v0.3,"G_formal,G_effective,false_stability_steps,trigger_C_count",avg_governance_capture_false_stability_steps,59.666667,supported
+CL08,Async/message loss can create hidden collapse.,C08,"message_loss,phase_divergence,false_stability_steps",avg_async_false_stability_steps,0.0,inconclusive
+CL09,Topology monitoring must reclassify drift.,C03/C08,"actual_topology,detected_topology,reclassification_latency_steps",avg_reclassification_latency_steps,0.0,measured
+CL10,Recovery claims must survive finite resources.,C02/C06/C08,"resource_budget,resource_exhaustion_step,max_unmet_recovery_demand",resource_exhaustion_rate_all_runs,0.35,measured
