@@ -32,7 +32,7 @@ Post-sync update:
 
 - `79e9a92` - Add SOE upgrade closure archive.
 - `b49e96d` - Add Box upload index for SOE closure.
-- Final GitHub compare after the Box update showed the sync branch 9 commits ahead of `origin/main` and 0 commits behind.
+- PR #3 is the live GitHub compare record for the current ahead/behind count after subsequent metadata-only report updates.
 
 ## Included In This Sync
 
