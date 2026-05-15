@@ -1,0 +1,2 @@
+batch_id,count,min,p25,median,p75,p95,max,avg
+grand_sim_v0_5,80,0.0,3.0,8.0,11.0,19.0,20.0,7.9875

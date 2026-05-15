@@ -1,0 +1,7 @@
+scenario,architecture,runs,ci_to_identity_cascade_rate,pre_reentry_identity_collapse_rate,recovery_intact_rate,avg_reentry_activation_step,avg_recovery_step
+ci_only,separate,240,0.0,0.0,0.1875,-1.0,15.0
+ci_only,merged,240,0.0,0.0,0.1667,-1.0,15.0
+identity_only,separate,240,0.0,1.0,1.0,-1.0,9.9583
+identity_only,merged,240,0.0,1.0,1.0,-1.0,9.975
+dual_failure,separate,240,1.0,1.0,0.0,8.9292,-1.0
+dual_failure,merged,240,1.0,1.0,0.0,8.1833,-1.0

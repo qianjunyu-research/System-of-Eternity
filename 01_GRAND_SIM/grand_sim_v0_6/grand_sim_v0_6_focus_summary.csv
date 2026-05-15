@@ -1,0 +1,5 @@
+focus,metric,value,status
+CL02 regression,on_time_tpr;false_positive_rate;avg_lead_to_collapse30,1.0;0.0;7.8625,supported_in_v0_6_regression
+CL09 topology lag,avg_latency;avg_wrong_monitoring_steps;avg_topology_false_stability_steps;max_wrong_monitoring_window,46.666667;46.666667;0.0;65,supported_in_v0_6_stress
+CL05 unbalanced hubs,all_hub_delta;single_hub_delta;unbalanced_primary_delta;hub3_secondary_ignition,0.0;0.333333;0.3;0.333333,context_dependent_unbalanced_tested
+CL10 resource stress,resource_exhaustion_rate_all_runs;stress_exhaustion_rate;avg_stress_floor_steps;avg_routing_delay_loss,0.41746;1.0;112.583333;0.005169,stress_measured_v0_6

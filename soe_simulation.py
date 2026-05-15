@@ -22,6 +22,7 @@ TOPOLOGY_CHOICES = {
     "random",
     "scale-free",
     "small-world",
+    "star",
     "federation",
 }
 HUB_FAILURE_MODES = {
@@ -206,6 +207,17 @@ def build_federation_topology(node_ids: List[int], rng: random.Random) -> Topolo
     return graph
 
 
+def build_star_topology(node_ids: List[int], rng: random.Random) -> TopologyGraph:
+    del rng
+    graph = TopologyGraph(node_ids)
+    if not node_ids:
+        return graph
+    hub = node_ids[0]
+    for node_id in node_ids[1:]:
+        graph.add_edge(hub, node_id)
+    return graph
+
+
 def build_topology_graph(
     topology: str,
     node_ids: List[int],
@@ -217,6 +229,8 @@ def build_topology_graph(
         return build_scale_free_topology(node_ids, rng)
     if topology == "small-world":
         return build_small_world_topology(node_ids, rng)
+    if topology == "star":
+        return build_star_topology(node_ids, rng)
     if topology == "federation":
         return build_federation_topology(node_ids, rng)
     return TopologyGraph(node_ids)

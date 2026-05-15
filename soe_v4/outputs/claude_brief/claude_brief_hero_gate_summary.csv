@@ -1,0 +1,2 @@
+adversarial_runs,genuine_runs,false_positive_rate,false_negative_rate,fast_collapse_danger_rate,pass_false_activation,pass_genuine_activation,pass_72h_delay
+600,420,0.0,0.0,1.0,pass,pass,fail

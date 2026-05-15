@@ -37,6 +37,7 @@ class NodeRuntime:
     execution_rng: random.Random
     observation_rng: random.Random
     history: List[Dict[str, float]]
+    activation_active: bool
 
 
 def build_node_config(overrides: List[str]) -> Config:
@@ -58,9 +59,19 @@ def build_node_config(overrides: List[str]) -> Config:
     return Config(**params)
 
 
-def build_neighbors(node_count: int, coupled: bool) -> List[List[int]]:
+def build_neighbors(node_count: int, coupled: bool, topology: str = "ring") -> List[List[int]]:
     if not coupled:
         return [[] for _ in range(node_count)]
+    if topology == "star":
+        if node_count <= 1:
+            return [[] for _ in range(node_count)]
+        neighbors = [[] for _ in range(node_count)]
+        for node_index in range(1, node_count):
+            neighbors[0].append(node_index)
+            neighbors[node_index].append(0)
+        return neighbors
+    if topology != "ring":
+        raise ValueError(f"Unsupported topology: {topology}")
     neighbors: List[List[int]] = []
     for index in range(node_count):
         left = (index - 1) % node_count
@@ -92,9 +103,28 @@ def initialize_nodes(config: Config, node_count: int, run_seed: int) -> List[Nod
                 execution_rng=random.Random(run_seed + 10_000 + node_index),
                 observation_rng=random.Random(run_seed + 20_000 + node_index),
                 history=[],
+                activation_active=state.disturbance > 0.0,
             )
         )
     return nodes
+
+
+def update_activation_mask(
+    states: Sequence[State],
+    previous_active_mask: Sequence[bool],
+    activation_threshold: float,
+    deactivation_threshold: float,
+) -> List[bool]:
+    if activation_threshold <= 0.0:
+        return [state.disturbance > 0.0 for state in states]
+
+    active_mask: List[bool] = []
+    for state, was_active in zip(states, previous_active_mask):
+        if was_active:
+            active_mask.append(state.disturbance >= deactivation_threshold)
+        else:
+            active_mask.append(state.disturbance >= activation_threshold)
+    return active_mask
 
 
 def apply_coupling(
@@ -103,18 +133,46 @@ def apply_coupling(
     k_d: float,
     k_c: float,
     migration_rate: float,
+    activation_threshold: float = 0.0,
+    deactivation_threshold: float = 0.0,
+    propagation_exponent: float = 1.0,
+    neighbor_feedback_strength: float = 0.0,
+    active_mask: Sequence[bool] | None = None,
 ) -> List[State]:
     updated = [State(**state.__dict__) for state in states]
+    if active_mask is None:
+        active_mask = update_activation_mask(
+            states,
+            [False for _ in states],
+            activation_threshold,
+            deactivation_threshold,
+        )
 
     for node_index, node_neighbors in enumerate(neighbors):
         if not node_neighbors:
             continue
-        avg_neighbor_disturbance = sum(states[j].disturbance for j in node_neighbors) / len(node_neighbors)
-        avg_neighbor_cognition = sum(states[j].cognitive_distortion for j in node_neighbors) / len(node_neighbors)
-        updated[node_index].disturbance = clamp(updated[node_index].disturbance + (k_d * avg_neighbor_disturbance))
-        updated[node_index].cognitive_distortion = clamp(
-            updated[node_index].cognitive_distortion + (k_c * avg_neighbor_cognition)
-        )
+        active_neighbors = [
+            neighbor_index
+            for neighbor_index in node_neighbors
+            if active_mask[neighbor_index]
+        ]
+        if active_neighbors:
+            active_neighbor_ratio = len(active_neighbors) / len(node_neighbors)
+            feedback_multiplier = 1.0 + (neighbor_feedback_strength * active_neighbor_ratio)
+            avg_neighbor_disturbance = sum(
+                states[j].disturbance ** propagation_exponent for j in active_neighbors
+            ) / len(active_neighbors)
+            avg_neighbor_cognition = sum(
+                states[j].cognitive_distortion * (states[j].disturbance ** propagation_exponent)
+                for j in active_neighbors
+            ) / len(active_neighbors)
+            updated[node_index].disturbance = clamp(
+                updated[node_index].disturbance + (k_d * avg_neighbor_disturbance * feedback_multiplier)
+            )
+            updated[node_index].cognitive_distortion = clamp(
+                updated[node_index].cognitive_distortion
+                + (k_c * avg_neighbor_cognition * feedback_multiplier)
+            )
 
     trust_deltas = [0.0 for _ in states]
     seen_edges = set()
@@ -140,9 +198,45 @@ def apply_coupling(
     return updated
 
 
-def run_network(config: Config, node_count: int, steps: int, run_seed: int, coupled: bool, k_d: float, k_c: float, migration_rate: float) -> Tuple[List[NodeRuntime], Dict[str, float]]:
+def apply_intrinsic_decay(states: List[State], previous_states: Sequence[State], alpha: float) -> List[State]:
+    if alpha <= 0.0:
+        return [State(**state.__dict__) for state in states]
+
+    decayed_states: List[State] = []
+    for state, previous_state in zip(states, previous_states):
+        decayed_states.append(
+            State(
+                trust=clamp(state.trust),
+                disturbance=clamp(state.disturbance - (alpha * previous_state.disturbance)),
+                stability=clamp(state.stability),
+                cognitive_distortion=clamp(
+                    state.cognitive_distortion - (alpha * previous_state.cognitive_distortion)
+                ),
+            )
+        )
+    return decayed_states
+
+
+def run_network(
+    config: Config,
+    node_count: int,
+    steps: int,
+    run_seed: int,
+    coupled: bool,
+    k_d: float,
+    k_c: float,
+    migration_rate: float,
+    intrinsic_decay: float = 0.0,
+    activation_threshold: float = 0.0,
+    deactivation_threshold: float = 0.0,
+    propagation_exponent: float = 1.0,
+    neighbor_feedback_strength: float = 0.0,
+    topology: str = "ring",
+    hub_disturbance: float = 0.0,
+    hub_disturbance_cap: float = 1.0,
+) -> Tuple[List[NodeRuntime], Dict[str, float]]:
     nodes = initialize_nodes(config, node_count=node_count, run_seed=run_seed)
-    neighbors = build_neighbors(node_count, coupled=coupled)
+    neighbors = build_neighbors(node_count, coupled=coupled, topology=topology)
 
     for step in range(steps):
         local_next_states: List[State] = []
@@ -158,6 +252,14 @@ def run_network(config: Config, node_count: int, steps: int, run_seed: int, coup
             node.decision_queue, executed_actions, executed_decisions = drain_due_decisions(node.decision_queue, step)
             node.interventions = activate_interventions(node.interventions, executed_actions, config)
             next_state, extras = step_system(node.state, node.interventions, config, node.dynamics_rng)
+            if coupled and topology == "star" and node.node_index == 0 and hub_disturbance > 0.0:
+                stressed_disturbance = max(next_state.disturbance, hub_disturbance)
+                next_state = State(
+                    trust=next_state.trust,
+                    disturbance=clamp(min(stressed_disturbance, hub_disturbance_cap)),
+                    stability=next_state.stability,
+                    cognitive_distortion=next_state.cognitive_distortion,
+                )
 
             local_next_states.append(next_state)
             step_extras.append(extras)
@@ -166,15 +268,37 @@ def run_network(config: Config, node_count: int, steps: int, run_seed: int, coup
             sampled_delays.append(sampled_delay)
 
         if coupled:
+            active_mask = update_activation_mask(
+                [node.state for node in nodes],
+                [node.activation_active for node in nodes],
+                activation_threshold,
+                deactivation_threshold,
+            )
             coupled_next_states = apply_coupling(
                 local_next_states,
                 neighbors=neighbors,
                 k_d=k_d,
                 k_c=k_c,
                 migration_rate=migration_rate,
+                activation_threshold=activation_threshold,
+                deactivation_threshold=deactivation_threshold,
+                propagation_exponent=propagation_exponent,
+                neighbor_feedback_strength=neighbor_feedback_strength,
+                active_mask=active_mask,
             )
         else:
             coupled_next_states = local_next_states
+            active_mask = update_activation_mask(
+                [node.state for node in nodes],
+                [node.activation_active for node in nodes],
+                activation_threshold,
+                deactivation_threshold,
+            )
+        coupled_next_states = apply_intrinsic_decay(
+            coupled_next_states,
+            [node.state for node in nodes],
+            intrinsic_decay,
+        )
 
         step_stabilities = [state.stability for state in coupled_next_states]
         step_variance = statistics.pvariance(step_stabilities) if len(step_stabilities) > 1 else 0.0
@@ -215,12 +339,14 @@ def run_network(config: Config, node_count: int, steps: int, run_seed: int, coup
                     "executed_decisions": executed_label,
                     "sampled_delay": sampled_delay,
                     "node_stability_variance": step_variance,
+                    "activation_active": int(active_mask[node.node_index]),
                     **extras,
                 }
             )
             node.previous_observed_state = State(**node.observed_state.__dict__)
             node.observed_state = next_observed_state
             node.state = next_state
+            node.activation_active = active_mask[node.node_index]
 
     node_summaries = [summarize_run(node.history, threshold=config.stability_threshold) for node in nodes]
     final_stabilities = [float(summary["final_stability"]) for summary in node_summaries]
@@ -313,6 +439,7 @@ def main() -> None:
                 k_d=args.k_d,
                 k_c=args.k_c,
                 migration_rate=args.migration_rate,
+                topology="ring",
             )
             all_run_nodes.append(nodes)
             scenario_runs.append(

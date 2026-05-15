@@ -1,0 +1,3 @@
+reference_point,disturbance_threshold_at_equal_margin,cognition_threshold_at_equal_margin,support_damage_ratio_threshold
+normal_reference,0.3064,0.3166,1.0
+stress_reference,0.2872,0.1881,1.0

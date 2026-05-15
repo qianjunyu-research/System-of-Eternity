@@ -1,5 +1,20 @@
 # SOE Civilization Simulation
 
+## SOE v4.1 GitHub Package
+
+The repository now also includes a self-contained `soe_v4/` package for the
+locked V4 and V4.1 simulation campaign. The main reference document for this
+package is `docs/SOE_V4_1.docx`.
+
+GitHub-facing artifacts are intentionally compact:
+
+- simulation code in `soe_v4/`
+- tests in `test_soe_v4_*.py`
+- compact reports and summary CSVs under `soe_v4/outputs/`
+
+Large raw run dumps are left out of version control so the review surface stays
+focused on reusable code and high-signal results.
+
 This workspace now contains a small Python simulation inspired by the "System of Eternity (SOE)" document you referenced. It models a node-based civilization across 1,000 years with 10-year steps and tracks:
 
 - `nodes`

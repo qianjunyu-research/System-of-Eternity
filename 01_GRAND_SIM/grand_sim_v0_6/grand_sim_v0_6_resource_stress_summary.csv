@@ -1,0 +1,10 @@
+scenario,profile,runs,resource_exhaustion_rate,avg_resource_floor_steps,avg_max_unmet_recovery_demand,avg_max_routing_delay_loss,avg_routing_delay_steps,sustained_ignition_rate,avg_peak_collapse
+trigger_b_deadlock,low_stress,10,1.0,100.9,0.016850499999999997,0.0,0.0,1.0,1.0
+trigger_b_deadlock,mid_stress,10,1.0,107.0,0.0159063,0.0,0.0,1.0,1.0
+trigger_b_deadlock,high_stress,10,1.0,128.0,0.0158316,0.0,0.0,1.0,1.0
+resource_budget_shock,low_stress,10,1.0,104.3,0.0247779,0.0,0.0,1.0,1.0
+resource_budget_shock,mid_stress,10,1.0,112.3,0.0230688,0.0,0.0,1.0,1.0
+resource_budget_shock,high_stress,10,1.0,134.0,0.0228335,0.0,0.0,1.0,1.0
+resource_routing_delay,low_stress,10,1.0,91.4,0.0233702,0.0102531,160.0,1.0,1.0
+resource_routing_delay,mid_stress,10,1.0,106.0,0.0229008,0.0103611,160.0,1.0,1.0
+resource_routing_delay,high_stress,10,1.0,127.5,0.023003199999999998,0.0103974,160.0,1.0,1.0

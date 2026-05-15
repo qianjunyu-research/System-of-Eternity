@@ -1,0 +1,14 @@
+area,parameter,value
+CL09 topology_drift,build_drift_neighbors,step <55 ring_mesh; 55<=step<80 centralizing; step>=80 star_adjacent
+CL09 topology_lag_centralizing,topology_detection_lag_steps,18
+CL09 topology_lag_centralizing,topology_detection_interval,15
+CL09 topology_misclassification_async,topology_detection_lag_steps,12
+CL09 topology_misclassification_async,topology_misclassification window,55<=step<=112 returns ring_mesh for centralizing/star_adjacent/star
+CL05 unbalanced hubs,dominant_share,0.70 for hub_count<=2; 0.60 for hub_count>=3
+CL05 hub_2_unbalanced_primary_failure,hub_count/balanced/stress_mode,2 / False / single_primary
+CL05 hub_3_unbalanced_primary_failure,hub_count/balanced/stress_mode,3 / False / single_primary
+CL05 hub_3_unbalanced_secondary_failure,hub_count/balanced/stress_mode,3 / False / single_secondary
+CL10 resource_stress,resource_budget_initial,profile.resource_budget * 0.55
+CL10 resource_stress,demand_multiplier,1.25 + 0.20 when D_eff > 0.55
+CL10 resource_stress,replenish_rate,0.0012 * G_effective per step
+CL10 routing_delay_stress,delayed_recovery,35% of routed recovery and external support when D_eff > 0.45 or message_loss > 0.20

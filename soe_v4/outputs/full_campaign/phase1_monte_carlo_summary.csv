@@ -1,0 +1,2 @@
+runs,survival_rate,stable_rate,metastable_rate,collapse_rate,collapse_time_p10,collapse_time_p50,collapse_time_p90,mean_final_trust,var_final_trust,mean_final_disturbance,var_final_disturbance,mean_final_cognition,var_final_cognition,collapse_band_entry_rate,recovery_success_rate_after_shock
+320,0.7469,0.6438,0.1031,0.2531,22,22,22,0.9117,0.029,0.1455,0.0015,0.1321,0.0024,0.3812,0.725

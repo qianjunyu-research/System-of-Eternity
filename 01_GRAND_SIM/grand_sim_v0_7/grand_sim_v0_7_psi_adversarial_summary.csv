@@ -1,0 +1,13 @@
+scenario,profile,runs,positive_event_rows,on_time_tpr,avg_lead_to_collapse30,detected_positive_rate,avg_trigger_A_count,psi_w_s,psi_s_weight_scale
+federation_cluster_attack,low_stress,10,10,1.0,17.8,1.0,70.1,0.35,1.0
+federation_cluster_attack,mid_stress,10,10,1.0,10.3,1.0,104.7,0.35,1.0
+federation_cluster_attack,high_stress,10,10,1.0,7.7,1.0,141.1,0.35,1.0
+psi_stability_ablation,low_stress,10,10,0.0,0.0,0.0,0.0,0.0,0.0
+psi_stability_ablation,mid_stress,10,10,0.0,0.0,0.0,0.0,0.0,0.0
+psi_stability_ablation,high_stress,10,10,0.0,-4.1,1.0,131.3,0.0,0.0
+psi_corruption,low_stress,10,10,1.0,5.2,1.0,31.0,0.35,1.0
+psi_corruption,mid_stress,10,10,1.0,2.7,1.0,60.5,0.35,1.0
+psi_corruption,high_stress,10,10,1.0,1.8,1.0,137.0,0.35,1.0
+async_message_loss,low_stress,10,0,0.0,0.0,0.0,0.0,0.35,1.0
+async_message_loss,mid_stress,10,0,0.0,0.0,0.0,0.0,0.35,1.0
+async_message_loss,high_stress,10,10,1.0,12.6,1.0,141.0,0.35,1.0

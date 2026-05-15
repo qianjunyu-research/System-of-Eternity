@@ -1,0 +1,27 @@
+SYSTEM OF ETERNITY
+Architecture Design v2 — Post-Review Spec Update
+C05 · Structural Support Layer · v2.1
+Fix 4 — Node Classes and I(t) Subclassing
+4.1 Three Node Classes
+4.2 I_belong_proxy for Class I Nodes
+For institutional nodes, I_belong cannot be psychological but functional analogues exist:
+4.3 Mixed Networks
+Most real governance networks are mixed — human agents, institutions, and potentially AI systems all participate. In mixed networks:
+SOE · C05 Structural Support Layer · v2.1 · Fix 4: Node class definitions
+Version | v2.1 · 2026-05-01
+Source | Multi-AI Review Hostile Synthesis — 2026-05-01
+Change | Fix 4 — Node class definitions: I_belong cannot be applied to non-human nodes unchanged. Three node classes defined with appropriate I(t) formulations.
+ISSUE (Copilot): I_belong (belonging, psychological sense of shared purpose) is defined for all nodes. But C06 and C08 allow nodes to be institutions or AI systems. Institutions and AI systems cannot have psychological belonging. The composite I(t) = w_role·I_role + w_belong·I_belong breaks for heterogeneous node networks without subclassing.
+Class | Definition | I(t) formulation
+Class H — Human agent | Individual human participants. Can have genuine psychological belonging and role clarity. | Full composite: I(t) = w_role·I_role + w_belong·I_belong. Both sub-components apply. Timescales: I_role weeks-months, I_belong months-years.
+Class I — Institution | Formal organizational bodies (governments, agencies, corporations, NGOs). No psychological states — but can have functional analogues. | Role-primary: I(t) = w_role·I_role + w_belong·I_belong_proxy. I_belong_proxy = participation rate + mandate recognition + inter-institutional legitimacy score. Proxy replaces psychological belonging with observable institutional behavior.
+Class A — AI system | Artificial intelligence systems operating as governance participants. No psychological states. Role clarity applicable; belonging not applicable. | Role-only: I(t) = I_role. I_belong = 0 by definition. Institutional AI agents may use Class I formulation if they have organizational embedding. Pure AI: Class A.
+Proxy component | What it measures
+Participation rate | How actively the institution participates in governance processes relative to its mandate. Low participation = low functional belonging.
+Mandate recognition | Whether other nodes recognize this institution's authority and legitimacy in its declared domain. Unrecognized mandate = low belonging.
+Inter-institutional legitimacy | Whether the institution's decisions are treated as binding or advisory by peer institutions. Advisory-only status = low belonging in the governance network.
+I_belong_proxy(t) = α_p·participation_rate(t) + α_m·mandate_recognition(t) + α_l·legitimacy_score(t) α_p + α_m + α_l = 1.0 All proxy components ∈ [0, 1] α values: UNSPECIFIED — calibration pending
+Requirement | Detail
+Node class must be declared at deployment | Each node must be assigned Class H, I, or A before I(t) is computed. Unclassified nodes use Class I (conservative — avoids psychological attribution errors).
+CI applies at network level regardless of class | Civilizational belonging index CI constrains I_belong ceiling for Class H nodes. For Class I nodes it constrains the I_belong_proxy ceiling. For Class A nodes CI has no direct effect.
+T_reserve gating is class-agnostic | T_reserve coordination with C02 applies identically regardless of node class — all nodes have a trust floor below which they cannot donate to R_network.

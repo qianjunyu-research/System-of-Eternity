@@ -1,0 +1,32 @@
+SYSTEM OF ETERNITY
+Architecture Design v2 — Post-Review Spec Update
+C07 · Meta Governance Layer · v2.2
+Fix 7 (C07 side) — Federation Primary Stress Detector
+7.1 Topology-Specific Stress Detection Assignment
+7.2 Updated Psi Formula — Federation Confirmed Primary
+7.3 Trigger A — Topology-Conditioned Activation
+v19 SSL Finding — C05 Confirmed, No C07 Impact
+Version History — C07
+SOE · C07 · Meta Governance Layer · v2.2 · Federation Primary Stress Detector Confirmed
+Version | v2.2 · 2026-05-07
+Supersedes | v2.1 · 2026-05-01
+Source | v19b Simulation + C04 v2.3 architectural finding
+Change | Fix 7 (C07 side) — Psi_extended with cluster-variance term is confirmed as the primary stress detector for federation topology. Trigger A delegation from C04 stated explicitly. SSL timescale assertion confirmed by v19 Sim 2 (C05 clean, no C07 impact).
+v19b FINDING: S_network threshold (C04 Trigger A) does not activate on federation topology under any tested conditions. C07 Psi_extended cluster-variance term is confirmed as the sole effective stress detector for federation topology. This delegation is now explicit architecture, not a fallback.
+Topology | Primary stress detector | Secondary
+Ring / Mesh | C04 Trigger A (S_network threshold) | Psi_base (C07)
+Star | C04 Trigger A (S_network minimum-node) | Psi_base (C07)
+Federation | C07 Psi_extended cluster-variance term (SOLE DETECTOR) | C04 Trigger A: NOT APPLICABLE — does not fire by design
+Unknown | C04 Trigger A (conservative minimum-node) + Psi_base | Both active — conservative default
+Psi_extended is not an enhancement for federation — it IS the monitoring system for federation. Psi_base alone is insufficient for federation because it does not capture cluster-internal divergence. Deployments on federation topology must use Psi_extended. lambda = 0.1 locked (v18 Sim 3, zero false positives, true_positive_rate = 1.0).
+Psi_base(t) [ring/mesh/star/unknown]: Psi_base = w_T*(1-T_network) + w_D*D_effective + w_G*(1-G) + w_S*(1-S_network) + w_R*regime_weight Psi_extended(t) [federation — MANDATORY]: Psi_extended = Psi_base(t) + lambda * sum_k (N_k/N) * Var(T_{i in C_k}(t)) lambda = 0.1 [LOCKED — v18 Sim 3] Trigger A for federation fires on Psi_extended >= Psi_threshold, NOT on S_network >= S_threshold. S_threshold is irrelevant for federation topology.
+Topology | Trigger A activation condition
+Ring / Mesh | S_effective(t) < S_threshold [C04 — S_network weighted average]
+Star | S_effective(t) < S_threshold [C04 — S_network minimum-node]
+Federation | Psi_extended(t) >= Psi_threshold [C07 — cluster-variance term required]
+Unknown | S_effective(t) < S_threshold [C04 — conservative minimum-node]
+v19 Sim 2 confirmed C05 timescale assertion: trust recovers ~2x slower than cooperation (ratio 2.1–2.3 across 20 runs, assertion_supported = 1 for all). This finding is C05-only. No C07 changes required.
+Version | Date | Change
+v2.0 | 2026-04-xx | Initial Architecture Design v2 spec.
+v2.1 | 2026-05-01 | Fixes 2, 3, 5, 6 — consistency checks, Trigger B fallback, cluster-variance term, two-tier aggregation.
+v2.2 | 2026-05-07 | Fix 7 — Psi_extended confirmed as primary (sole) stress detector for federation. Trigger A delegation from C04 stated explicitly. Topology-conditioned Trigger A activation table added.

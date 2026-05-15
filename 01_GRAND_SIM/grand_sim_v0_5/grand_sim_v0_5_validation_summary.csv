@@ -1,0 +1,10 @@
+check,value,expected,status
+run_rows,420,420,pass
+step_rows,67200,67200,pass
+scenario_count,14,14,pass
+profile_count,3,3,pass
+federation_c04_trigger_a_violations,0,0,pass
+max_k_d_effective,0.13,<=0.15,pass
+max_k_c_effective,0.1,<=0.10,pass
+min_break_condition_margin,0.006735,>0,pass
+federation_psi_w_regime,0.0,0.0,pass

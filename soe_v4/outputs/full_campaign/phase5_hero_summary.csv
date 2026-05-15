@@ -1,0 +1,6 @@
+gate_option,false_positive_rate,false_negative_rate,survival_rate_under_true_critical,avg_time_to_intervention_hours,fast_collapse_survival_rate
+gate_72h,0.0,0.5238,0.0,85.92,0.0
+gate_48h,0.0,0.0,0.5238,67.2,0.0
+gate_24h,0.0,0.0,0.9238,43.2,0.84
+gate_12h,0.0,0.0,1.0,31.2,1.0
+gate_conditional_fast,0.0,0.0,0.9238,43.2,0.84

@@ -1,0 +1,6 @@
+batch_id,psi_threshold,positive_runs,negative_runs,detected_tpr,on_time_tpr,false_positive_rate,avg_lead,min_lead,max_lead
+grand_sim_v0_5,0.26,80,40,1.0,1.0,0.0,11.7,3,24
+grand_sim_v0_5,0.28,80,40,1.0,1.0,0.0,10.1125,2,22
+grand_sim_v0_5,0.3,80,40,1.0,1.0,0.0,7.9875,0,20
+grand_sim_v0_5,0.32,80,40,0.975,0.75,0.0,8.15,0,18
+grand_sim_v0_5,0.34,80,40,0.875,0.75,0.0,6.766667,0,17

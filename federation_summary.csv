@@ -1,0 +1,4 @@
+scenario,runs,sustained_ignition_rate,avg_network_failure_rate,avg_cluster1_failure_rate,avg_cluster2_failure_rate,avg_cluster3_failure_rate,avg_bridge_failure_rate,avg_final_cooperation,pct_collapsed
+disturbance_low,30,0.0,0.0,0.0,0.0,0.0,0.0,0.9394892431433911,0.0
+disturbance_high,30,0.0,0.0,0.0,0.0,0.0,0.0,0.9019075847041856,0.0
+cluster_targeted,30,0.0,0.3278481481481481,0.9835444444444444,0.0,0.0,0.32796296296296296,0.7460257569903423,0.0

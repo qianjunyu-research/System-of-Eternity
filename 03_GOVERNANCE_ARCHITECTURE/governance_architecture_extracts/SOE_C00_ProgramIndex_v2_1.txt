@@ -1,0 +1,85 @@
+SYSTEM OF ETERNITY
+Architecture Design v2 — Institutional Mechanisms
+C00 · Program Index · v2.1
+1. Document Naming Convention
+C00 is the index — always open this first. Each component is self-contained but cross-references others using CXX notation.
+2. Component Registry
+3. Simulation Findings — Locked
+4. Open Items — Consolidated
+All open items across C00–C08. Sorted by component. Items marked CALIBRATION REQUIRED are blocking for deployment.
+5. Four Hidden Assumptions — Pre-arXiv Statement
+6. Cross-Cutting Simulation Constraints
+f_min = 0.30
+Disturbance coupling floor. Locked by simulation. Prevents full loop collapse. Theoretical derivation absent — stated as empirically validated constraint.
+Star topology — MANDATORY AVOIDANCE
+Star topology produces 43.3% sustained ignition regardless of hub protection or ceiling reduction. Three-round confirmed v15/v16/v17. No deployment on star topology.
+Hub dual role — confirmed
+Hub serves as both failure broadcaster AND disturbance absorber. Protecting the hub redistributes load to peripherals. Multi-hub minimum: S_hub = min(all hub nodes).
+Federation threshold — UNRECALIBRATED
+Federation S_threshold at the ring/mesh value produces elevated false alarms: v18 Sim 2 measured 35.8% for minimum-node aggregation and 25.9% for two-tier aggregation. Do not deploy on federation topology with automatic Trigger A until v19 recalibration completes.
+Asynchronous T(t) updates
+T(t) updates are asynchronous across nodes. Update timing is topology-specific (C08). No synchronous global T update assumed anywhere in the architecture.
+Composite I(t) = w_role·I_role + w_belong·I_belong
+This formula applies to Class H nodes only. Class I nodes use I_belong_proxy. Class A nodes use I_role only. Mixed networks require node class declaration at deployment.
+7. v19 Simulation Scope
+8. arXiv / Publication Readiness
+SOE · C00 · Program Index · v2.1 · Architecture Design v2 Post-Review Update
+Version | v2.1 · 2026-05-05
+Program phase | Architecture Design v2 — Institutional Mechanisms
+Status | Post-review update complete — six spec changes applied
+Follows | Architecture Design v1 (6 components, all validated or flagged)
+Simulation program | v13–v18 complete. v19 scope: federation S_threshold calibration, SSL dynamics.
+Purpose | Convert validated simulation components into institutional mechanisms applicable to any governance context at any scale
+Scope | General — not scoped to any specific deployment context
+Node identity | UNSPECIFIED at this stage — deliberately deferred to implementation layer
+Drive folder ID | 16zLKgRb2dZUmAGZYxx7miMTH0PaKT2IA
+SOE_C00_ProgramIndex_v2_1.docx — This document. Open first. SOE_C01_TrustIntegrityLayer.docx — v2.0 SOE_C02_RecoveryEngine_v2_1.docx — v2.1 (Fix 1) SOE_C03_DisturbanceBuffer.docx — v2.0 SOE_C04_SLM_v2_1.docx — v2.1 (Fix 6) SOE_C05_SSL_v2_1.docx — v2.1 (Fix 4) SOE_C06_GovernanceModule.docx — v2.0 SOE_C07_MetaGovernance_v2_1.docx — v2.1 (Fixes 2, 3, 5, 6) SOE_C08_CoordinationLayer.docx — v2.0
+ID | Name | Version | Status | Purpose (brief) | Open Items | Key Dependencies
+C00 | Program Index | v2.1 | CURRENT — updated post-review | Master index. Open first. Lists all components, versions, open items, sim constraints. | None | None
+C01 | Trust Integrity Layer | v2.0 | VALIDATED — no v2.1 changes | Defines T(t) network trust: per-node updates, network aggregation, continuous proxy assumption. | Continuous trust proxy assumption — stated as assumption, not derived. T measurement operationalization deferred to implementation. | C03 (D_effective), C06 (G(t))
+C02 | Recovery Engine | v2.1 | UPDATED — Fix 1 applied | Specifies R(T,t) recovery mechanism. R_base + R_gov + R_network. Adaptive R_base form. T-G loop break condition now explicit. | k_b UNSPECIFIED — must satisfy break condition: k_b·(1 + γ_D·f_min) > a·f_min·T_floor + δ·G_min. R_base independent activation pathway — condition for R_base acting without C06 unspecified. | C01 (T), C03 (D_effective), C06 (G(t)), C07 (Trigger B for external intervention)
+C03 | Disturbance Buffer | v2.0 | VALIDATED — no v2.1 changes | Defines D_effective: raw disturbance filtered through governance suppression. k_D_effective = k_D · (1 − α_gov·G(t)), floor f_min = 0.30. | α_gov UNSPECIFIED. f_min = 0.30 locked by simulation but theoretical derivation absent. | C06 (G(t) for suppression path), C04 (feeds S_network)
+C04 | Stability Lock Mechanism | v2.1 | UPDATED — Fix 6 applied | Defines S_effective = min(S_hub, S_network). Topology-conditioned S_network aggregation. Two-tier federation method added. Multi-hub extension added. | Federation S_threshold UNSPECIFIED — requires v19 calibration sweep. Do not deploy SOE on federation topology with automatic Trigger A until recalibrated. | C01 (T per node → S), C03 (D → S dynamics), C07 (Trigger A threshold)
+C05 | Structural Support Layer | v2.1 | UPDATED — Fix 4 applied | Defines I(t) identity index. Three node classes: H (human), I (institution), A (AI). I_belong_proxy defined for Class I. Class A: I_role only. | α_p, α_m, α_l for I_belong_proxy UNSPECIFIED. SSL timescales asserted (I_role weeks-months, I_belong months-years) — not derived. G(t) existence vs. effectiveness separability unspecified. | C06 (CI ceiling on I_belong), C02 (T_reserve gating)
+C06 | Governance Module | v2.0 | VALIDATED — no v2.1 changes | Defines G(t) via dG/dt = γT − δG + H(t). Path 1: interference suppression (k_D_effective). Path 2: trust amplification (bI). H(t) = Hero/Witness activation. | γ, δ UNSPECIFIED. G(t) existence / effectiveness separability — G(t) conflates whether governance exists with whether it works. g(T) undefined. | C01 (T → G dynamics), C05 (I → H(t)), C02 (G → R_gov), C03 (G → k_D_effective)
+C07 | Meta Governance Layer | v2.1 | UPDATED — Fixes 2, 3, 5, 6 applied | Defines Ψ(t) stress index and four triggers (A–D). Trigger B quorum fallback specified. Cross-component consistency checks added. Cluster-variance term added for federation. | Ψ weights (w_T, w_D, w_G, w_S, w_R) UNSPECIFIED. λ = 0.1 recommended (v18 Sim 3) but not locked. τ_A_max UNSPECIFIED. | C01, C03, C04, C06 (inputs to Ψ), C04 (Trigger A threshold), C02 (Trigger B → R_gov), all components (Trigger C/D)
+C08 | Coordination Layer | v2.0 | VALIDATED — no v2.1 changes | Defines asynchronous T(t) update protocol, message passing, and federation cluster coordination. Update intervals topology-specific. | Asynchronous update interval bounds UNSPECIFIED. Message loss handling under high disturbance unspecified. | All components (coordination wrapper)
+These findings are locked across all components. No individual component spec can override them.
+Finding | Status | Detail
+Star topology | MANDATORY AVOIDANCE | 43.3% sustained ignition at S_hub cap (v15). Hub protection redistributes load to peripherals — dual role confirmed (v17). Three-round confirmation complete.
+Ring / Mesh | SAFE | Zero ignition across tested parameter range. Weighted average S_network appropriate.
+Federation | SAFE (with caveats) | Zero ignition (v18 Sim 1). S_threshold requires recalibration: v18 Sim 2 measured false_alarm_rate = 0.358 for minimum-node and 0.259 for two-tier at the ring/mesh threshold. Federation S_threshold is v19 target.
+Hub redundancy | MINIMUM 3 HUBS REQUIRED | v18 Sim 4 correction: 2 hubs are insufficient (balanced and unbalanced: sustained ignition 1.0, collapsed 1.0). Minimum viable hub redundancy = 3 hubs (balanced and unbalanced: sustained ignition 0.0, collapsed 0.0). Star topology avoidance remains mandatory below 3 hubs; S_hub = min(all hub nodes).
+Cluster-variance (Ψ) | CONFIRMED NECESSARY | lambda = 0.1 recommended with zero false positives and true_positive_rate = 1.0 (v18 Sim 3). Current CSV shows avg_detection_lead_steps = 0.0 for all tested lambda values; no early-warning lead advantage is claimed. CL-D false-stability failure mode detected.
+T-G loop break | ANALYTICALLY SPECIFIED | Break condition: k_b·(1 + γ_D·f_min) > a·f_min·T_floor + δ·G_min. k_b calibration required.
+Parameter / Item | Component | Status | Detail
+k_b | C02 | CALIBRATION REQUIRED | Must satisfy T-G loop break condition. Binding constraint on R_base calibration.
+α_gov | C03 | UNSPECIFIED | Governance suppression coefficient. Value not yet determined.
+Federation S_threshold | C04 | Elevated false alarms at ring/mesh threshold: Method A false_alarm_rate = 0.358; Method B false_alarm_rate = 0.259. Calibration sweep required before deployment. | Elevated false alarms at ring/mesh threshold: Method A = 0.358; Method B = 0.259. Calibration sweep required before deployment.
+α_p, α_m, α_l | C05 | UNSPECIFIED | I_belong_proxy weights for institutional nodes.
+γ, δ | C06 | UNSPECIFIED | G(t) growth and decay rates. Calibration pending.
+Ψ weights (w_T, w_D, w_G, w_S, w_R) | C07 | UNSPECIFIED | Meta Governance stress index weights. λ = 0.1 recommended, not locked.
+τ_A_max | C07 | UNSPECIFIED | Maximum steps in Trigger A before quorum fallback activates.
+Continuous trust proxy | C01 | STATED ASSUMPTION | T(t) treated as continuous. Discretization behavior under high noise unstated.
+G(t) existence/effectiveness | C06 | STATED ASSUMPTION | G(t) conflates whether governance exists with whether it works. Separability unspecified.
+SSL timescales | C05 | STATED ASSUMPTION | I_role weeks-months, I_belong months-years — asserted, not derived from dynamics.
+R_base independent activation | C02 | OPEN GAP | Condition under which R_base activates without C06 contribution is unspecified.
+These assumptions were identified during multi-AI review. They must be stated explicitly in any arXiv paper. They are not gaps — they are architectural choices that require disclosure.
+Assumption | Statement
+Continuous trust proxy | T(t) is modeled as a continuous variable. Real institutional trust may be discrete or ordinal. Behavior at discretization boundaries is unstated.
+G(t) existence / effectiveness separability | G(t) conflates governance existence with governance effectiveness. A government that exists but is captured still has positive G(t) in current formulation.
+SSL timescales asserted | I_role operates on weeks-months timescale; I_belong on months-years. These timescales are asserted as plausible, not derived from identity dynamics or empirical data.
+R_base independent activation pathway | When C06 G(t) → 0 (governance collapse), R_base must act alone. The condition defining 'alone' and the pathway is unspecified in C02.
+Apply across all components. Locked by simulation v13–v18. No component spec may override.
+Target | Priority | Detail
+Federation S_threshold | HIGH — deployment blocking | Calibration sweep: identify S_threshold value producing acceptable false alarm rate for federation topology. v18 Sim 2 baseline: Method A false_alarm_rate = 0.358; Method B false_alarm_rate = 0.259. Two-tier aggregation method already specified (C04/C07).
+SSL dynamics simulation | MEDIUM | Simulate I(t) dynamics over time for Class H and Class I nodes. Validate timescale assertions (I_role weeks-months, I_belong months-years).
+Item | Status | Note
+Architecture spec (C00–C08) | COMPLETE | Nine components, all validated or flagged.
+Multi-AI review | COMPLETE | GPT, Grok, Gemini, Le Chat, Copilot. Six spec updates applied.
+Simulation program (v13–v18) | COMPLETE | All topology findings locked.
+Integration checkpoint | PASSED — zero contradictions | Across all nine components.
+Four hidden assumptions stated | COMPLETE — this document Section 5 | Must appear in paper methods section.
+v19 simulation | PENDING | Federation S_threshold and SSL dynamics. Not blocking paper outline.
+arXiv endorser (cs.MA or cs.SI) | ONGOING | Do not suggest finding endorsers — search is active.
+Paper outline | NEXT STEP after C00 update | Can begin with current state; v19 results incorporated when ready.

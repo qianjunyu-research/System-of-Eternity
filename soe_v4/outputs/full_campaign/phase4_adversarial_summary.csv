@@ -1,0 +1,13 @@
+attack_profile,topology,systemic_collapse_rate,false_stability_rate,recovery_success_rate,avg_failed_node_share,avg_healthy_cluster_ratio
+coordinated_spikes,fully_connected,0.0,0.0,1.0,0.08,1.0
+coordinated_spikes,random,0.0,0.0,1.0,0.099,1.0
+coordinated_spikes,clustered,0.0,1.0,1.0,0.24,1.0
+cognitive_amp,fully_connected,0.0,0.0,1.0,0.02,1.0
+cognitive_amp,random,0.0,0.0,1.0,0.027,1.0
+cognitive_amp,clustered,0.0,0.0,1.0,0.06,0.8085
+trust_targeted,fully_connected,0.0,0.0,1.0,0.02,1.0
+trust_targeted,random,0.0,0.0,1.0,0.02,1.0
+trust_targeted,clustered,0.0,0.0,1.0,0.02,0.7755
+timing_attack,fully_connected,0.0,0.0,1.0,0.06,1.0
+timing_attack,random,0.0,0.0,1.0,0.066,1.0
+timing_attack,clustered,0.0,1.0,1.0,0.24,1.0

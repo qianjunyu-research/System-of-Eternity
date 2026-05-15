@@ -1,0 +1,5 @@
+batch_id,comparison,v18_config,v18_hub_count,v18_balanced,v18_sustained_ignition_rate,v18_pct_collapsed,v02_mid_stress_scenario,v02_mid_stress_sustained_ignition_rate,delta_v02_minus_v18
+grand_sim_v0_3,v18_2hub_balanced,B,2,1,1.0,1.0,hub_2_balanced,1.0,0.0
+grand_sim_v0_3,v18_3hub_balanced,C,3,1,0.0,0.0,hub_3_balanced,1.0,1.0
+grand_sim_v0_3,v18_2hub_unbalanced,D,2,0,1.0,1.0,,,
+grand_sim_v0_3,v18_3hub_unbalanced,E,3,0,0.0,0.0,,,

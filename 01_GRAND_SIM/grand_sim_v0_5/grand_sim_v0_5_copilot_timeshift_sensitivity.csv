@@ -1,0 +1,8 @@
+psi_signal_shift_steps,interpretation,positive_event_rows,detected_positive_rows,on_time_rows,detected_tpr,on_time_tpr,false_positive_rows,no_event_rows,false_positive_rate,avg_shifted_lead,min_shifted_lead,max_shifted_lead
+-3,negative=earlier_signal;positive=delayed_signal,80,80,80,1.0,1.0,0,40,0.0,10.9875,3,23
+-2,negative=earlier_signal;positive=delayed_signal,80,80,80,1.0,1.0,0,40,0.0,9.9875,2,22
+-1,negative=earlier_signal;positive=delayed_signal,80,80,80,1.0,1.0,0,40,0.0,8.9875,1,21
+0,negative=earlier_signal;positive=delayed_signal,80,80,80,1.0,1.0,0,40,0.0,7.9875,0,20
+1,negative=earlier_signal;positive=delayed_signal,80,80,78,1.0,0.975,0,40,0.0,6.9875,-1,19
+2,negative=earlier_signal;positive=delayed_signal,80,80,74,1.0,0.925,0,40,0.0,5.9875,-2,18
+3,negative=earlier_signal;positive=delayed_signal,80,80,66,1.0,0.825,0,40,0.0,4.9875,-3,17

@@ -1,0 +1,7 @@
+support_profile,recovery_probability,collapse_probability,avg_time_to_irreversible_collapse,avg_recovery_step,avg_final_trust,temporary_trust_boost,coordination_assist,staged_reentry_bonus,support_cost
+current_structure,0.0,1.0,17.0,-1,0.3812,,,,
+temporary_trust_boost,0.0,1.0,17.0,-1,0.4971,,,,
+coordination_assist,0.0,1.0,17.0,-1,0.9971,,,,
+staged_reentry,0.0,1.0,17.0,-1,0.536,,,,
+combined_minimal_support,0.0,1.0,17.0,-1,1.0,,,,
+minimal_recovery_condition,0.0,1.0,,,,not_found,not_found,not_found,not_found

@@ -1,0 +1,11 @@
+metric,value
+positive_event_rows,80
+on_time_detections,80
+positive_lead_detections,78
+zero_lead_detections,2
+late_or_missing_positive_detections,0
+federation_false_positives_no_event,0
+federation_c04_trigger_source_violations,0
+nonfederation_c07_trigger_sources,0
+nonzero_psi_term_regime_at_detect,0
+bad_federation_trigger_source_at_detect,0
