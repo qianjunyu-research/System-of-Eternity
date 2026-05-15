@@ -28,6 +28,12 @@ Local committed history ahead of `origin/main` included:
 
 The local workspace also contained untracked post-Grand-Simulation and SOE Upgrade materials. This sync adds the curated research packet rather than temporary render/cache folders.
 
+Post-sync update:
+
+- `79e9a92` - Add SOE upgrade closure archive.
+- `b49e96d` - Add Box upload index for SOE closure.
+- Final GitHub compare after the Box update showed the sync branch 9 commits ahead of `origin/main` and 0 commits behind.
+
 ## Included In This Sync
 
 - Grand Simulation v0.1-v0.7 source code, run outputs, findings, prompts, and multi-AI review materials under `01_GRAND_SIM`.
@@ -35,6 +41,7 @@ The local workspace also contained untracked post-Grand-Simulation and SOE Upgra
 - Governance Architecture extracts and v0.5/v0.5.1 upgrade trail under `03_GOVERNANCE_ARCHITECTURE` and `00_ACTIVE_HANDOFFS`.
 - Node v0.1 execution specification and review materials under `04_NODE_SPEC`.
 - Final SOE Upgrade closure release packet under `06_RELEASES/SOE_Upgrade_Closure_2026-05-15`.
+- Box upload index under `06_RELEASES/SOE_Upgrade_Closure_2026-05-15/SOE_Box_Upload_Index_2026-05-15.md`.
 - Current workspace status and cleanup/readme notes.
 - Simulation code updates for governance coupling, star topology support, recovery conversion metrics, and v18-v19b simulation scripts.
 
@@ -57,6 +64,7 @@ Most excluded folders are local QA/cache artifacts, not canonical research sourc
 - No individual file above 50 MB was found before commit preparation.
 - A merge-marker check caught and resolved conflict markers in `governance_network_sim.py` before sync.
 - `pytest` was unavailable in the bundled Python runtime, so validation used `py_compile`, a small `governance_network_sim.py` smoke run, and a star-topology construction smoke check.
+- Final local/GitHub comparison after the Box index update found no normal untracked files remaining. Ignored local items are limited to render/cache folders, temporary staging, prior-history material excluded for conflict-marker contamination, and intentionally ignored bulky intermediate run files.
 
 ## Evidence Boundary Reminder
 
