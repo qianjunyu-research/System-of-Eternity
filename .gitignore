@@ -16,3 +16,16 @@ soe_v4/outputs/claude_brief/*_runs.csv
 soe_v4/outputs/claude_brief/claude_brief_hero_gate.csv
 soe_v4/outputs/claude_brief/claude_brief_merged_layers.csv
 soe_v4/outputs/full_campaign/*_runs.csv
+
+# Generated simulation/output artifacts
+*_runs.csv
+*_history.csv
+*_summary.csv
+*_steps.csv
+*_thresholds.csv
+*_note.txt
+*_smoke.csv
+*_outputs/
+monte_carlo_*.csv
+verify_*.csv
+debug_*.csv

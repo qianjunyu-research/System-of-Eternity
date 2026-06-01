@@ -1,5 +1,0 @@
-﻿"topology","survival_rate","avg_fragmentation_count","avg_contagion_containment","avg_final_connected_components","avg_final_governance_stability"
-"random","1","0","0.068","1.08","0.967"
-"scale-free","1","0","0.054","1","0.97"
-"small-world","1","0","0.07","1","0.968"
-"federation","1","0","0.055","1.22","0.966"

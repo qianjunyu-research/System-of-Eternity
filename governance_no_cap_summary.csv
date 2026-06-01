@@ -1,3 +1,0 @@
-scenario,stable_run_rate,failure_rate,recovered_run_rate,avg_final_stability,avg_min_stability,trust_mean,trust_min,trust_p25,trust_median,trust_p75,trust_max,trust_saturation_rate
-baseline_high_control_no_cap,1.0,0.0,0.0,0.9999999999999989,0.8804805073038814,0.9976672280917047,0.9533445618340921,1.0,1.0,1.0,1.0,0.95
-constraint_regime_no_cap,0.05,0.65,0.9,0.6833919289569079,0.44317702952807664,0.4991024221913497,0.05337369096556846,0.2545140111751072,0.44637760487178363,0.7899170976622907,1.0,0.05

@@ -1,6 +1,0 @@
-Hub redundancy below ignition 0.05: yes.
-Minimum structurally safe hub count: 3.
-Balance matters: not materially in this sweep.
-Two hubs sufficiency: not sufficient; three hubs required only if config C clears threshold.
-Recommended minimum hub count: 3.
-Ring/mesh-equivalent safety restored: yes under this v18 test.

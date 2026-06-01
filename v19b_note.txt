@@ -1,6 +1,0 @@
-D_hub value used: 0.8 (maximum tested value; Step 1 did not reach trigger_A_fire_rate >= 0.50).
-Recommended federation S_threshold: 0.1.
-False alarm rate at recommended threshold: 0.000.
-False alarm target <= 10% achieved: yes.
-Deployment recommendation: do not approve full automation from v19b alone; sensitivity is unresolved.
-Structural observation: Trigger A never fired in the final threshold sweep; federation two-tier S_network appears resistant to bridge-only D_hub stress.

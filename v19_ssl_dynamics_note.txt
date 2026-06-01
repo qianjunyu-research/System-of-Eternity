@@ -1,5 +1,0 @@
-Average cooperation half-life: 9.40 steps.
-Average trust_memory half-life: 20.80 steps.
-Average timescale ratio: 2.22.
-C05 timescale assertion: supported by ratio > 1.5 criterion.
-No C05 revision required.

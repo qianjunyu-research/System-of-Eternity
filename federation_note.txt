@@ -1,6 +1,0 @@
-Federation safety at k_D = 0.10: safe by ignition < 0.05 criterion.
-Cluster-targeted stress containment: contained.
-Bridge node micro-hub evidence: elevated bridge failure observed.
-Ring/mesh comparison: federation remains closer to mesh than star when non-stressed clusters stay bounded.
-Overall topology behavior: ring/mesh-like with conditions.
-Intra-cluster micro-star check: bridge nodes are the main watchpoint; dense cluster interiors do not create one dominant hub.
