@@ -36,7 +36,6 @@ The prototype does not claim empirical validation, pilot readiness, deployment r
 
 - domain decision
 - permanent contact route
-- confirmed Substack profile URL
 - final logo/symbol decision
 - full GPT Deep Research brand verdict after the user's Deep Research quota returns
 
