@@ -42,7 +42,7 @@ High priority:
 Medium priority:
 
 - Decide whether the final homepage identity stays `Non-Terminal Research` or becomes a domain-specific wording.
-- Finalize static logo/symbol after the next deep-research design pass.
+- Finalize static logo/symbol after the next deep-research design pass. Use `VISUAL_IDENTITY_ADDENDUM_INTAKE_2026-06-03.md` as the constraint source for open-mark, no-central-hub, and no-closed-seal rules.
 - Add a short privacy/analytics note if analytics are added.
 
 Later:
