@@ -2,7 +2,7 @@
 
 Date: 2026-06-03
 
-Status: GitHub Pages staging is live.
+Status: GitHub Pages staging is live. Custom domain registration is complete and DNS connection is in progress.
 
 Staging URL:
 
@@ -15,24 +15,27 @@ https://qianjunyu-research.github.io/nonterminal-research-site/
 - GitHub username changed to `qianjunyu-research`.
 - Public staging repo created: `qianjunyu-research/nonterminal-research-site`.
 - Substack link confirmed: `https://substack.com/@deliberatescale`.
-- Website profile URL should use the staging URL until a custom domain is chosen.
+- Website profile URL should use the staging URL until `https://nonterminal.org/` is fully active.
 
-## Domain Shortlist
+## Domain
 
-Primary candidates to evaluate before purchase:
+Primary domain selected and registered:
 
-1. `nonterminal.org` - strongest research-hub identity if available and affordable.
-2. `qianjunyu.com` - strongest personal academic identity if available and affordable.
-3. `qianjunyu-research.com` - fallback if the personal-name domain is unavailable.
-4. `systemofeternity.org` - useful later as an SOE-specific redirect, not the main portfolio domain.
+```text
+nonterminal.org
+```
 
-Do not buy a domain until availability, cost, renewal terms, and redirect strategy are checked live.
+Canonical launch target:
+
+```text
+https://nonterminal.org/
+```
 
 ## Update Queue
 
 High priority:
 
-- Pick final custom domain.
+- Finish GitHub Pages custom-domain connection.
 - Add permanent contact route.
 - Replace staging URL in public profile fields after custom domain is active.
 
@@ -56,6 +59,10 @@ Use the live staging site, not only the file folder:
 Review this public research-hub staging site for institutional credibility, academic seriousness, evidence-boundary clarity, and first-time reader trust:
 
 https://qianjunyu-research.github.io/nonterminal-research-site/
+
+If the custom domain is active, also check:
+
+https://nonterminal.org/
 
 Do not optimize for the author’s personal taste. Optimize for the strongest public research identity. Should this staging direction be accepted, patched, or redesigned before custom-domain launch?
 ```
