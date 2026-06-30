@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Non-Terminal Research Logo Concepts v0.1</title>
+    <style>
+      :root {
+        --ink: #07111f;
+        --paper: #efebe2;
+        --paper-cool: #f7f5ee;
+        --line: #d2c9ba;
+        --bronze: #a87637;
+        --steel: #53728d;
+        --white: #fffaf0;
+        --muted: #596274;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+        line-height: 1.6;
+      }
+
+      header {
+        background: var(--ink);
+        color: var(--white);
+        padding: 56px 32px;
+        border-bottom: 3px solid var(--bronze);
+      }
+
+      header div,
+      main {
+        max-width: 1120px;
+        margin: 0 auto;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 600;
+      }
+
+      h1 {
+        font-size: clamp(2.6rem, 5vw, 4.5rem);
+        line-height: 0.95;
+      }
+
+      header p {
+        max-width: 760px;
+        color: rgba(255, 250, 240, 0.74);
+        font-size: 1.1rem;
+      }
+
+      main {
+        padding: 48px 32px 80px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        background: rgba(247, 245, 238, 0.65);
+        padding: 24px;
+      }
+
+      .mark-box {
+        display: grid;
+        place-items: center;
+        min-height: 260px;
+        background: var(--ink);
+        margin-bottom: 20px;
+      }
+
+      .mark-box.paper {
+        background: var(--paper-cool);
+      }
+
+      .mark-box img {
+        width: 176px;
+        height: 176px;
+      }
+
+      .small-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      .small-row img {
+        width: 48px;
+        height: 48px;
+        background: var(--ink);
+        padding: 8px;
+      }
+
+      .verdict {
+        margin-top: 48px;
+        border-left: 3px solid var(--bronze);
+        padding: 8px 0 8px 18px;
+        color: var(--muted);
+      }
+
+      @media (max-width: 860px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Non-Terminal Research<br>Logo Concepts</h1>
+        <p>Draft v0.1 mark directions. These are not final logo designs; they are concept anchors for AI review, human artist briefing, and selection criteria.</p>
+      </div>
+    </header>
+
+    <main>
+      <section class="grid" aria-label="Logo concept cards">
+        <article class="card">
+          <div class="mark-box">
+            <img src="concepts/concept-a-open-continuity-ring.svg" alt="Concept A Open Continuity Ring">
+          </div>
+          <h2>Concept A</h2>
+          <p><strong>Open Continuity Ring.</strong> The recommended baseline. Non-closed continuity with restrained nodes and an intentional gap.</p>
+          <div class="small-row">
+            <img src="concepts/concept-a-open-continuity-ring.svg" alt="">
+            <span>Best favicon/social-avatar candidate.</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="mark-box">
+            <img src="concepts/concept-b-revision-gate.svg" alt="Concept B Revision Gate">
+          </div>
+          <h2>Concept B</h2>
+          <p><strong>Revision Gate.</strong> More governance-specific. A continuity line passes through a controlled revision gate.</p>
+          <div class="small-row">
+            <img src="concepts/concept-b-revision-gate.svg" alt="">
+            <span>Strong as a diagrammatic secondary mark.</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="mark-box">
+            <img src="concepts/concept-c-nested-horizon.svg" alt="Concept C Nested Horizon">
+          </div>
+          <h2>Concept C</h2>
+          <p><strong>Nested Horizon.</strong> Long-range and layered. Elegant, but may be too abstract without careful execution.</p>
+          <div class="small-row">
+            <img src="concepts/concept-c-nested-horizon.svg" alt="">
+            <span>Good mood, weaker distinctiveness.</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="verdict">
+        <p><strong>Current recommendation:</strong> start from Concept A, borrow only a little of Concept B's controlled-revision logic if needed, and avoid making Concept C the primary mark unless a human artist can give it distinctiveness.</p>
+      </section>
+    </main>
+  </body>
+</html>

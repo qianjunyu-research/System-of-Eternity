@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SOE Logo Patched O Directions</title>
+  <style>
+    :root {
+      --ink: #07111f;
+      --paper: #f4efe5;
+      --muted: #5a6574;
+      --rule: #c8bda9;
+    }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, Arial, sans-serif;
+      line-height: 1.5;
+    }
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 24px 72px;
+    }
+    h1 {
+      font-size: 34px;
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+    }
+    p {
+      color: var(--muted);
+      margin: 0 0 32px;
+      max-width: 760px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    figure {
+      margin: 0;
+      border: 1px solid var(--rule);
+      background: #fffaf0;
+      padding: 18px;
+    }
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid rgba(7, 17, 31, 0.12);
+    }
+    figcaption {
+      margin-top: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+    }
+    .note {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0;
+      display: block;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>SOE Logo: Patched O Directions</h1>
+    <p>Small geometry tests responding to the reticle/loading-spinner critique. These do not alter the live website.</p>
+    <section class="grid">
+      <figure>
+        <img src="variant-1-single-gap-open-ring.svg" alt="SOE single-gap open-ring direction">
+        <figcaption>Variant 1: Single-Gap Open Ring <span class="note">Lead recommendation. Removes crosshair symmetry while preserving the non-terminal signal.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="variant-2-two-gap-offset-ring.svg" alt="SOE two-gap offset ring direction">
+        <figcaption>Variant 2: Offset Two-Gap Ring <span class="note">More dynamic. Slightly less calm, but less spinner-like than four equal gaps.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="variant-3-solid-o-with-notch.svg" alt="SOE solid O with notch direction">
+        <figcaption>Variant 3: Solid O with Notch <span class="note">Most typographic. Lowest spinner risk, but possibly too subtle.</span></figcaption>
+      </figure>
+    </section>
+  </main>
+</body>
+</html>
+

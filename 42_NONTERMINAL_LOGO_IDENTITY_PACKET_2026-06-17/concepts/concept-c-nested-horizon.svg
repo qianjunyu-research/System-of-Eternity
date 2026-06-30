@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Nested Horizon</title>
+  <desc id="desc">Layered incomplete arcs and a quiet axis, representing long-horizon continuity and repeated revision cycles.</desc>
+  <rect width="256" height="256" rx="28" fill="#07111f"/>
+  <path d="M56 153c18-54 58-84 113-90" fill="none" stroke="#fffaf0" stroke-width="7" stroke-linecap="round"/>
+  <path d="M73 179c23-57 72-91 132-91" fill="none" stroke="#fffaf0" stroke-width="7" stroke-linecap="round" opacity="0.88"/>
+  <path d="M45 124c35-18 88-21 147-9" fill="none" stroke="#53728d" stroke-width="5" stroke-linecap="round" opacity="0.68"/>
+  <path d="M82 83 181 176" fill="none" stroke="#53728d" stroke-width="4" stroke-linecap="round" opacity="0.45"/>
+  <circle cx="56" cy="153" r="6" fill="#a87637"/>
+  <circle cx="169" cy="63" r="6" fill="#a87637"/>
+  <circle cx="73" cy="179" r="6" fill="#fffaf0" opacity="0.72"/>
+  <circle cx="205" cy="88" r="6" fill="#fffaf0" opacity="0.72"/>
+</svg>

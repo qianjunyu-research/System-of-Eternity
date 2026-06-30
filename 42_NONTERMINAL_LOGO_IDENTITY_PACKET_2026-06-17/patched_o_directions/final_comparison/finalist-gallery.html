@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SOE Logo Final Comparison</title>
+  <style>
+    :root {
+      --ink: #07111f;
+      --paper: #f4efe5;
+      --muted: #5a6574;
+      --rule: #c8bda9;
+    }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, Arial, sans-serif;
+      line-height: 1.5;
+    }
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 24px 72px;
+    }
+    h1 {
+      font-size: 34px;
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+    }
+    p {
+      color: var(--muted);
+      margin: 0 0 32px;
+      max-width: 780px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    figure {
+      margin: 0;
+      border: 1px solid var(--rule);
+      background: #fffaf0;
+      padding: 18px;
+    }
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid rgba(7, 17, 31, 0.12);
+    }
+    figcaption {
+      margin-top: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+    }
+    .note {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>SOE Logo Final Comparison</h1>
+    <p>Corrected wordmark tests after review: no four-cardinal-gap O, no side-gap C-read, improved spacing, and no-dot comparison.</p>
+    <section class="grid">
+      <figure>
+        <img src="finalist-a-tuned-open-o-no-dot.svg" alt="SOE tuned open O without dot">
+        <figcaption>Finalist A: Tuned Open O, No Dot <span class="note">Lead recommendation. Visible non-terminal signal without reticle or center-dot target cue.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="finalist-b-tuned-open-o-with-dot.svg" alt="SOE tuned open O with dot">
+        <figcaption>Finalist B: Tuned Open O, With Dot <span class="note">Compares the original divider treatment. More ceremonial, but slightly more target-like.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="finalist-c-notched-o-no-dot.svg" alt="SOE notched O without dot">
+        <figcaption>Finalist C: Notched O, No Dot <span class="note">Safer and more typographic; less explicit non-terminal signal.</span></figcaption>
+      </figure>
+    </section>
+  </main>
+</body>
+</html>
+

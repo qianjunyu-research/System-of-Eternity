@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Revision Gate</title>
+  <desc id="desc">A restrained continuity line crossing a bounded gate, representing controlled institutional revision.</desc>
+  <rect width="256" height="256" rx="28" fill="#07111f"/>
+  <path d="M41 128h61" fill="none" stroke="#fffaf0" stroke-width="7" stroke-linecap="round"/>
+  <path d="M154 128h61" fill="none" stroke="#fffaf0" stroke-width="7" stroke-linecap="round"/>
+  <path d="M104 71v114" fill="none" stroke="#a87637" stroke-width="6" stroke-linecap="round"/>
+  <path d="M152 71v114" fill="none" stroke="#a87637" stroke-width="6" stroke-linecap="round"/>
+  <path d="M104 80c26 13 26 83 48 96" fill="none" stroke="#53728d" stroke-width="5" stroke-linecap="round" opacity="0.75"/>
+  <path d="M152 80c-26 13-26 83-48 96" fill="none" stroke="#53728d" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+  <circle cx="41" cy="128" r="7" fill="#fffaf0" opacity="0.8"/>
+  <circle cx="215" cy="128" r="7" fill="#fffaf0" opacity="0.8"/>
+  <circle cx="128" cy="128" r="6" fill="#a87637"/>
+</svg>

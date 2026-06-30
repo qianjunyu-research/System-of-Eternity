@@ -1,5 +1,8 @@
 __pycache__/
 *.py[cod]
+*.zip
+*.7z
+*.rar
 99_TEMP_LOCAL/
 rendered_*/
 lo_render_tmp*/

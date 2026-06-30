@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-labelledby="title desc">
+  <title id="title">SOE offset two-gap open-ring direction</title>
+  <desc id="desc">SOE wordmark with two offset O openings to reduce crosshair symmetry while keeping an open-system signal.</desc>
+  <rect width="900" height="520" fill="#f4efe5"/>
+  <g fill="#07111f">
+    <text x="62" y="250" font-family="Inter, Arial, sans-serif" font-size="220" font-weight="750" letter-spacing="-12">S</text>
+    <text x="594" y="250" font-family="Inter, Arial, sans-serif" font-size="220" font-weight="750" letter-spacing="-8">E</text>
+  </g>
+  <g transform="translate(450 173)" fill="none" stroke="#07111f" stroke-width="35" stroke-linecap="butt">
+    <path d="M 94 0 A 94 94 0 0 1 -48 81" />
+    <path d="M -83 44 A 94 94 0 0 1 -63 -70" />
+    <path d="M -17 -92 A 94 94 0 0 1 75 -57" />
+  </g>
+  <g stroke="#07111f" stroke-width="6" stroke-linecap="square">
+    <line x1="110" y1="360" x2="388" y2="360"/>
+    <line x1="512" y1="360" x2="790" y2="360"/>
+  </g>
+  <circle cx="450" cy="360" r="14" fill="#07111f"/>
+</svg>
+

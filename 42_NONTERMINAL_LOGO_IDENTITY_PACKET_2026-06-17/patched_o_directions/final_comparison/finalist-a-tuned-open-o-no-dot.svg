@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-labelledby="title desc">
+  <title id="title">SOE tuned open O no dot</title>
+  <desc id="desc">SOE wordmark with a narrowed top-right opening in the O and a clean underline without center dot.</desc>
+  <rect width="900" height="520" fill="#f4efe5"/>
+  <g fill="#07111f">
+    <text x="106" y="258" font-family="Inter, Arial, sans-serif" font-size="230" font-weight="760" letter-spacing="-12">S</text>
+    <text x="562" y="258" font-family="Inter, Arial, sans-serif" font-size="230" font-weight="760" letter-spacing="-8">E</text>
+  </g>
+  <g transform="translate(450 176)">
+    <circle cx="0" cy="0" r="96" fill="#07111f"/>
+    <circle cx="0" cy="0" r="61" fill="#f4efe5"/>
+    <path d="M 23 -108 L 92 -84 L 55 -49 L 20 -63 Z" fill="#f4efe5"/>
+  </g>
+  <line x1="160" y1="360" x2="740" y2="360" stroke="#07111f" stroke-width="5" stroke-linecap="square"/>
+</svg>
+

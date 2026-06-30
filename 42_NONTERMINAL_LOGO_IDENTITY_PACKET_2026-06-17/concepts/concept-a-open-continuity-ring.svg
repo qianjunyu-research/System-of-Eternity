@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Open Continuity Ring</title>
+  <desc id="desc">An incomplete ring with small nodes and an intentional gap, representing continuity without final closure.</desc>
+  <rect width="256" height="256" rx="28" fill="#07111f"/>
+  <path d="M188.4 67.6A84 84 0 0 0 54.3 151.1" fill="none" stroke="#fffaf0" stroke-width="7" stroke-linecap="round"/>
+  <path d="M69.1 181.9A84 84 0 0 0 198.5 101.2" fill="none" stroke="#fffaf0" stroke-width="7" stroke-linecap="round" opacity="0.92"/>
+  <path d="M78.5 78.2 178.1 160.9" fill="none" stroke="#53728d" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <path d="M69.4 165.5 178.8 87.4" fill="none" stroke="#53728d" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+  <circle cx="78.5" cy="78.2" r="7" fill="#a87637"/>
+  <circle cx="178.1" cy="160.9" r="7" fill="#a87637"/>
+  <circle cx="69.4" cy="165.5" r="6" fill="#fffaf0" opacity="0.78"/>
+  <circle cx="178.8" cy="87.4" r="6" fill="#fffaf0" opacity="0.78"/>
+  <circle cx="128" cy="128" r="5" fill="#a87637" opacity="0.72"/>
+</svg>
