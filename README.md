@@ -1,3 +1,19 @@
+# Current SOE research release
+
+**Architecture Ready Ver. 1.0.0**, adopted and published 10 October 2026.
+
+Start with the [Meta Governance and evaluation evidence record](https://doi.org/10.5281/zenodo.23275603), alongside [Governance Architecture](https://doi.org/10.5281/zenodo.23275583) and [Operation Layer](https://doi.org/10.5281/zenodo.23275602). See the [release reader guide](releases/architecture-ready-1.0.0/README.md) for exact titles, citation links and rights scope.
+
+The Grand Evaluation and Exit Evaluation are complete. Post-closure integration repairs are separately identified in the published record. Architecture readiness is not empirical validation, pilot/deployment readiness, universal safety or operational authorization.
+
+This repository preserves historical simulation code and prototype materials. Their presence does not make them the implementation of the current release or transfer their original evidence limits. This update does not relicense repository code.
+
+---
+
+## Historical simulation and prototype guide
+
+The original README follows unchanged. Its instructions and claims belong to their original experiments and versions, not automatically to the published 1.0.0 architecture.
+
 # SOE Civilization Simulation
 
 This workspace now contains a small Python simulation inspired by the "System of Eternity (SOE)" document you referenced. It models a node-based civilization across 1,000 years with 10-year steps and tracks:
